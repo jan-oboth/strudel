@@ -1,0 +1,56 @@
+// Berlin Jazz Bar — Modal Jazz
+// Hypnotic, atmospheric. Kind of Blue energy.
+// Real samples: piano1, sax_vib, jazz drums
+
+samples('github:tidalcycles/dirt-samples')
+
+stack(
+  // === PIANO — Sparse modal voicings, lots of space ===
+  chord("<Dm11 Dm11 Dm11 Dm11 Ebm11 Ebm11 Dm11 Dm11>")
+    .voicing()
+    .s("piano1")
+    .gain(0.45)
+    .room(0.5).roomsize(3)
+    .pan(0.6)
+    .struct("[x ~ ~ ~] [~ ~ x ~]")
+    .slow(4),
+
+  // === DOUBLE BASS — Pedal point, minimal movement ===
+  note("<d2@3 ~ d2@3 ~ d2@3 ~ d2@3 ~ eb2@3 ~ eb2@3 ~ d2@3 ~ d2@3 ~>")
+    .s("sawtooth")
+    .lpf(350).lpq(2)
+    .decay(0.5).sustain(0.4).release(0.2)
+    .gain(0.5)
+    .room(0.2)
+    .pan(0.4)
+    .slow(4),
+
+  // === DRUMS — Floating, brushed, minimal ===
+  stack(
+    s("[jazz:5 ~ jazz:5 ~]*2")
+      .gain("0.35 ~ 0.3 ~")
+      .pan(0.7),
+    s("~ [~ jazz:1] ~ ~")
+      .gain(0.25)
+      .pan(0.5),
+    s("jazz:0 ~ ~ ~")
+      .gain(0.3)
+  ).room(0.35),
+
+  // === SOPRANO SAX — Long tones, floating melody ===
+  note(`<
+    [d4@3 ~ ~ e4 f4 ~]
+    [a4@4 ~ ~]
+    [g4@2 f4 e4 d4 ~]
+    [e4@4 ~ ~]
+    [eb4@3 ~ ~ f4 gb4 ~]
+    [bb4@4 ~ ~]
+    [a4@2 g4 f4 e4 ~]
+    [d4@4 ~ ~]
+  >`)
+    .s("sax_vib")
+    .gain(0.55)
+    .room(0.55).roomsize(4)
+    .pan(0.5)
+    .slow(4)
+)

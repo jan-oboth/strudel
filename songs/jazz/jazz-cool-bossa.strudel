@@ -1,0 +1,50 @@
+// Berlin Jazz Bar — Cool Jazz / Bossa Nova
+// Relaxed, smoky, understated. Late night Kreuzberg.
+// Real samples: piano1, sax_vib, jazz drums
+
+samples('github:tidalcycles/dirt-samples')
+
+stack(
+  // === PIANO — Real piano, sparse comping ===
+  chord("<Dm9 G13 C^9 A7b13>")
+    .voicing()
+    .s("piano1")
+    .gain(0.5)
+    .room(0.35).roomsize(2)
+    .pan(0.6)
+    .struct("~ [x ~] ~ [~ x], [~ x] ~ [x ~] ~"),
+
+  // === DOUBLE BASS — Synth bass (warm, woody) ===
+  note("<d2 [d2 e2] g2 [g2 a2] c2 [c2 d2] a1 [a1 b1]>")
+    .s("sawtooth")
+    .lpf(400).lpq(2)
+    .decay(0.35).sustain(0.3).release(0.1)
+    .gain(0.5)
+    .room(0.15)
+    .pan(0.4),
+
+  // === DRUMS — Real jazz brushes ===
+  stack(
+    s("jazz:5*4")
+      .gain("0.5 0.3 0.45 0.3")
+      .pan(0.65),
+    s("~ jazz:1 ~ jazz:1")
+      .gain(0.35)
+      .pan(0.45),
+    s("[jazz:0 ~ ~ ~] [~ ~ jazz:0 ~]")
+      .gain(0.4)
+  ).room(0.25),
+
+  // === TENOR SAX — Real sax with vibrato ===
+  note(`<
+    [~ d4 f4 ~] [a4@2 g4 f4]
+    [~ e4 d4 ~] [~ c4@2 ~]
+    [d4 ~ f4 a4] [g4@2 ~ f4]
+    [e4 d4 c#4 ~] [d4@3 ~]
+  >`)
+    .s("sax_vib")
+    .gain(0.55)
+    .room(0.4).roomsize(2)
+    .pan(0.55)
+    .slow(4)
+)

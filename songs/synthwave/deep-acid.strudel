@@ -1,0 +1,40 @@
+// LETS MAKE ACIDDDDD
+
+setCps(140/60/4)
+
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
+
+// === KICK — Sidechain source with scope viz ===
+_$: s("sbd!4")._scope()
+  .duck("2:3:4").duckattack(.2).duckdepth(.8)
+
+// === BASS — Random acid bass in C minor ===
+$bass: n(irand(10).sub(7).seg(16)).scale("c:minor")
+  .rib(46,1)
+  .distort("2.2:.3")
+  .s("sawtooth").lpf(200).lpenv(2.28)
+  .lpq(12).orbit(2)
+  ._pianoroll()
+
+// === PAD — Supersaw with FM, slow swell ===
+$: s("supersaw").detune(1).rel(5).beat(2, 32).slow(2).orbit(3)
+  .fm("2").fmh(2.04)
+  
+// === PULSE — Rhythmic texture ===
+$: s("pulse").orbit(4).seg(16)
+  .lpf(800).lpq(4)
+  .gain(.3)
+
+// === HATS — Skittering 16ths ===
+$: s("hh*16").gain(sine.range(0.05, 0.25).fast(4))
+  .pan(rand)
+  .speed(rand.range(1, 1.8))
+  .orbit(5)
+  ._pianoroll()
+
+// === CLAP — On the 2 and 4 ===
+$: s("~ cp ~ cp").gain(.4).room(.3)
+  .orbit(6)
+
+// === VIZ — Spectrum at the bottom ===
+$: s("~")._spectrum({color:"#00ffff", thickness:2})

@@ -1,0 +1,81 @@
+// DEEP INDUSTRIAL ACID
+
+setCps(142/60/4)
+
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
+
+// === KICK — Distorted 909, sidechain everything ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.85)
+  .distort(1.5)
+  .duck("1:2:3").duckattack(.03).duckdepth(.9)
+  ._scope({color:"#ff3300", thickness:3})
+
+// === BASS — Random acid, deep and grinding ===
+$bass: n(irand(10).sub(7).seg(16)).scale("c:minor")
+  .rib(46,1)
+  .distort("2.2:.3")
+  .s("sawtooth").lpf(200).lpenv(2.28)
+  .lpq(12).orbit(2)
+  ._pianoroll()
+
+// === INDUSTRIAL ACID — Stabbing square, syncopated ===
+$: n("<0 ~ 3 ~ 5 ~ 0 <7 -3>, ~ 0 ~ 3 ~ 5 ~ 0>").scale("c:minor")
+  .o(2).s("supersaw")
+  .acidenv(0.6)
+  .lpq(16)
+  .distort("3:.4")
+  .gain(.2)
+  .orbit(3)
+  ._pianoroll()
+
+// === PAD — FM supersaw, dark and slow ===
+$: s("supersaw").detune(1).rel(5).beat(2, 32).slow(2).orbit(4)
+  .fm("2").fmh(2.04)
+
+// === INDUSTRIAL NOISE — Bit-crushed, rhythmic gating ===
+$: s("white:2*8")
+  .gain("0.12 0.02 0.08 0.02 0.1 0.02 0.06 0.02")
+  .hpf(3000)
+  .distort(1.5)
+  .crush(8)
+  .decay(.04)
+  .orbit(5)
+
+// === METALLIC HIT — Inharmonic FM percussion ===
+$: note("<c4 ~ eb4 ~ c4 ~ <gb4 f4> ~>")
+  .s("sine")
+  .fm(7).fmh(3.14)
+  .decay(.06).release(.02)
+  .struct("[x ~ ~ x] [~ x ~ ~]")
+  .gain(.2)
+  .distort(.8)
+  .delay(.15).delaytime(3/16).delayfeedback(.25)
+  .hpf(1500)
+  .orbit(6)
+
+// === PULSE — Rhythmic texture ===
+$: s("pulse").orbit(7).seg(16)
+  .lpf(600).lpq(5)
+  .gain(.25)
+
+// === CLAP — Hard, distorted ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.55)
+  .distort(1)
+  .room(.3).roomsize(2)
+  .orbit(8)
+
+// === HATS — Skittering, random panning ===
+$: s("hh*16").bank("RolandTR909")
+  .gain(sine.range(0.05, 0.22).fast(4))
+  .pan(rand)
+  .speed(rand.range(1, 1.6))
+  .hpf(5000)
+  .orbit(9)
+
+// === SUB RUMBLE — Felt not heard ===
+$: note("c0").s("sine").gain(.35).lpf(50)
+
+// === VIZ ===
+$: s("~")._spectrum({color:"#ff3300", thickness:2})

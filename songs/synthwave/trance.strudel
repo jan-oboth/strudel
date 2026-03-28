@@ -1,0 +1,37 @@
+// LET US TRANCE ONCE MORE
+
+// Register acid envelope: classic TB-303 filter sweep
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
+
+// === LEAD — Acid sawtooth arp in G minor ===
+$: n("<0 4 0 9 7>*16").add("<7 _ _ 6 5 _ _ 6>*2").scale("g:minor")
+  .o(3).s("sawtooth").acidenv(0.87)
+  .delay(.4)
+  ._pianoroll()
+
+// === PAD — Supersaw, detuned, lower octave ===
+$: n("<7 _ _ 6 5 _ <5 3> <6 4>>*2").scale("g:minor").transpose(-24)
+  .detune(rand)
+  .o(4).s("sawtooth").superimpose(x => x.add(0.08))
+  .acidenv(1)
+  ._pianoroll()
+
+// === NOISE — Atmosphere ===
+$: s("white:4").att(.4).o(6)
+
+// === CLAP — On 2 and 4 ===
+$: s("jcp:9:4").o(8)
+
+// === KICK — Four on the floor ===
+$: s("bd*4").bank("RolandTR909").gain(.8)
+
+// === HATS — Driving 16ths ===
+$: s("hh*16").bank("RolandTR909").gain("0.3 0.1 0.2 0.1".fast(4))
+  .pan(rand)
+  ._pianoroll()
+
+// === BASS — Sub bass following the lead ===
+$: n("<0 0 0 0 3 3 5 5>").scale("g:minor")
+  .o(1).s("sine")
+  .lpf(200)
+  .gain(.6)

@@ -1,0 +1,62 @@
+// Berlin Jazz Bar — Soul Jazz / Groove
+// Funky, head-nodding. Horace Silver energy.
+// Real samples: piano1, sax, jazz drums
+
+samples('github:tidalcycles/dirt-samples')
+
+stack(
+  // === PIANO — Funky comping, bluesy ===
+  chord("<F7 F7 Bb7 Bb7 F7 F7 C7 Bb7>")
+    .voicing()
+    .s("piano1")
+    .gain(0.52)
+    .room(0.25).roomsize(2)
+    .pan(0.6)
+    .struct("[x ~ x ~] [~ x ~ x] [x ~ x ~] [~ x ~ x]")
+    .slow(4),
+
+  // === DOUBLE BASS — Groovy walking, strong beat ===
+  note(`<
+    f2 a2 c3 a2  f2 ab2 bb2 b2
+    bb1 d2 f2 d2  bb1 db2 eb2 e2
+    f2 a2 c3 a2  f2 eb2 d2 c2
+    c2 e2 g2 e2  bb1 d2 f2 ab2
+  >`)
+    .s("sawtooth")
+    .lpf(500).lpq(3)
+    .decay(0.25).sustain(0.25).release(0.08)
+    .gain(0.55)
+    .room(0.15)
+    .pan(0.4)
+    .slow(4),
+
+  // === DRUMS — Solid backbeat, funky, real jazz kit ===
+  stack(
+    s("jazz:0 ~ [~ jazz:0] ~, ~ jazz:1 ~ jazz:1")
+      .gain("0.5 0.45 0.4 0.5")
+      .pan(0.5),
+    s("jazz:5*8")
+      .gain("0.35 0.15 0.3 0.15 0.35 0.15 0.3 0.2")
+      .pan(0.65),
+    s("~ ~ ~ [~ jazz:4]")
+      .gain(0.2)
+      .pan(0.7)
+  ).room(0.2).swingBy(1/8, 4),
+
+  // === TENOR SAX — Bluesy, soulful melody ===
+  note(`<
+    [f4 ~ ab4 f4] [g4@2 f4 eb4]
+    [f4 ~ ab4 bb4] [c5@2 bb4 ab4]
+    [bb4 ~ ab4 f4] [g4 f4 eb4 ~]
+    [f4 ~ eb4 c4] [f4@3 ~]
+    [f4 ab4 bb4 c5] [eb5@2 c5 bb4]
+    [c5 bb4 ab4 f4] [g4@2 f4 ~]
+    [f4 ~ ab4 f4] [eb4 f4 g4 ab4]
+    [g4 f4 eb4 c4] [f4@3 ~]
+  >`)
+    .s("sax")
+    .gain(0.55)
+    .room(0.35).roomsize(2)
+    .pan(0.55)
+    .slow(4)
+)

@@ -1,0 +1,115 @@
+// INDUSTRIAL TECHNO — HARD BASS
+
+setCps(145/60/4)
+
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
+
+// === KICK — Punishing four on the floor, distorted ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.9)
+  .distort(2)
+  .lpf(4000)
+  .duck("1:2:3").duckattack(.02).duckdepth(1)
+  ._scope({color:"#ff2200", thickness:3})
+
+// === HARD BASS — FM square, punchy stabs ===
+_$: note("<[c1 ~ c1 ~] [c1 ~ c1 <bb0 eb1>] [c1 ~ <db1 c1> ~] [c1 ~ c1 <f0 g0>]>")
+  .s("square")
+  .fm(3).fmh(1.5)
+  .lpf(300).lpq(8).lpenv(5).lpdecay(.1)
+  .distort("0:1")
+  .gain(.5)
+  .orbit(2)
+  ._pianoroll()
+
+// === ACID LINE — Pick one, mute the others with _$ ===
+
+// A: Hypnotic — same note, filter does all the work
+_$: n("<0 0 0 0 0 0 0 0>*2").scale("c:minor")
+  .o(2).s("sawtooth")
+  .lpf(80).lpenv(sine.range(2,12).slow(8)).lpdecay(.06)
+  .lpq(22)
+  .distort("3")
+  .gain(.35)
+  .orbit(3)
+  ._pianoroll()
+
+// B: Chromatic chaos — random semitones, unpredictable
+_$: n(irand(12).seg(16)).scale("c:chromatic")
+  .o(2).s("sawtooth")
+  .acidenv(0.7)
+  .lpq(20)
+  .distort("2.5")
+  .gain(.33)
+  .orbit(3)
+  ._pianoroll()
+
+// C: Stabbing — syncopated, rhythmic gaps
+$: n("<0 ~ 3 ~ 5 ~ 0 <7 -3>, ~ 0 ~ 3 ~ 5 ~ 0>").scale("c:minor")
+  .o(2).s("square")
+  .acidenv(0.5)
+  .lpq(16)
+  .distort("3:.5")
+  .gain(.35)
+  .orbit(3)
+  ._pianoroll()
+
+// === INDUSTRIAL NOISE — Textured, rhythmic ===
+$: s("white:2*8")
+  .gain("0.15 0.02 0.1 0.02 0.12 0.02 0.08 0.02")
+  .hpf(3000)
+  .distort(2)
+  .crush(6)
+  .decay(.05)
+  .orbit(4)
+
+// === CLAP — Metallic, hard ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.65)
+  .distort(1.5)
+  .room(.4).roomsize(2)
+  .orbit(5)
+
+// === HATS — Relentless 16ths ===
+$: s("hh*16").bank("RolandTR909")
+  .gain("<0.35 0.1 0.25 0.1>*4")
+  .speed("<1 1 1 1.3>*4")
+  .hpf(6000)
+  .pan(rand)
+  .orbit(6)
+
+// === OPEN HAT — Offbeat accent ===
+$: s("~ [~ oh] ~ [~ oh]").bank("RolandTR909")
+  .gain(.2)
+  .hpf(5000)
+  .pan(.6)
+  .orbit(6)
+
+// === METALLIC HIT — Pitched percussion, irregular ===
+$: note("<c4 ~ eb4 ~ c4 ~ <gb4 f4> ~>")
+  .s("sine")
+  .fm(7).fmh(3.14)
+  .decay(.08).release(.02)
+  .struct("[x ~ ~ x] [~ x ~ ~]")
+  .gain(.25)
+  .distort(1)
+  .delay(.2).delaytime(3/16).delayfeedback(.3)
+  .hpf(1000)
+  .orbit(7)
+
+// === RUMBLE — Sub drone ===
+$: note("c0")
+  .s("sine")
+  .gain(.4)
+  .lpf(60)
+  .slow(8)
+
+// === TOM FILL — Every 4 bars ===
+$: s("<~ ~ ~ [tom:2 tom:1 tom:0 bd]>").bank("RolandTR909")
+  .gain(.5)
+  .distort(1.5)
+  .room(.2)
+  .orbit(8)
+
+// === VIZ ===
+$: s("~")._spectrum({color:"#ff2200", thickness:3})

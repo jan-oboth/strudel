@@ -76,6 +76,17 @@ Algorave music workspace using [Strudel](https://strudel.cc/) — a browser-base
 - MuseScore screenshots (clean computer-engraved) are much easier to read than scanned 19th-century PDFs.
 - Guitar tabs can be used but require transposition (and octave rearrangement).
 - After transcribing, always do an accidental audit: check every # and b against the key signature.
+- **Use MIDI-to-Strudel converter** (https://emanuel-de-jong.github.io/MIDI-To-Strudel/) for accurate note data when available.
+
+### Naming & Presentation
+- "Kaya" pieces in root folder have all identifying comments stripped — only `// Kaya Minor 1` etc.
+- Working/reference versions live in `songs/` with full attribution.
+- The `audit-classical-strudel` skill (~/.claude/skills/) provides a systematic checklist for reviewing pieces.
+
+### Key Lesson: Match Real Recordings
+- Always compare against a specific recording (user provides Spotify links).
+- The first 10-20 seconds must be convincing — make the opening the most granular.
+- Listeners notice wrong speed and wrong notes more than anything else. Get tempo and key right first, then refine articulation.
 
 ## File Conventions
 
@@ -126,28 +137,35 @@ Use with `.s("name")`: `gm_synth_bass_1`, `gm_lead_2_sawtooth`, `gm_epiano1`, `g
 
 ### Techno/Electronic
 ```javascript
-// Blue Monday style (from awesome-strudel)
-setcpm(130/4)
-stack(
-  s("bd bd [bd*4] [bd*4]").bank("linn").decay(.15),        // kick
-  s("[oh oh*2]*4").bank("dmx").decay(.1).gain(.12),          // hats
-  s("[~ sd]*2").bank("linn").gain(.5),                       // snare
-  note("<[f1 f2*2]*2 [c1 c2*2]*2>*2").s("gm_synth_bass_1") // bass
-)
+// Use $: syntax for independent concurrent patterns (mute with //$: or _$:)
+setCps(140/60/4) // BPM conversion
+// Acid envelope — register custom function:
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
 ```
+- **Drum machines:** `.bank("RolandTR909")`, `.bank("RolandTR808")`, `.bank("linn")`, `.bank("dmx")`
+- **Sidechain ducking:** `.duck("2:3:4").duckattack(.2).duckdepth(.8)` on the kick
+- **Random notes:** `irand(N)` + `.seg(16)` to quantize to 16ths
+- **Effect buses:** `.orbit(N)` to route patterns separately
+- **Live muting:** `$:` patterns can be muted with `//` or `_` prefix, save to apply
 
 ### Jazz Essentials
-- Use `chord().voicing()` for smooth jazz harmony
-- Walking bass: sequential root motion with chromatic approach notes
-- Swing feel: `.swingBy(1/6, 4)` on drums and melody
-- Jazz scales: `"C:dorian"`, `"C:mixolydian"`, `"C:bebop major"`
-- Rhodes/EP sound: use `triangle` or `sine` with `.decay(.5).sustain(.2)`
+- **Real samples:** `piano1`, `fmpiano`, `sax`, `sax_vib`, `sax_stacc`, `vibraphone`
+- **Jazz drums:** `samples('github:tidalcycles/dirt-samples')` → `jazz:0` (kick), `jazz:1` (snare), `jazz:5` (ride)
+- **Upright bass:** `sawtooth` with `.lpf(400-500).lpq(2)` (no real sample available)
+- `chord().voicing()` for jazz harmony, `.swingBy(1/6, 4)` for swing
 
 ### Synthwave Essentials
-- Detuned pads: `.superimpose(x => x.add(0.07))` on sawtooth
-- Arps: 16th-note arpeggiated chord tones with delay feedback
-- Gated reverb snare: `.room(0.8).roomsize(3)` on snare
-- Bass: `square` with `.lpf(500).lpq(4).lpenv(4).lpdecay(0.2)`
+- **Supersaw pad:** `.superimpose(x => x.add(0.08))` twice (+ and -) on sawtooth
+- **Arps:** 16th-note cascades with `.delay(.25).delaytime(3/16).delayfeedback(.45)`
+- **Gated snare:** `.room(0.7).roomsize(3)` on TR-909 snare
+- **Filter sweep:** `.lpf(sine.range(800, 5000).slow(16))`
+- **FM synthesis:** `.fm("2").fmh(2.04)` for metallic tones
+
+### Visualizations (always add to electronic pieces)
+- `._pianoroll()` — note grid (melodic patterns)
+- `._scope()` — waveform (kicks/bass)
+- `._spectrum({color:"#00ffff", thickness:2})` — frequency analyzer
+- Global `.pianoroll()` (no `_`) may not work via strudel.nvim
 
 ---
 
