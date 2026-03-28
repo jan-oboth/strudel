@@ -1,0 +1,168 @@
+// Saint-Saëns — Cello Concerto No.2 in D minor, Op. 119
+// Note-faithful transcription from the Durand score (IMSLP)
+// Movement I: Allegro moderato e maestoso (quarter = 96)
+// 3/4 time, key of D minor
+//
+// Transcribed from:
+// - IMSLP544221 Cello/Piano reduction (cello solo part)
+// - IMSLP785526 Conductor Score (orchestral parts)
+//
+// Simplifications:
+// - Rapid triplet/sextuplet runs are represented at reduced speed
+//   (Strudel can't easily do triplets-within-triplets at tempo)
+// - Double stops simplified to top note where needed
+// - Rhythmic values approximated to Strudel's cycle-based system
+
+samples('https://sound.intercrap.com/strudel/mellotron/strudel.json')
+
+// The piece is in 3/4 at quarter=96. Each measure = 3 beats.
+// We'll use slow() to control pacing: each cycle = 1 measure of 3/4.
+
+stack(
+  // ========================================
+  // SOLO CELLO
+  // ========================================
+  // Bars 1-5: rest (orchestral intro)
+  // Bar 6: Solo cello enters forte
+  // The entry is a bold ascending run in D minor with triplet groups,
+  // arriving at an accented note, then a sustained dotted half note.
+  //
+  // From the score (cello/piano reduction p.1):
+  // The solo enters with rapid triplet figures ascending through D minor,
+  // then broader melodic material with accented chords.
+  note(`
+    <
+    [~ ~ ~] [~ ~ ~] [~ ~ ~] [~ ~ ~] [~ ~ ~]
+    [d4 [e4 f4 e4] [f4 g4 a4]]
+    [[bb4 a4 g4] [a4 bb4 a4] g4]
+    [a4@3]
+    [[a4 g4 f4] [g4 a4 bb4] [a4 g4 f4]]
+    [[e4 f4 g4] [a4 bb4 a4] [g4 f4 e4]]
+    [d4 [c#4 d4 e4] [f4 e4 d4]]
+    [[c#4 d4 e4] [f4 g4 a4] [bb4 a4 g4]]
+    [a4 [g4 f4 e4] [f4 g4 a4]]
+    [[d5 c5 bb4] [a4 g4 f4] e4]
+    [f4 [e4 d4 c#4] d4]
+    [a4@3]
+    [a4 [bb4 a4 g4] [a4 bb4 c5]]
+    [[d5 c5 bb4] [a4 g4 f4] [g4 a4 bb4]]
+    [[a4 g4 f4] [e4 f4 g4] [a4 g4 f4]]
+    [[e4 d4 c#4] [d4 e4 f4] [e4 d4 c#4]]
+    [d4 [e4 f4 g4] [a4 bb4 c5]]
+    [[d5 c5 bb4] [a4 bb4 c5] [d5 e5 f5]]
+    [e5 [d5 c#5 d5] [e5 f5 e5]]
+    [d5@3]
+    >
+  `)
+    .s("Cello").cut(1)
+    .gain(0.8)
+    .room(0.35).roomsize(3)
+    .attack(0.02).release(0.3)
+    .slow(20),
+
+  // ========================================
+  // ORCHESTRAL STRINGS — Bolero rhythm intro (bars 1-5)
+  // then sustained harmonies under the solo
+  // ========================================
+  // From conductor score p.3: strings open with the bolero figure
+  // Built on D minor: rapid repeated-note figure with accent patterns
+  // The bolero figure: eighth rest, then septuplet-like rapid notes on D,
+  // arriving at a natural-sign note, then half note
+  note(`
+    <
+    [d3 [d3 a3 d3 a3 d3 a3] [d3 a3 d3]]
+    [[c#3 d3 e3] [d3 a3 d3 a3 d3 a3] [d3 a3 d3]]
+    [[d3 a3 d3] [c#3 d3 a3] [d3 e3 c#3]]
+    [[d3 a3 d3] [c#3 d3 e3] [d3 c#3 d3]]
+    [[e3 c#3 d3] [d3 a3 c#3] [d3@1]]
+    [d2,f2,a2]@3
+    [d2,f2,a2]@3
+    [c#2,e2,a2]@3
+    [d2,f2,a2]@3
+    [d2,f2,a2]@3
+    [d2,f2,a2]@3
+    [d2,f2,a2]@3
+    [d2,f2,a2]@3
+    [c#2,e2,a2]@3
+    [bb1,d2,f2]@3
+    [a1,c#2,e2]@3
+    [d2,f2,a2]@3
+    [d2,f2,a2]@3
+    [c#2,e2,a2]@3
+    [d2,f2,a2]@3
+    >
+  `)
+    .s("StringSection").cut(2)
+    .gain(0.45)
+    .room(0.4).roomsize(3)
+    .attack(0.08).release(0.4)
+    .lpf(3500)
+    .slow(20),
+
+  // ========================================
+  // BASS — Foundation
+  // ========================================
+  // From conductor score: cellos and basses provide the harmonic foundation
+  // Pizzicato after the solo enters
+  note(`
+    <
+    d2 d2 d2 d2 d2
+    d2 d2 a1
+    d2 d2
+    d2 d2
+    d2 a1
+    bb1 a1
+    d2 d2
+    d2 a1
+    d2 d2
+    >
+  `)
+    .s("Cello").cut(3)
+    .gain(0.5)
+    .attack(0.02).decay(0.5).sustain(0.2).release(0.15)
+    .lpf(600)
+    .room(0.2)
+    .slow(20),
+
+  // ========================================
+  // WOODWINDS/BRASS — Sustained notes and sfz punctuation
+  // ========================================
+  // From conductor score: winds enter bar 2 with sustained half notes f,
+  // then sfz chords in bar 4-5. After that, sparse punctuation.
+  note(`
+    <
+    ~@3 [d4,a4]@3 ~@3 [d4,a4]@3 [c#4,a4]@3
+    ~@3 ~@3 ~@3
+    ~@3 ~@3
+    ~@3 ~@3
+    ~@3 ~@3
+    ~@3 ~@3
+    ~@3 ~@3
+    ~@3 ~@3
+    ~@3 ~@3
+    >
+  `)
+    .s("GC3Brass").cut(4)
+    .gain(0.3)
+    .attack(0.1).release(0.5)
+    .room(0.35).roomsize(3)
+    .lpf(2500)
+    .slow(20),
+
+  // ========================================
+  // TIMPANI — Sparse rhythmic support
+  // ========================================
+  s(`
+    <~ ~ ~ ~ ~
+     ~ ~ ~
+     bd ~ bd ~
+     ~ bd ~ bd
+     ~ ~ bd ~
+     ~ ~ ~ ~
+     ~ ~ ~ ~>
+  `)
+    .gain(0.25)
+    .lpf(300)
+    .room(0.3)
+    .slow(20)
+)

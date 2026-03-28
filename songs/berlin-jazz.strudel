@@ -1,0 +1,97 @@
+// Berlin Jazz Bar — Late Night Session
+// Smoky jazz club vibes: walking bass, brushed drums, Rhodes-like keys
+// ii-V-I progressions in Bb major with jazz extensions
+
+stack(
+  // === PIANO/RHODES COMPING — Jazz voicings ===
+  chord(`
+    <Bb^7 Bb^7 Eb^7 Eb^7
+     Dm7 G7 Cm7 F7
+     Bb^7 G7b13 Cm7 F7
+     Dm7 Db7 Cm7 F7>
+  `)
+    .voicing()
+    .s("sine")
+    .attack(0.01).decay(0.5).sustain(0.2).release(0.4)
+    .gain(0.45)
+    .room(0.4).roomsize(2)
+    .lpf(3500)
+    .pan(0.6)
+    // Rhythmic comping — not on every beat
+    .struct("~ [x ~] ~ [~ x], [~ x] ~ [x ~] ~")
+    .slow(4),
+
+  // === WALKING BASS ===
+  note(`
+    <bb1 d2 f2 d2
+     eb2 g2 bb2 g2
+     d2 f2 a2 f2
+     g2 b2 d3 b2
+     c2 e2 g2 e2
+     f2 a2 c3 a2
+     bb1 d2 f2 ab2
+     g2 bb2 d3 c3
+     bb1 c2 d2 eb2
+     d2 e2 f2 g2
+     c2 d2 eb2 e2
+     f2 g2 a2 bb2
+     d2 eb2 e2 f2
+     db2 d2 eb2 e2
+     c2 d2 eb2 e2
+     f2 g2 a2 bb2>
+  `)
+    .s("sawtooth")
+    .lpf(600).lpq(2)
+    .decay(0.3).sustain(0.4).release(0.1)
+    .gain(0.55)
+    .room(0.2)
+    .pan(0.4)
+    .slow(4),
+
+  // === BRUSHED DRUMS — Swinging pattern ===
+  stack(
+    // Ride cymbal — swung
+    s("hh*4")
+      .gain("0.5 0.3 0.45 0.3")
+      .swingBy(1/6, 4)
+      .pan(0.7),
+
+    // Ghost snares on 2 and 4
+    s("~ sd ~ sd")
+      .gain(0.3)
+      .speed(1.5)
+      .pan(0.45),
+
+    // Subtle kick
+    s("bd ~ ~ ~, ~ ~ bd ~")
+      .gain(0.35),
+
+    // Hi-hat chatter
+    s("~ ~ ~ ~, ~ [~ hh] ~ [~ hh]")
+      .gain(0.15)
+      .speed(1.8)
+      .pan(0.6)
+  )
+    .room(0.25)
+    .swingBy(1/6, 4),
+
+  // === MELODY — Breathy lead (sparse, bluesy) ===
+  note(`
+    <[~ bb4 d5 ~] [f5@2 eb5 d5]
+     [~ c5 bb4 ~] [~ a4@2 ~]
+     [bb4 ~ d5 f5] [eb5@2 ~ d5]
+     [c5 bb4 a4 ~] [bb4@3 ~]
+     [~ d5 f5 ~] [g5@2 f5 eb5]
+     [d5 ~ c5 bb4] [~ a4@2 ~]
+     [bb4 c5 d5 eb5] [d5@2 c5 bb4]
+     [a4 ~ bb4 ~] [~@4]>
+  `)
+    .s("triangle")
+    .attack(0.05).decay(0.3).sustain(0.5).release(0.5)
+    .gain(0.35)
+    .lpf(2000).lpq(1)
+    .room(0.5).roomsize(2)
+    .vib(5).vibmod(0.15)
+    .pan(0.55)
+    .slow(8)
+)

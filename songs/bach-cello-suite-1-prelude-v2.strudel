@@ -1,0 +1,161 @@
+// J.S. Bach — Cello Suite No.1 in G Major, BWV 1007
+// I. Prélude — v2 (harmonic fixes)
+// Fixes: removed incorrect C#/Bb, corrected bass notes, more varied patterns
+
+samples('https://sound.intercrap.com/strudel/mellotron/strudel.json')
+
+arrange(
+  // === m.1: THE opening — G major, slightly held ===
+  [2, note(`
+    [g2 d3 b3 a3 b3 d3 b3 d3 g2 d3 b3 a3 b3 d3 b3 d3]
+  `).slow(2)],
+
+  // === m.2: Flowing, listener is hooked ===
+  [1.8, note(`
+    [g2 e3 c4 b3 c4 e3 c4 e3 g2 e3 c4 b3 c4 e3 c4 e3]
+  `).slow(1.8)],
+
+  // === m.3: D7/F# — bass moves to F#, tension ===
+  [1.8, note(`
+    [f#2 d3 c4 a3 c4 d3 c4 d3 f#2 d3 c4 a3 c4 d3 c4 d3]
+  `).slow(1.8)],
+
+  // === m.4: Back to G — settling ===
+  [2, note(`
+    [g2 g3 b3 a3 b3 g3 b3 g3 g2 g3 b3 a3 b3 g3 b3 g3]
+  `).slow(2)],
+
+  // === m.5: Em — bass drops, darker colour ===
+  [1.8, note(`
+    [e3 g3 b3 a3 b3 g3 b3 g3 e3 g3 b3 a3 b3 g3 b3 g3]
+  `).slow(1.8)],
+
+  // === m.6: C/E — warmth, lean forward ===
+  [1.6, note(`
+    [e3 g3 c4 b3 c4 g3 c4 g3 e3 g3 c4 b3 c4 g3 c4 g3]
+  `).slow(1.6)],
+
+  // === m.7: D major — arrival, broaden ===
+  [2.1, note(`
+    [d3 a3 d4 c4 d4 a3 d4 a3 d3 a3 d4 c4 d4 a3 d4 a3]
+  `).slow(2.1)],
+
+  // === m.8: D7 — ritardando into next phrase ===
+  [2.1, note(`
+    [d3 f#3 c4 b3 c4 f#3 c4 f#3 d3 f#3 a3 f#3 a3 f#3 a3 f#3]
+  `).slow(2.1)],
+
+  // === m.9: G/B — new energy, bass steps up ===
+  [1.7, note(`
+    [b2 d3 b3 a3 b3 d3 b3 d3 b2 d3 b3 a3 b3 d3 b3 d3]
+  `).slow(1.7)],
+
+  // === m.10: Am — not A7, keep it diatonic ===
+  [1.7, note(`
+    [a2 e3 c4 b3 c4 e3 c4 e3 a2 e3 c4 b3 c4 e3 c4 e3]
+  `).slow(1.7)],
+
+  // === m.11: D7 — dominant ===
+  [1.7, note(`
+    [d3 a3 d4 c4 d4 a3 d4 a3 d3 f#3 c4 a3 c4 f#3 c4 f#3]
+  `).slow(1.7)],
+
+  // === m.12: G — resolution ===
+  [1.8, note(`
+    [g2 b2 g3 f#3 g3 b2 g3 b2 g2 b2 g3 f#3 g3 b2 g3 b2]
+  `).slow(1.8)],
+
+  // === m.13-14: G quiet — more intimate ===
+  [3.8, note(`
+    [g2 b2 g3 f#3 g3 b2 g3 b2 g2 b2 g3 f#3 g3 b2 g3 b2]
+    [g2 c3 a3 g3 a3 c3 a3 c3 g2 c3 a3 g3 a3 c3 a3 c3]
+  `).slow(3.8)],
+
+  // === m.15: Am — pushing forward ===
+  [1.4, note(`
+    [a2 c3 a3 g3 a3 c3 a3 c3 a2 e3 a3 g3 a3 e3 a3 e3]
+  `).slow(1.4)],
+
+  // === m.16: D — driving ===
+  [1.4, note(`
+    [d3 b3 d4 c4 d4 b3 d4 b3 d3 b3 d4 c4 d4 b3 d4 b3]
+  `).slow(1.4)],
+
+  // === m.17-18: D pedal — driving ===
+  [2.8, note(`
+    [d3 a3 d4 c4 d4 a3 d4 a3 d3 a3 d4 c4 d4 a3 d4 a3]
+    [d3 g3 d4 b3 d4 g3 d4 g3 d3 g3 d4 b3 d4 g3 d4 g3]
+  `).slow(2.8)],
+
+  // === m.19-20: D7 resolving to G — broadening ===
+  [3.8, note(`
+    [d3 f#3 c4 a3 c4 f#3 c4 f#3 d3 f#3 c4 a3 c4 f#3 c4 a3]
+    [g2 b2 d3 a3 d3 b2 d3 b2 g2 b2 d3 f#3 d3 b2 d3 b2]
+  `).slow(3.8)],
+
+  // === m.21-22: C to D7 — transition ===
+  [3.4, note(`
+    [c3 e3 g3 e3 g3 e3 g3 e3 c3 e3 g3 e3 g3 e3 g3 e3]
+    [c3 d3 f#3 d3 f#3 d3 f#3 d3 c3 d3 f#3 d3 f#3 d3 f#3 d3]
+  `).slow(3.4)],
+
+  // === m.23: B natural — bass descent starts ===
+  [1.5, note(`
+    [b2 d3 g3 d3 g3 d3 g3 d3 b2 d3 g3 d3 g3 d3 g3 d3]
+  `).slow(1.5)],
+
+  // === m.24: B natural continued — NOT Bb ===
+  [1.5, note(`
+    [b2 d3 g3 f#3 g3 d3 g3 d3 b2 d3 g3 f#3 g3 d3 g3 d3]
+  `).slow(1.5)],
+
+  // === m.25: A — bass drops ===
+  [1.5, note(`
+    [a2 d3 g3 f#3 g3 d3 g3 d3 a2 d3 g3 f#3 g3 d3 g3 d3]
+  `).slow(1.5)],
+
+  // === m.26: A to D7 — resolving ===
+  [1.6, note(`
+    [a2 d3 f#3 d3 f#3 d3 f#3 d3 a2 c3 f#3 d3 f#3 c3 f#3 c3]
+  `).slow(1.6)],
+
+  // === m.27-29: Grand arpeggios — expansive ===
+  [5.3, note(`
+    [g2 b2 d3 b2 g3 d3 b3 g3 d4 b3 g3 b3 d4 b3 g3 b3]
+    [c3 e3 g3 e3 c4 g3 e4 c4 g3 c4 e4 c4 g3 c4 e4 c4]
+    [f#2 a2 d3 a2 f#3 d3 a3 f#3 d3 f#3 a3 f#3 d3 f#3 a3 f#3]
+  `).slow(5.3)],
+
+  // === m.30-33: Sweeping scales — climax ===
+  [6, note(`
+    [g2 b2 d3 g3 b3 d4 g4 b3 d4 b3 g3 b3 d3 b2 g2 b2]
+    [g2 b2 d3 g3 b3 d4 g4 b3 d4 b3 g3 b3 d3 b2 g2 b2]
+    [g2 c3 e3 g3 c4 e4 c4 g3 e3 g3 c4 e4 c4 g3 e3 c3]
+    [g2 c3 e3 g3 c4 e4 c4 g3 e3 g3 c4 e4 c4 g3 e3 c3]
+  `).slow(6)],
+
+  // === m.34-36: Winding down — broader ===
+  [5.3, note(`
+    [g2 b2 d3 g3 b3 d4 b3 g3 d3 b2 g2 b2 d3 b2 g2 b2]
+    [g2 a2 c3 f#3 a3 c4 a3 f#3 c3 a2 f#2 a2 c3 f#3 a3 c4]
+    [g2 b2 d3 g3 b3 d4 g4 f#4 g4 d4 b3 a3 b3 g3 f#3 e3]
+  `).slow(5.3)],
+
+  // === m.37-39: Final flourishes — D to G ===
+  [5.3, note(`
+    [d3 a3 d4 f#4 a4 d4 a3 f#3 d3 f#3 a3 d4 f#4 a4 d4 a3]
+    [e3 g3 c4 e4 g4 e4 c4 g3 e3 g3 c4 e4 g4 e4 c4 g3]
+    [d3 f#3 a3 d4 a4 d4 a3 f#3 d3 a3 d4 f#4 a4 d4 a3 f#3]
+  `).slow(5.3)],
+
+  // === m.40-42: Final cadence — slowing dramatically ===
+  [7, note(`
+    [d3 g3 b3 d4 g4 d4 b3 g3 d3 g3 b3 d4 g4 d4 b3 g3]
+    [c3 e3 a3 e4 a4 e4 a3 e3 c3 e3 a3 e4 a4 e4 a3 e3]
+    [c3 d3 f#3 a3 d4 f#4 a4 d4 f#3 a3 d4 a3 f#3 d3 a2 f#2]
+  `).slow(7)]
+)
+  .s("Cello")
+  .gain(0.75)
+  .room(0.4).roomsize(4)
+  .attack(0.005).release(0.15)

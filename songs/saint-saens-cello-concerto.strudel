@@ -1,0 +1,91 @@
+// Saint-Saëns — Cello Concerto No.2 in D minor, Op. 119
+// Evocation of the Allegro moderato e maestoso
+// The opening is built on a fiery bolero rhythm with a declamatory cello theme
+// NOTE: This is an artistic interpretation, not a note-accurate transcription
+// Uses mellotron cello + orchestral samples
+
+samples('https://sound.intercrap.com/strudel/mellotron/strudel.json')
+
+stack(
+  // === BOLERO RHYTHM — Snare-like pattern (foundational to the movement) ===
+  // The bolero figure permeates Part I of the first movement
+  s("~ [hh hh hh] ~ [hh hh hh], ~ ~ ~ [hh hh hh hh hh hh]")
+    .gain("~ 0.25 ~ 0.25, ~ ~ ~ 0.15")
+    .speed(1.4)
+    .pan(0.5)
+    .room(0.3),
+
+  // === SOLO CELLO — Fiery, declamatory theme ===
+  // Maestoso character: bold leaps, dotted rhythms, ascending lines
+  note(`
+    <[d3@3 d3] [d3 f3 a3 d4]
+     [c#4@2 d4 a3] [bb3 a3 g3 f3]
+     [g3@2 a3 bb3] [a3@3 ~]
+     [d3 e3 f3 g3] [a3@2 d4 c#4]
+     [d4@3 ~] [a3 bb3 a3 g3]
+     [f3@2 g3 a3] [bb3 a3 g3 f3]
+     [e3@2 f3 g3] [a3 g3 f3 e3]
+     [d3@3 ~] [~@4]>
+  `)
+    .s("Cello").cut(1)
+    .gain(0.8)
+    .room(0.4).roomsize(3)
+    .attack(0.03).release(0.4)
+    .slow(8),
+
+  // === ORCHESTRAL STRINGS — Sustained D minor harmonies ===
+  // Tonal scheme: D minor opening, with hints toward Eb major (Andante later)
+  note(`
+    <[d2,f2,a2]@4 [d2,f2,a2]@4
+     [d2,f2,a2]@4 [c#2,e2,a2]@4
+     [bb1,d2,g2]@4 [a1,c#2,e2]@4
+     [d2,f2,a2]@4 [d2,f2,a2]@4
+     [d2,f2,a2]@4 [d2,g2,bb2]@4
+     [d2,f2,a2]@4 [c2,e2,bb2]@4
+     [c#2,e2,a2]@4 [c#2,e2,a2]@4
+     [d2,f2,a2]@4 [d2,f2,a2]@4>
+  `)
+    .s("StringSection").cut(2)
+    .gain(0.45)
+    .room(0.5).roomsize(4)
+    .attack(0.15).release(0.6)
+    .lpf(3500)
+    .slow(8),
+
+  // === BASS — Low cello/bass foundation ===
+  note(`
+    <d2 d2 d2 d2
+     d2 a1 bb1 a1
+     d2 d2 d2 d2
+     d2 g1 a1 a1
+     d2 d2 d2 d2
+     d2 c2 a1 a1
+     d2 d2 d2 d2
+     d2 ~ ~ ~>
+  `)
+    .s("Cello").cut(3)
+    .gain(0.55)
+    .attack(0.02).decay(0.5).sustain(0.3).release(0.2)
+    .lpf(700)
+    .room(0.25)
+    .slow(8),
+
+  // === BRASS — Maestoso punctuation ===
+  // Bold interjections on strong beats, reinforcing the heroic character
+  note(`
+    <[d3,a3,d4]@4 ~@4
+     ~@4 [a2,e3,a3]@4
+     [bb2,d3,g3]@4 [a2,c#3,e3]@4
+     [d3,a3,d4]@4 ~@4
+     [d3,a3,d4]@4 ~@4
+     ~@4 [c3,e3,bb3]@4
+     [a2,c#3,e3]@4 [a2,c#3,e3]@4
+     [d3,a3,d4]@4 ~@4>
+  `)
+    .s("GC3Brass").cut(4)
+    .gain(0.3)
+    .attack(0.08).release(0.5)
+    .room(0.4).roomsize(3)
+    .lpf(2500)
+    .slow(8)
+)

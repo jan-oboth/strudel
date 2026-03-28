@@ -1,0 +1,12 @@
+# Score PDFs and screenshots (large binary files)
+files/
+
+# Claude internal
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
