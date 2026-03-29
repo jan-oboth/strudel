@@ -1,0 +1,161 @@
+// BERLIN CHILL HAZE — Hazy Dub-Influenced Berghain
+
+setCps(123/60/4)
+
+// === KICK — Deep, full 4/4 ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.82)
+  .shape(.28)
+  .lpf(2200)
+  .duck("1:2:3:4:5:6:7").duckattack(.01).duckdepth(.9)
+  .room(.2).roomsize(4).roomlp(700)
+  .orbit(1)
+  ._scope({color:"#0a1a2a", thickness:3})
+  ._spectrum({color:"#0a1a2a", thickness:2})
+
+// === KICK ALT — Half-time feel ===
+_$: s("<bd ~ ~ ~ bd ~ ~ ~>").bank("RolandTR909")
+  .gain(.85)
+  .shape(.3)
+  .lpf(2500)
+  .duck("1:2:3:4:5:6:7").duckattack(.01).duckdepth(.95)
+  .room(.2).roomsize(4).roomlp(700)
+  .orbit(1)
+  ._scope({color:"#0a1a2a", thickness:3})
+
+// === SUB BASS — Slow drone, deep ===
+$: note("<c1!8 eb1!4 g0!4>")
+  .s("sine")
+  .gain(.5)
+  .lpf(70)
+  .slow(16)
+  .orbit(2)
+
+// === BASS STAB — Minimal, filtered ===
+$: note("<[c2 ~ ~ ~] [~ ~ c2 ~] [c2 ~ ~ c2] [~ ~ ~ <bb1 g1>]>")
+  .s("sawtooth")
+  .lpf(sine.range(160, 500).slow(32))
+  .lpq(5)
+  .decay(.1).release(.05)
+  .distort(.65)
+  .gain(.32)
+  .orbit(2)
+  ._pianoroll({color:"#1a3355"})
+
+// === PAD — Wide, dub-drenched chords ===
+$: note("<[c3,eb3,g3]!4 [bb2,d3,f3]!2 [ab2,c3,eb3]!2>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.08))
+  .superimpose(x => x.add(-0.08))
+  .lpf(sine.range(200, 1400).slow(48))
+  .attack(1).decay(2.5).sustain(.35).release(2)
+  .gain(.14)
+  .room(.8).roomsize(8).roomlp(1200).roomdim(2500)
+  .slow(8)
+  .orbit(5)
+
+// === STAB LAYER 1 — FM sine, heavy delay, the star ===
+$: note("<~ [eb4 ~] ~ [d4 ~] ~ ~ [c4 ~] ~>")
+  .s("sine")
+  .fm(2).fmh(2.01)
+  .decay(.35).release(.5)
+  .lpf(2400)
+  .gain(.4)
+  .delay(.5).delaytime(3/16).delayfeedback(.55)
+  .room(.65).roomsize(6)
+  .pan(.35)
+  .orbit(6)
+  ._pianoroll({color:"#2244aa"})
+
+// === STAB LAYER 2 — Interlocking melody, fills gaps ===
+_$: note("<[g4 ~] ~ ~ ~ [f4 ~] ~ ~ [eb4 ~]>")
+  .s("sine")
+  .fm(2).fmh(2.04)
+  .decay(.25).release(.3)
+  .lpf(2800)
+  .gain(.3)
+  .delay(.4).delaytime(5/16).delayfeedback(.5)
+  .room(.6).roomsize(5)
+  .pan(.65)
+  .orbit(7)
+  ._pianoroll({color:"#3355bb"})
+
+// === STAB ALT 1 — 7th chord stabs, jazzy ===
+_$: note("<[c4,eb4,g4,bb4] ~ ~ ~ ~ ~ [bb3,d4,f4,ab4] ~>")
+  .s("sine")
+  .fm(2).fmh(2.01)
+  .decay(.25).release(.35)
+  .lpf(2500)
+  .gain(.35)
+  .delay(.45).delaytime(3/16).delayfeedback(.5)
+  .room(.7).roomsize(6)
+  .pan(.4)
+  .orbit(6)
+  ._pianoroll({color:"#2244aa"})
+
+// === STAB ALT 2 — Sus chord stabs, tension ===
+$: note("<~ ~ [c4,f4,g4] ~ ~ ~ ~ [bb3,eb4,f4]>")
+  .s("sine")
+  .fm(1.5).fmh(2.01)
+  .decay(.3).release(.4)
+  .lpf(2200)
+  .gain(.35)
+  .delay(.5).delaytime(3/16).delayfeedback(.55)
+  .room(.65).roomsize(6)
+  .pan(.5)
+  .orbit(6)
+  ._pianoroll({color:"#2244aa"})
+
+// === STAB ALT 3 — Sparse single notes, deeper FM ===
+_$: note("<~ ~ ~ [d4 ~] ~ ~ ~ [c4 ~]>")
+  .s("sine")
+  .fm(3).fmh(2.01)
+  .decay(.4).release(.6)
+  .lpf(2000)
+  .gain(.4)
+  .delay(.55).delaytime(3/16).delayfeedback(.6)
+  .room(.75).roomsize(7)
+  .pan(.4)
+  .orbit(6)
+  ._pianoroll({color:"#2244aa"})
+
+// === CLAP — Big room reverb ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.42)
+  .room(.55).roomsize(5).roomlp(1800)
+  .hpf(800)
+  .orbit(3)
+
+// === CLOSED HAT — Sparse, hazy ===
+$: s("~ hh ~ ~, ~ ~ hh ~").bank("RolandTR909")
+  .gain("0.15 0.09")
+  .hpf(7000)
+  .pan(sine.range(.3,.7).slow(9))
+  .orbit(4)
+
+// === OPEN HAT — Ghost, offbeat ===
+_$: s("~ [~ oh] ~ ~").bank("RolandTR909")
+  .gain(.1)
+  .hpf(6000)
+  .decay(.15)
+  .pan(.6)
+  .orbit(4)
+
+// === RIDE — Ghost pulse, barely audible ===
+$: s("~ ~ ~ ~, ~ [~ hh:3] ~ ~").bank("RolandTR909")
+  .gain(.06)
+  .hpf(8000)
+  .delay(.3).delaytime(5/16).delayfeedback(.4)
+  .pan(.55)
+  .orbit(4)
+
+// === RUMBLE — Deep sub texture ===
+$: note("c0")
+  .s("brown")
+  .gain(.2)
+  .lpf(40)
+  .slow(16)
+  .orbit(8)
+
+// === VIZ ===
+// ._spectrum() is on the kick line above (must be on a sounding pattern)

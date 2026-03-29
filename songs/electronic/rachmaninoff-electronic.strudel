@@ -1,0 +1,181 @@
+// RACHMANINOFF ELECTRONIC — Dark Romantic Techno in C# Minor
+// Rachmaninoff's harmonic DNA through a techno lens:
+// bell-chord motifs, wide voicings, singing melodies, brooding intensity
+
+setCps(128/60/4)
+
+samples('https://sound.intercrap.com/strudel/mellotron/strudel.json')
+
+// === KICK — Deep, weighty, like his bass register ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.85).shape(.3).lpf(2000)
+  .duck("1:2:3:4:5:6:7:8:9:10").duckattack(.02).duckdepth(.88)
+  .orbit(0)
+  ._scope({color:"#1a0044", thickness:3})
+  ._spectrum({color:"#3300aa", thickness:2})
+
+// half-time for breakdowns
+_$: s("bd ~ bd ~").bank("RolandTR909")
+  .gain(.82).shape(.35).lpf(1800)
+  .duck("1:2:3:4:5:6:7:8:9:10").duckattack(.02).duckdepth(.88)
+  .orbit(0)._scope({color:"#1a0044"})
+
+// === BELL CHORD MOTIF — Prelude in C# Minor DNA ===
+// The famous three-note bell: G#, C#, G# spread across octaves
+$: note("<[g#2,c#3,g#3]@3 ~ [g#2,c#3,g#3]@3 ~>")
+  .s("MkIIChurchOrgan").cut(1).gain(.28)
+  .room(.7).roomsize(6).roomlp(1500).roomdim(3000)
+  .attack(.05).release(.8)
+  .slow(4).orbit(1)
+  ._pianoroll({color:"#3300aa"})
+
+// shimmering vibraphone bells
+_$: note("<[g#3,c#4,g#4]@3 ~ [g#3,c#4,g#4]@3 ~>")
+  .s("Vibes").cut(1).gain(.22)
+  .room(.8).roomsize(7).roomlp(2000)
+  .attack(.01).release(.6)
+  .slow(4).orbit(1)
+  ._pianoroll({color:"#3300aa"})
+
+// FM synthesis bell — metallic, cold
+_$: note("<[g#3,c#4,g#4]@3 ~ [g#3,c#4,g#4]@3 ~>")
+  .s("sine").fm(4).fmh(2.76).gain(.15)
+  .room(.75).roomsize(6)
+  .attack(.01).release(.7)
+  .slow(4).orbit(1)
+
+// === SINGING MELODY — Vocalise-inspired, haunting ===
+// Long, singing line — Rachmaninoff's gift for melody
+$: note("<[c#4 ~ d#4 e4] [f#4 ~ g#4 f#4] [e4 d#4 ~ c#4] [b3 ~ ~ ~] [a3 ~ b3 c#4] [d#4 ~ e4 f#4] [g#4 ~ f#4 e4] [c#4 ~ ~ ~]>")
+  .s("Cello").gain(.28)
+  .attack(.03).release(.4)
+  .room(.5).roomsize(4).roomlp(2500)
+  .slow(4).orbit(2)
+  ._pianoroll({color:"#5500cc"})
+
+// mellotron choir — wordless singing like Vocalise
+_$: note("<[c#4 ~ d#4 e4] [f#4 ~ g#4 f#4] [e4 d#4 ~ c#4] [b3 ~ ~ ~] [a3 ~ b3 c#4] [d#4 ~ e4 f#4] [g#4 ~ f#4 e4] [c#4 ~ ~ ~]>")
+  .s("8Choir").gain(.2)
+  .attack(.08).release(.5)
+  .room(.65).roomsize(5).roomlp(2000)
+  .slow(4).orbit(2)
+
+// higher octave, more ornamental
+_$: note("<[c#5 d#5 e5 f#5] [g#5 ~ f#5 e5] [d#5 c#5 b4 a4] [g#4 ~ ~ ~]>")
+  .s("Cello").gain(.2)
+  .attack(.02).release(.3)
+  .room(.5).roomsize(4)
+  .slow(4).orbit(2)
+
+// === WIDE CHORD PAD — Rachmaninoff's massive voicings ===
+// Spread across 3+ octaves — his enormous hands enabled impossible stretches
+$: note("<[c#2,g#2,e3,b3,c#4]!4 [a1,e2,c#3,a3,e4]!2 [f#1,c#2,a2,f#3,c#4]!2>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.06)).superimpose(x => x.add(-0.06))
+  .lpf(sine.range(300, 2000).slow(32))
+  .attack(1).decay(2.5).sustain(.35).release(1.8)
+  .gain(.12).room(.75).roomsize(7).roomlp(1400).roomdim(2800)
+  .slow(8).orbit(3)
+
+// mellotron strings — warmer, more orchestral
+_$: note("<[c#2,g#2,e3,b3,c#4]!4 [a1,e2,c#3,a3,e4]!2 [f#1,c#2,a2,f#3,c#4]!2>")
+  .s("StringSection").cut(3).gain(.2)
+  .room(.8).roomsize(8).roomlp(1200).roomdim(3000)
+  .attack(.3).release(1.2)
+  .slow(8).orbit(3)
+
+// === COUNTERMELODY — Second voice weaving below ===
+// Rachmaninoff always has inner voices moving independently
+$: note("<[g#3 ~ a3 ~] [~ b3 ~ a3] [g#3 ~ f#3 ~] [e3 ~ ~ ~] [f#3 ~ g#3 ~] [~ a3 ~ g#3] [f#3 ~ e3 ~] [d#3 ~ ~ ~]>")
+  .s("M300A").cut(4).gain(.18)
+  .room(.5).roomsize(4).roomlp(2000)
+  .attack(.05).release(.35)
+  .slow(4).orbit(4)
+  ._pianoroll({color:"#7700dd"})
+
+// solo violin — thinner, more plaintive
+_$: note("<[g#3 ~ a3 ~] [~ b3 ~ a3] [g#3 ~ f#3 ~] [e3 ~ ~ ~] [f#3 ~ g#3 ~] [~ a3 ~ g#3] [f#3 ~ e3 ~] [d#3 ~ ~ ~]>")
+  .s("M300B").cut(4).gain(.16)
+  .room(.55).roomsize(4).roomlp(2200)
+  .attack(.04).release(.3)
+  .slow(4).orbit(4)
+
+// gm strings — synthetic but full
+_$: note("<[g#3 ~ a3 ~] [~ b3 ~ a3] [g#3 ~ f#3 ~] [e3 ~ ~ ~]>")
+  .s("gm_strings").gain(.14)
+  .room(.5).roomsize(4)
+  .attack(.06).release(.4)
+  .slow(4).orbit(4)
+
+// === SUB BASS — Foundation, following the harmony ===
+$: note("<c#1!4 a0!2 f#0!2>")
+  .s("sine").gain(.48).lpf(70)
+  .slow(8).orbit(5)
+  ._scope({color:"#220044", thickness:2})
+
+// === SWEEPING ARPEGGIOS — Concerto No.2 spirit ===
+// Wide arpeggios spanning octaves, like his piano figurations
+$: note("<[c#3 e3 g#3 c#4 e4] [a2 c#3 e3 a3 c#4] [f#2 a2 c#3 f#3 a3] [g#2 b2 d#3 g#3 b3]>")
+  .s("sawtooth")
+  .lpf(sine.range(500, 2800).slow(8)).lpq(3)
+  .decay(.18).release(.12).gain(.1)
+  .delay(.25).delaytime(3/16).delayfeedback(.4)
+  .orbit(6)
+  ._pianoroll({color:"#4400bb"})
+
+// triangle wave — softer, more introspective
+_$: note("<[c#3 e3 g#3 c#4 e4] [a2 c#3 e3 a3 c#4] [f#2 a2 c#3 f#3 a3] [g#2 b2 d#3 g#3 b3]>")
+  .s("triangle")
+  .lpf(sine.range(400, 2200).slow(8)).lpq(2)
+  .decay(.22).release(.15).gain(.09)
+  .delay(.2).delaytime(3/16).delayfeedback(.35)
+  .orbit(6)
+
+// square wave — hollow, more aggressive
+_$: note("<[c#3 g#3 c#4 e4 g#4] [a2 e3 a3 c#4 e4] [f#2 c#3 f#3 a3 c#4] [g#2 d#3 g#3 b3 d#4]>")
+  .s("square")
+  .lpf(sine.range(300, 1800).slow(8)).lpq(4)
+  .decay(.15).release(.1).gain(.08)
+  .delay(.3).delaytime(3/16).delayfeedback(.45)
+  .orbit(6)
+
+// === TREMOLO STRINGS — Building intensity ===
+// Isle of the Dead atmosphere — dark, surging
+$: note("<[c#3,e3]!4 [a2,c#3]!4>")
+  .s("gm_tremolo_strings").gain(.15)
+  .room(.6).roomsize(5)
+  .lpf(sine.range(800, 3000).slow(16))
+  .slow(8).orbit(7)
+
+// === CLAP — Reverb-drenched, emotional weight ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.42).room(.5).roomsize(4)
+  .hpf(800).orbit(8)
+
+// ghost claps on offbeats
+_$: s("~ [~ cp] ~ [~ cp]").bank("RolandTR909")
+  .gain(.25).room(.6).roomsize(5)
+  .hpf(900).orbit(8)
+
+// === HATS — Sparse, stay out of the melody's way ===
+$: s("~ hh ~ hh, ~ ~ hh ~").bank("RolandTR909")
+  .gain("0.15 0.08").hpf(7000)
+  .pan(sine.range(.35,.65).slow(7))
+  .orbit(9)
+
+// busier hats for energy sections
+_$: s("hh*8").bank("RolandTR909")
+  .gain(sine.range(0.06, 0.18).fast(2)).hpf(7500)
+  .pan(rand).orbit(9)
+
+// open hat accents
+_$: s("~ oh ~ ~, hh*4").bank("RolandTR909")
+  .gain("0.2 0.1").hpf(6500)
+  .room(.3).roomsize(2)
+  .orbit(9)
+
+// === RUMBLE — Subterranean darkness ===
+$: note("c#1").s("brown").gain(.25).lpf(80).slow(16).orbit(10)
+
+// === VIZ ===
+// ._spectrum() is on the kick line above (must be on a sounding pattern)

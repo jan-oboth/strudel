@@ -1,0 +1,146 @@
+// BERLIN CHILL NOCTURNE — 2am Deep Club
+
+setCps(125/60/4)
+
+// === KICK — Sparse berghain-style, cavernous ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.85)
+  .shape(.3)
+  .lpf(2500)
+  .duck("1:2:3:4:5:6:7").duckattack(.01).duckdepth(.95)
+  .room(.15).roomsize(4).roomlp(800)
+  .orbit(1)
+  ._scope({color:"#1a0033", thickness:3})
+  ._spectrum({color:"#1a0033", thickness:2})
+
+// === SUB BASS — Slow hypnotic drone ===
+$: note("<c1!8 bb0!4 g0!4>")
+  .s("sine")
+  .gain(.5)
+  .lpf(75)
+  .slow(16)
+  .orbit(2)
+
+// === BASS STAB — Syncopated, filtered ===
+$: note("<[c2 ~ ~ c2] [~ ~ c2 ~] [c2 ~ ~ ~] [~ c2 ~ <bb1 g1>]>")
+  .s("sawtooth")
+  .lpf(sine.range(180, 550).slow(32))
+  .lpq(6)
+  .decay(.12).release(.05)
+  .distort(.7)
+  .gain(.35)
+  .orbit(2)
+  ._pianoroll({color:"#330055"})
+
+// === PAD — Dark detuned saw chord, very background ===
+$: note("<[c3,eb3,g3]!4 [bb2,d3,f3]!2 [g2,bb2,d3]!2>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.07))
+  .superimpose(x => x.add(-0.07))
+  .lpf(sine.range(250, 1600).slow(64))
+  .attack(.8).decay(2).sustain(.4).release(1.5)
+  .gain(.12)
+  .room(.7).roomsize(6).roomlp(1500).roomdim(3000)
+  .slow(8)
+  .orbit(5)
+
+// === STAB MAIN — Extended melody, FM sine, the star ===
+_$: note("<[eb4 ~ d4 c4] [~ ~ ~ ~] [g4 ~ f4 ~] [~ eb4 ~ d4] [c4 ~ ~ ~] [~ ~ d4 ~] [eb4 ~ ~ g4] [~ ~ ~ ~]>")
+  .s("sine")
+  .fm(2).fmh(2.01)
+  .decay(.3).release(.4)
+  .lpf(2500)
+  .gain(.35)
+  .delay(.35).delaytime(3/16).delayfeedback(.45)
+  .room(.6).roomsize(5)
+  .pan(.4)
+  .orbit(6)
+  ._pianoroll({color:"#5500aa"})
+
+// === STAB ALT 1 — Electric piano melody, warmer ===
+_$: note("<[eb4 ~ ~ d4] [~ c4 ~ ~] [g4 ~ ~ f4] [~ ~ eb4 ~] [d4 ~ c4 ~] [~ ~ ~ ~] [eb4 ~ d4 ~] [~ ~ ~ ~]>")
+  .s("gm_epiano1")
+  .decay(.35).release(.5)
+  .lpf(3000)
+  .gain(.8)
+  .delay(.3).delaytime(3/16).delayfeedback(.4)
+  .room(.55).roomsize(5)
+  .pan(.45)
+  .orbit(6)
+  ._pianoroll({color:"#5500aa"})
+
+// === STAB ALT 2 — Chord stabs, minor voicings ===
+_$: note("<[c4,eb4,g4] ~ ~ ~ [bb3,d4,f4] ~ ~ ~ [g3,bb3,d4] ~ ~ ~ [c4,eb4,g4] ~ ~ ~>")
+  .s("sine")
+  .fm(2).fmh(2.01)
+  .decay(.2).release(.3)
+  .lpf(2200)
+  .gain(.35)
+  .delay(.4).delaytime(3/16).delayfeedback(.5)
+  .room(.65).roomsize(5)
+  .pan(.5)
+  .orbit(6)
+  ._pianoroll({color:"#5500aa"})
+
+// === STAB ALT 3 — Higher register, sparse and distant ===
+$: note("<~ ~ [g5 ~ ~ ~] ~ ~ ~ [eb5 ~ d5 ~] ~>")
+  .s("sine")
+  .fm(2).fmh(2.04)
+  .decay(.2).release(.35)
+  .lpf(3500)
+  .gain(.7)
+  .delay(.5).delaytime(3/16).delayfeedback(.55)
+  .room(.7).roomsize(6)
+  .pan(.35)
+  .orbit(6)
+  ._pianoroll({color:"#5500aa"})
+
+// === CLAP — Dry, 2 and 4 ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.48)
+  .room(.35).roomsize(3).roomlp(2000)
+  .hpf(800)
+  .orbit(3)
+
+// === CLOSED HAT — Sparse, understated ===
+$: s("~ hh ~ hh, ~ ~ hh ~").bank("RolandTR909")
+  .gain("0.18 0.1")
+  .hpf(7000)
+  .pan(sine.range(.35,.65).slow(7))
+  .orbit(4)
+
+// === OPEN HAT — Offbeat ghost ===
+$: s("~ [~ oh] ~ ~").bank("RolandTR909")
+  .gain(.12)
+  .hpf(6000)
+  .decay(.15)
+  .pan(.6)
+  .orbit(4)
+
+// === RIDE — Very quiet hypnotic pulse ===
+$: s("~ ~ ~ ~, ~ [~ hh:3] ~ [~ hh:3]").bank("RolandTR909")
+  .gain(.07)
+  .hpf(8000)
+  .pan(.55)
+  .orbit(4)
+
+// === RUMBLE — Sub-frequency texture ===
+$: note("c0")
+  .s("brown")
+  .gain(.18)
+  .lpf(42)
+  .slow(16)
+  .orbit(7)
+
+// === PERCUSSIVE TEXTURE — Distant metallic click ===
+$: s("~ ~ ~ ~, ~ [~ hh:4] ~ ~")
+  .speed(1.6)
+  .gain(.05)
+  .hpf(4000)
+  .crush(10)
+  .delay(.2).delaytime(5/16).delayfeedback(.5)
+  .pan(rand)
+  .orbit(4)
+
+// === VIZ ===
+// ._spectrum() is on the kick line above (must be on a sounding pattern)

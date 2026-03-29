@@ -1,0 +1,441 @@
+// Berlin Convergence (Full Track) — Multi-phase techno evolution
+// Berghain deep minimal → 90s Tresor acid → Industrial peak → Resolution
+//
+// Phase 1: Intro       (24 cycles) — Berghain deep minimal
+// Phase 2: Transition  (16 cycles) — Berghain→Raw, first acid hints
+// Phase 3: 90s Raw     (32 cycles) — Tresor acid assault + rising arp
+// Phase 4: Peak        (28 cycles) — Maximum industrial intensity + FM metal
+// Phase 5: Breakdown   (16 cycles) — Strip to pad + rumble + stab tail
+// Phase 6: Outro       (16 cycles) — Berghain resolution
+//
+// Total: 132 cycles (~3:57 at 134 BPM)
+// Key: C minor throughout
+// Each layer uses independent arrange() for per-layer phase control.
+// Muted alternatives (_$:) below active patterns for live swapping.
+//
+// NOTE on .slow() inside arrange():
+//   Do NOT put .slow(N) on repeating drum patterns — they loop every cycle naturally.
+//   Only use .slow() on patterns that musically need stretching:
+//   pads (.slow(8)), sub bass drones (.slow(16)), etc.
+
+setCps(134/60/4)
+
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
+
+
+// =========================================================================
+// === KICK (orbit 0) — sidechain source, evolves across all phases ===
+// =========================================================================
+
+$: arrange(
+  [24, s("bd*4").bank("RolandTR909")
+    .gain(.88).shape(.3).lpf(2500)],                                        // 1. berghain — deep, shaped
+  [16, s("bd*4").bank("RolandTR909")
+    .gain(.88).shape(.3).lpf(2500)],                                        // 2. transition — continues
+  [32, s("bd*4").bank("RolandTR909")
+    .gain(.85).shape(.6).lpf(5000)],                                        // 3. raw — harder, brighter
+  [28, s("bd*4").bank("RolandTR909")
+    .gain(.78).distort(1.2)],                                               // 4. industrial — distorted (reduced)
+  [16, s("~")],                                                             // 5. breakdown — silence
+  [16, s("bd*4").bank("RolandTR909")
+    .gain(.88).shape(.3).lpf(2500)]                                         // 6. berghain — return
+).duck("1:2:3:4:5:6:7:8:9:10").duckattack(.015).duckdepth(.95)
+  .orbit(0)
+  ._scope({color:"#220033", thickness:3})
+  ._spectrum({color:"#440066", thickness:2})
+
+// Alt kick 1: static berghain kick throughout
+_$: s("bd*4").bank("RolandTR909")
+  .gain(.88).shape(.3).lpf(2500)
+  .duck("1:2:3:4:5:6:7:8:9:10").duckattack(.015).duckdepth(.95)
+  .orbit(0)
+  ._scope({color:"#220033", thickness:3})
+
+// Alt kick 2: static industrial kick throughout
+_$: s("bd*4").bank("RolandTR909")
+  .gain(.78).distort(1.2)
+  .duck("1:2:3:4:5:6:7:8:9:10").duckattack(.015).duckdepth(.95)
+  .orbit(0)
+  ._scope({color:"#ff2200", thickness:3})
+
+
+// =========================================================================
+// === SUB BASS (orbit 1) — foundation, present in all phases ===
+// =========================================================================
+
+$: arrange(
+  [24, note("<c1!8 bb0!4 g0!4>").s("sine")
+    .gain(.55).lpf(75).slow(16)],                                           // 1. berghain — slow root movement
+  [16, note("<c1!8 bb0!4 g0!4>").s("sine")
+    .gain(.55).lpf(75).slow(16)],                                           // 2. transition — continues
+  [32, note("c1*4").s("sine")
+    .gain(.45).lpf(80).decay(.15).release(.05)],                            // 3. raw — percussive sub
+  [28, note("c1*4").s("sine")
+    .gain(.35).lpf(50).decay(.15).release(.05)],                            // 4. industrial — tighter, darker
+  [16, note("<c1!8 bb0!4 g0!4>").s("sine")
+    .gain(.45).lpf(75).slow(16)],                                           // 5. breakdown — soft return
+  [16, note("<c1!8 bb0!4 g0!4>").s("sine")
+    .gain(.55).lpf(75).slow(16)]                                            // 6. berghain — full
+).orbit(1)
+
+
+// =========================================================================
+// === BASS STAB (orbit 2) — berghain syncopated sawtooth ===
+// =========================================================================
+
+$: arrange(
+  [24, note("<[c2 ~ ~ c2] [~ ~ c2 ~] [c2 ~ ~ ~] [~ c2 ~ <bb1 g1>]>")
+    .s("sawtooth").lpf(sine.range(180, 600).slow(24)).lpq(6)
+    .decay(.12).release(.05).distort(.8).gain(.38)],                        // 1. berghain — full stab
+  [16, note("<[c2 ~ ~ c2] [~ ~ c2 ~] [c2 ~ ~ ~] [~ c2 ~ <bb1 g1>]>")
+    .s("sawtooth").lpf(sine.range(180, 600).slow(16)).lpq(6)
+    .decay(.12).release(.05).distort(.8).gain(.2)],                         // 2. transition — fading out
+  [32, s("~")],                                                             // 3. silent — acid replaces
+  [28, s("~")],                                                             // 4. silent
+  [16, s("~")],                                                             // 5. silent
+  [16, note("<[c2 ~ ~ c2] [~ ~ c2 ~] [c2 ~ ~ ~] [~ c2 ~ <bb1 g1>]>")
+    .s("sawtooth").lpf(sine.range(180, 600).slow(16)).lpq(6)
+    .decay(.12).release(.05).distort(.8).gain(.38)]                         // 6. berghain — returns
+).orbit(2)
+  ._pianoroll({color:"#440066"})
+
+
+// =========================================================================
+// === ACID LINE A (orbit 3) — raw 303 style, filter IS the melody ===
+// =========================================================================
+
+$: arrange(
+  [24, s("~")],                                                             // 1. silent
+  [16, note("<c2!6 bb1 c2, ~ ~ ~ ~ ~ ~ eb2 ~>").s("sawtooth")
+    .lpf(90).lpenv(sine.range(3, 14).slow(16)).lpdecay(.08)
+    .lpq(24).distort(1.5).gain(.2)],                                       // 2. hint — quiet intro
+  [32, note("<c2!6 bb1 c2, ~ ~ ~ ~ ~ ~ eb2 ~>").s("sawtooth")
+    .lpf(90).lpenv(sine.range(3, 14).slow(16)).lpdecay(.08)
+    .lpq(24).distort(1.5).gain(.2)],                                       // 3. full raw acid (reduced from .32)
+  [28, s("~")],                                                             // 4. silent — industrial acid takes over
+  [16, s("~")],                                                             // 5. silent
+  [16, s("~")]                                                              // 6. silent
+).orbit(3)
+  ._pianoroll({color:"#cc0000"})
+
+// Alt acid 1: chromatic random — unpredictable, chaotic
+_$: n(irand(7).seg(16)).scale("c:minor").o(2).s("supersaw")
+  .acidenv(0.6).lpq(20).distort(3).gain(.05).slow(8)
+  .orbit(3)
+  ._pianoroll({color:"#cc0000"})
+
+// Alt acid 2: stabbing 303 — syncopated, rhythmic gaps
+_$: note("<c2 ~ c2 eb2 ~ c2 f2 ~, ~ ~ ~ ~ c2 ~ ~ eb2>").s("supersaw")
+  .acidenv(sine.range(0.4, 0.7).slow(8)).lpq(20).distort(2.8)
+  .gain("<0.2 0.7>"*4).slow(1.5)
+  .orbit(3)
+  ._pianoroll({color:"#cc0000"})
+
+
+// =========================================================================
+// === RISING ACID ARP (orbit 3) — raw phase only, syncopated ascent ===
+// =========================================================================
+
+$: arrange(
+  [24, s("~")],                                                             // 1. silent
+  [16, s("~")],                                                             // 2. silent
+  [32, note("<[c3 ~ eb3 ~] [f3 ~ g3 ~] [ab3 ~ bb3 ~] [c4 ~ eb4 ~]>")
+    .s("square").lpf(sine.range(400, 3500).slow(32)).lpq(18)
+    .decay(.06).release(.03).distort(2.5)
+    .gain(.18).hpf(300)
+    .delay(.2).delaytime(3/16).delayfeedback(.35)
+    .pan(sine.range(.3, .7).slow(4))],                                      // 3. raw — rising arp (unique to this phase)
+  [28, s("~")],                                                             // 4. silent
+  [16, s("~")],                                                             // 5. silent
+  [16, s("~")]                                                              // 6. silent
+).orbit(3)
+
+
+// =========================================================================
+// === INDUSTRIAL ACID (orbit 4) — supersaw chaos for peak phase ===
+// =========================================================================
+
+$: arrange(
+  [24, s("~")],                                                             // 1. silent
+  [16, s("~")],                                                             // 2. silent
+  [32, s("~")],                                                             // 3. silent
+  [28, n("<0 ~ 3 ~ 5 ~ 0 <7 -3>, ~ 0 ~ 3 ~ 5 ~ 0>").scale("c:minor").o(2)
+    .s("supersaw").acidenv(0.5).lpq(14)
+    .distort(2.4).gain(.6)],                                                // 4. industrial acid (gain .5, distort 2.4)
+  [16, n("<0 ~ 3 ~ 5 ~ 0 <7 -3>, ~ 0 ~ 3 ~ 5 ~ 0>").scale("c:minor").o(2)
+    .s("supersaw").acidenv(0.5).lpq(14)
+    .distort(2.4).gain(.2)],                                                // 5. fading tail
+  [16, s("~")]                                                              // 6. silent
+).orbit(4)
+
+
+// =========================================================================
+// === GATED NOISE (orbit 4) — industrial phase only, rhythmic gate ===
+// =========================================================================
+
+$: arrange(
+  [24, s("~")],                                                             // 1. silent
+  [16, s("~")],                                                             // 2. silent
+  [32, s("~")],                                                             // 3. silent
+  [28, s("pink*16")
+    .gain("<.08 0 .06 0 .1 0 .04 0>*2")
+    .hpf(4000).lpf(sine.range(5000, 12000).slow(8))
+    .crush(6).decay(.03)
+    .pan(rand.range(.2, .8))],                                              // 4. industrial — gated noise rhythm
+  [16, s("~")],                                                             // 5. silent
+  [16, s("~")]                                                              // 6. silent
+).orbit(4)
+
+
+// =========================================================================
+// === CLAP (orbit 5) — evolving character across subgenres ===
+// =========================================================================
+
+$: arrange(
+  [24, s("~ cp ~ cp").bank("RolandTR909")
+    .gain(.5).room(.35).roomsize(3).roomlp(2000).hpf(800)],                // 1. berghain — cavernous
+  [16, s("~ cp ~ cp").bank("RolandTR909")
+    .gain(.5).room(.35).roomsize(3).roomlp(2000).hpf(800)],                // 2. transition — continues
+  [32, s("~ cp ~ cp").bank("RolandTR909")
+    .gain(.6).distort(1.2).room(.15).roomsize(.8)],                         // 3. raw — dry, hard
+  [28, s("~ cp ~ cp").bank("RolandTR909")
+    .gain(.55).distort(.8).room(.3).roomsize(2)],                           // 4. industrial — mid reverb
+  [16, s("~")],                                                             // 5. breakdown — silence
+  [16, s("~ cp ~ cp").bank("RolandTR909")
+    .gain(.5).room(.35).roomsize(3).roomlp(2000).hpf(800)]                 // 6. berghain — return
+).orbit(5)
+
+
+// =========================================================================
+// === CLOSED HATS (orbit 6) — sparse → relentless → chaotic ===
+// =========================================================================
+
+$: arrange(
+  [24, s("~ hh ~ hh, ~ ~ hh ~").bank("RolandTR909")
+    .gain("0.2 0.12").hpf(7000)
+    .pan(sine.range(.35,.65).slow(7))],                                     // 1. berghain — sparse
+  [16, s("~ hh ~ hh, ~ ~ hh ~").bank("RolandTR909")
+    .gain("0.2 0.12").hpf(7000)
+    .pan(sine.range(.35,.65).slow(7))],                                     // 2. transition — sparse
+  [32, s("hh*16").bank("RolandTR909")
+    .gain("<0.38 0.12 0.28 0.12>*4")
+    .speed("<1 1.05 1 1.1>*4")
+    .hpf(7000).pan(rand.range(.3,.7))],                                    // 3. raw — relentless 16ths
+  [28, s("hh*16").bank("RolandTR909")
+    .gain(sine.range(0.05, 0.22).fast(4))
+    .pan(rand).speed(rand.range(1, 1.6))
+    .hpf(5000)],                                                            // 4. industrial — chaotic
+  [16, s("~")],                                                             // 5. breakdown — silence
+  [16, s("~ hh ~ hh, ~ ~ hh ~").bank("RolandTR909")
+    .gain("0.2 0.12").hpf(7000)
+    .pan(sine.range(.35,.65).slow(7))]                                      // 6. berghain — sparse return
+).orbit(6)
+
+// Alt hats 1: sparse berghain throughout
+_$: s("~ hh ~ hh, ~ ~ hh ~").bank("RolandTR909")
+  .gain("0.2 0.12").hpf(7000)
+  .pan(sine.range(.35,.65).slow(7))
+  .orbit(6)
+
+// Alt hats 2: relentless 16ths throughout
+_$: s("hh*16").bank("RolandTR909")
+  .gain("<0.38 0.12 0.28 0.12>*4")
+  .speed("<1 1.05 1 1.1>*4")
+  .hpf(7000).pan(rand.range(.3,.7))
+  .orbit(6)
+
+
+// =========================================================================
+// === OPEN HAT (orbit 6) — offbeat ghost, fades with raw phase ===
+// =========================================================================
+
+$: arrange(
+  [24, s("~ [~ oh] ~ ~").bank("RolandTR909")
+    .gain(.14).hpf(6000).decay(.15).pan(.6)],                              // 1. berghain — ghost
+  [16, s("~ [~ oh] ~ ~").bank("RolandTR909")
+    .gain(.14).hpf(6000).decay(.15).pan(.6)],                              // 2. transition — ghost
+  [32, s("~ oh ~ oh").bank("RolandTR909")
+    .gain(.22).hpf(5500).cut(2).pan(.55)],                                  // 3. raw — louder offbeat
+  [28, s("~")],                                                             // 4. silent — chaos enough
+  [16, s("~")],                                                             // 5. silent
+  [16, s("~")]                                                              // 6. silent
+).orbit(6)
+
+
+// =========================================================================
+// === PAD (orbit 8) — supersaw wash, breathes across the arc ===
+// =========================================================================
+
+$: arrange(
+  [24, note("<[c3,eb3,g3]!4 [bb2,d3,f3]!2 [g2,bb2,d3]!2>")
+    .s("sawtooth")
+    .superimpose(x => x.add(0.07)).superimpose(x => x.add(-0.07))
+    .lpf(sine.range(300, 1800).slow(48))
+    .attack(.8).decay(2).sustain(.4).release(1.5)
+    .gain(.12).room(.7).roomsize(6).roomlp(1500).roomdim(3000)
+    .slow(8)],                                                              // 1. berghain — warm wash
+  [16, note("<[c3,eb3,g3]!4 [bb2,d3,f3]!2 [g2,bb2,d3]!2>")
+    .s("sawtooth")
+    .superimpose(x => x.add(0.07)).superimpose(x => x.add(-0.07))
+    .lpf(sine.range(300, 1800).slow(48))
+    .attack(.8).decay(2).sustain(.4).release(1.5)
+    .gain(.12).room(.7).roomsize(6).roomlp(1500).roomdim(3000)
+    .slow(8)],                                                              // 2. transition — continues
+  [32, s("~")],                                                             // 3. silent — acid owns the space
+  [28, s("~")],                                                             // 4. silent — industrial owns it
+  [16, note("<[c3,eb3,g3]!4 [bb2,d3,f3]!2 [g2,bb2,d3]!2>")
+    .s("sawtooth")
+    .superimpose(x => x.add(0.07)).superimpose(x => x.add(-0.07))
+    .lpf(sine.range(300, 1800).slow(48))
+    .attack(.8).decay(2).sustain(.4).release(1.5)
+    .gain(.15).room(.8).roomsize(8).roomlp(1200).roomdim(2500)
+    .slow(8)],                                                              // 5. breakdown — exposed, wider
+  [16, note("<[c3,eb3,g3]!4 [bb2,d3,f3]!2 [g2,bb2,d3]!2>")
+    .s("sawtooth")
+    .superimpose(x => x.add(0.07)).superimpose(x => x.add(-0.07))
+    .lpf(sine.range(300, 1800).slow(48))
+    .attack(.8).decay(2).sustain(.4).release(1.5)
+    .gain(.12).room(.7).roomsize(6).roomlp(1500).roomdim(3000)
+    .slow(8)]                                                               // 6. berghain — resolution
+).orbit(8)
+
+// Alt pad: static berghain pad loop (no arrange, always present)
+_$: note("<[c3,eb3,g3]!4 [bb2,d3,f3]!2 [g2,bb2,d3]!2>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.07)).superimpose(x => x.add(-0.07))
+  .lpf(sine.range(300, 1800).slow(48))
+  .attack(.8).decay(2).sustain(.4).release(1.5)
+  .gain(.12).room(.7).roomsize(6).roomlp(1500).roomdim(3000)
+  .slow(8)
+  .orbit(8)
+
+
+// =========================================================================
+// === FM STAB (orbit 7) — evolves across ALL phases, dedicated orbit ===
+// =========================================================================
+
+$: arrange(
+  [24, note("<~ ~ ~ [eb4 ~ d4 ~] ~ ~ ~ [c4 ~ ~ ~]>").s("sine")
+    .fm(2).fmh(2.01).decay(.25).release(.3).lpf(2200).gain(.6)
+    .delay(.3).delaytime(3/16).delayfeedback(.4)
+    .room(.5).roomsize(5).pan(.4)],                                         // 1. berghain — sparse FM stab (.3 gain)
+  [16, note("<~ ~ [g4 ~ ~ ~] ~ ~ ~ [eb4 ~ f4 ~] ~>").s("sine")
+    .fm(2).fmh(2.01).decay(.2).release(.25).lpf(2800).gain(.25)
+    .delay(.25).delaytime(3/16).delayfeedback(.35)
+    .room(.4).roomsize(4).pan(.45)],                                        // 2. transition — slightly denser
+  [32, note("<[c5 ~ eb5 ~] ~ [f5 ~ g5 ~] ~ [ab5 ~ g5 ~] ~ [eb5 ~ c5 ~] ~>")
+    .s("square").decay(.08).release(.04)
+    .lpf(sine.range(1500, 5000).slow(16)).lpq(12)
+    .distort(2).gain(.25).hpf(600)
+    .delay(.15).delaytime(1/8).delayfeedback(.3)
+    .pan(.55)],                                                             // 3. raw — aggressive acid stab, high register
+  [28, note("<[c4 ~ ~ eb4] [~ gb4 ~ ~] [c4 ~ ~ f4] [~ ~ eb4 ~]>").s("sine")
+    .fm(7).fmh(3.51).decay(.12).release(.06)
+    .lpf(3500).gain(.2).distort(.6)
+    .hpf(800).pan(.6)
+    .delay(.1).delaytime(1/8).delayfeedback(.2)],                           // 4. industrial — inharmonic FM metallic stab
+  [16, note("<~ ~ ~ ~ [eb4 ~ ~ d4] ~ ~ ~ ~ ~ ~ ~ [c4 ~ ~ ~] ~ ~ ~>")
+    .s("sine").fm(2).fmh(2.01)
+    .decay(.4).release(.8).lpf(1800).gain(.35)
+    .delay(.5).delaytime(3/8).delayfeedback(.6)
+    .room(.8).roomsize(8).pan(.4)],                                         // 5. breakdown — exposed, long delay tail
+  [16, note("<~ ~ ~ [eb4 ~ d4 ~] ~ ~ ~ [c4 ~ ~ ~]>").s("sine")
+    .fm(2).fmh(2.01).decay(.25).release(.3).lpf(2200).gain(.5)
+    .delay(.3).delaytime(3/16).delayfeedback(.4)
+    .room(.5).roomsize(5).pan(.4)]                                          // 6. berghain — FM returns
+).orbit(7)
+
+// Alt stab: static berghain stab (no phase changes)
+_$: note("<~ ~ ~ [eb4 ~ d4 ~] ~ ~ ~ [c4 ~ ~ ~]>").s("sine")
+  .fm(2).fmh(2.01).decay(.25).release(.3).lpf(2200).gain(.3)
+  .delay(.3).delaytime(3/16).delayfeedback(.4)
+  .room(.5).roomsize(5).pan(.4)
+  .orbit(7)
+
+// Alt stab: industrial FM throughout
+_$: note("<[c4 ~ ~ eb4] [~ gb4 ~ ~] [c4 ~ ~ f4] [~ ~ eb4 ~]>").s("sine")
+  .fm(7).fmh(3.51).decay(.12).release(.06)
+  .lpf(3500).gain(.2).distort(.6)
+  .hpf(800).pan(.6)
+  .orbit(7)
+
+
+// =========================================================================
+// === METALLIC PERC (orbit 9) — FM percussion for raw + industrial ===
+// =========================================================================
+
+$: arrange(
+  [24, s("~")],                                                             // 1. silent
+  [16, s("~")],                                                             // 2. silent
+  [32, note("<c5 ~ ~ eb5 ~ ~ c5 ~>").s("sine")
+    .fm(9).fmh(4.71).decay(.04).release(.01)
+    .gain(.15).distort(1.2).hpf(2000)
+    .delay(.15).delaytime(3/16).delayfeedback(.25)
+    .pan(.35)],                                                             // 3. raw — bright metallic
+  [28, note("<c4 ~ eb4 ~ c4 ~ <gb4 f4> ~>").s("sine")
+    .fm(11).fmh(5.19).decay(.05).release(.02)
+    .struct("[x ~ ~ x] [~ x ~ ~]")
+    .gain(.15).distort(.6)
+    .delay(.15).delaytime(3/16).delayfeedback(.25)
+    .hpf(1500)],                                                            // 4. industrial — different FM ratio, darker
+  [16, s("~")],                                                             // 5. silent
+  [16, s("~")]                                                              // 6. silent
+).orbit(9)
+
+
+// =========================================================================
+// === NOISE (orbit 10) — industrial texture, phases 4 only ===
+// =========================================================================
+
+$: arrange(
+  [24, s("~")],                                                             // 1. silent
+  [16, s("~")],                                                             // 2. silent
+  [32, s("~")],                                                             // 3. silent
+  [28, s("white:2*8")
+    .gain("0.06 0.01 0.04 0.01 0.05 0.01 0.03 0.01")
+    .hpf(3000).distort(1.2).crush(8).decay(.04)],                          // 4. industrial — rhythmic noise (halved gains)
+  [16, s("white:2*8")
+    .gain("0.03 0.005 0.02 0.005 0.025 0.005 0.015 0.005")
+    .hpf(3000).distort(1.2).crush(8).decay(.04)],                          // 5. breakdown — quarter gain
+  [16, s("~")]                                                              // 6. silent
+).orbit(10)
+
+// Alt noise: continuous sweep (no arrange)
+_$: s("white")
+  .gain(sine.range(0, .06).slow(8))
+  .hpf(2000).lpf(sine.range(3000, 12000).slow(8))
+  .distort(1.2).crush(8)
+  .orbit(10)
+
+
+// =========================================================================
+// === FM METALLIC TEXTURE (orbit 9) — industrial phase only ===
+// =========================================================================
+
+$: arrange(
+  [24, s("~")],                                                             // 1. silent
+  [16, s("~")],                                                             // 2. silent
+  [32, s("~")],                                                             // 3. silent
+  [28, note("<c3 ~ ~ eb3 ~ ~ g3 ~ ~ c3 ~ ~ eb3 ~ ~ bb2>")
+    .s("sine").fm(13).fmh(7.07)
+    .decay(.03).release(.01).gain(.12)
+    .hpf(2500).distort(.5)
+    .delay(.2).delaytime(1/6).delayfeedback(.3)
+    .pan(sine.range(.2, .8).slow(3))],                                      // 4. industrial — inharmonic FM metallic texture
+  [16, s("~")],                                                             // 5. silent
+  [16, s("~")]                                                              // 6. silent
+).orbit(9)
+
+
+// =========================================================================
+// === RUMBLE (orbit 11) — subsonic presence, always on ===
+// =========================================================================
+
+$: arrange(
+  [24, note("c0").s("brown").gain(.2).lpf(45).slow(16)],                    // 1. berghain — brown noise
+  [16, note("c0").s("brown").gain(.25).lpf(45).slow(16)],                   // 2. transition — slightly louder
+  [32, note("c0").s("sine").gain(.25).lpf(50).slow(16)],                    // 3. raw — sine rumble
+  [28, note("c0").s("sine").gain(.25).lpf(50).slow(16)],                    // 4. industrial — same level
+  [16, note("c0").s("brown").gain(.2).lpf(45).slow(16)],                    // 5. breakdown — soft
+  [16, note("c0").s("brown").gain(.2).lpf(45).slow(16)]                     // 6. outro — soft
+).orbit(11)

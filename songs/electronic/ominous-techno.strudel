@@ -1,0 +1,153 @@
+// Ominous Techno — C minor / diminished, menacing and slow
+
+setCps(130/60/4)
+
+samples('https://sound.intercrap.com/strudel/mellotron/strudel.json')
+samples('github:tidalcycles/Dirt-Samples')
+
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
+
+// === KICK — Deep, ominous sidechain source (orbit 0) ===
+$: s("bd*4").bank("RolandTR909").gain(.85).shape(.4).lpf(2000).orbit(0)
+  .duck("1:2:3:4:5:6:7:8:9:10:11").duckattack(.02).duckdepth(.9)
+  ._scope()
+_$: s("<bd ~ bd ~>").bank("RolandTR909").gain(.85).shape(.5).lpf(1800).orbit(0)
+  .duck("1:2:3:4:5:6:7:8:9:10:11").duckattack(.02).duckdepth(.9)
+
+// === SUB BASS — Tritone drone (orbit 1) ===
+// Tritone C-Gb is the most unsettling interval
+$: note("<c2!4 gb1!4>").s("sine").gain(.5).lpf(120).slow(8).orbit(1)
+  ._scope({color:"#220000", thickness:2})
+// Alt: chromatic descent
+_$: note("<c2 b1 bb1 a1>").s("sine").gain(.45).lpf(110).slow(16).orbit(1)
+  ._spectrum({color:"#330000", thickness:2})
+
+// === OMINOUS DRONE — Diminished chord, detuned saws (orbit 2) ===
+$: note("<[c2,eb2,gb2]!4 [b1,d2,f2]!4>")
+  .s("sawtooth").superimpose(x => x.add(0.05)).superimpose(x => x.add(-0.05))
+  .lpf(sine.range(200, 1200).slow(32))
+  .attack(1.5).decay(3).sustain(.3).release(2)
+  .gain(.15).room(.85).roomsize(8).roomlp(1200).roomdim(2500)
+  .slow(8).orbit(2)
+  ._pianoroll({color:"#440000"})
+// Alt: dark sawtooth drone, single note
+_$: note("c2").s("sawtooth").gain(.12).lpf(400).lpq(3).slow(16)
+  .room(.9).roomsize(10).orbit(2)
+_$: note("<[c2,eb2,gb2]!4 [b1,eb2,a2]!4>")
+  .s("sawtooth").superimpose(x => x.add(0.07)).superimpose(x => x.add(-0.07))
+  .lpf(sine.range(150, 900).slow(24))
+  .attack(2).decay(4).sustain(.2).release(3)
+  .gain(.12).room(.9).roomsize(10).roomlp(1000).roomdim(2000)
+  .slow(8).orbit(2)
+
+// === HORROR FX — Goblin atmosphere (orbit 3) ===
+_$: note("<c3 ~ ~ eb3 ~ ~ gb3 ~>")
+  .s("gm_fx_goblins").gain(.5).room(.7).roomsize(6).slow(4).orbit(3)
+_$: note("<c3 ~ ~ eb3 ~ ~ gb3 ~>")
+  .s("gm_fx_atmosphere").gain(.2).room(.8).roomsize(7).slow(4).orbit(3)
+$: note("<c3 ~ ~ eb3 ~ ~ gb3 ~>")
+  .s("gm_fx_echoes").gain(.7).room(.85).roomsize(8).slow(4).orbit(3)
+  ._pianoroll({color:"#660000"})
+
+// === MUSIC BOX — Creepy melody, sparse (orbit 4) ===
+$: note("<~ c5 ~ [eb5 ~] ~ ~ gb5 ~, ~ ~ ~ ~ ~ [c5 b4] ~ ~>")
+  .s("gm_music_box").gain(.2).room(.6).roomsize(5)
+  .delay(.35).delaytime(3/16).delayfeedback(.5)
+  .slow(2).orbit(4)
+  ._pianoroll()
+_$: note("<~ c5 ~ [eb5 ~] ~ ~ gb5 ~, ~ ~ ~ ~ ~ [c5 b4] ~ ~>")
+  .s("gm_tubular_bells").gain(.15).room(.7).roomsize(6)
+  .delay(.3).delaytime(3/16).delayfeedback(.45)
+  .slow(2).orbit(4)
+_$: note("<~ c5 ~ [eb5 ~] ~ ~ gb5 ~, ~ ~ ~ ~ ~ [c5 b4] ~ ~>")
+  .s("gm_celesta").gain(.18).room(.65).roomsize(5)
+  .delay(.35).delaytime(3/16).delayfeedback(.5)
+  .slow(2).orbit(4)
+
+// === CHOIR PAD — Spectral tritone mellotron (orbit 5) ===
+$: note("<[c3,gb3]!4 [b2,f3]!4>")
+  .s("8Choir").cut(2).gain(.2).room(.8).roomsize(7).roomlp(1500)
+  .lpf(sine.range(400, 2000).slow(16))
+  .slow(8).orbit(5)
+_$: note("<[c3,gb3]!4 [b2,f3]!4>")
+  .s("MkIIChurchOrgan").cut(2).gain(.2).room(.85).roomsize(8).roomlp(1200)
+  .lpf(sine.range(300, 1800).slow(16))
+  .slow(8).orbit(5)
+_$: note("<[c3,gb3]!4 [b2,f3]!4>")
+  .s("gm_tremolo_strings").gain(.6).room(.75).roomsize(6).roomlp(1800)
+  .lpf(sine.range(500, 2500).slow(16))
+  .slow(8).orbit(5)
+
+// === METALLIC SCRAPE — FM synthesis, inharmonic (orbit 6) ===
+$: note("<c4 ~ ~ ~ eb4 ~ ~ ~>")
+  .s("sine").fm(8).fmh(1.41).decay(.3).release(.1)
+  .gain(.15).distort(.6).hpf(1500)
+  .delay(.2).delaytime(5/16).delayfeedback(.35)
+  .pan(rand.range(.2,.8)).orbit(6)
+  ._pianoroll({color:"#880000"})
+_$: note("<c4 ~ ~ ~ eb4 ~ ~ ~>")
+  .s("sine").fm(11).fmh(5.13).decay(.2).release(.05)
+  .gain(.12).distort(1.5).hpf(2000)
+  .delay(.15).delaytime(5/16).delayfeedback(.3)
+  .pan(rand.range(.2,.8)).orbit(6)
+_$: note("<c4 ~ gb4 ~ eb4 ~ f4 ~>")
+  .s("sine").fm(6).fmh(2.73).decay(.4).release(.15)
+  .gain(.13).distort(.8).hpf(1200)
+  .delay(.25).delaytime(3/8).delayfeedback(.4)
+  .pan(rand.range(.1,.9)).orbit(6)
+
+// === TENSION RISER — Filtered noise sweep (orbit 7) ===
+$: s("~ ~ ~ gm_reverse_cymbal").gain(.3).room(.5).slow(4).orbit(7)
+_$: s("white").gain(saw.range(0, .1).slow(16))
+  .hpf(2000).lpf(saw.range(3000, 14000).slow(16))
+  .distort(1).crush(10).orbit(7)
+  ._scope({color:"#550000", thickness:2})
+_$: s("white").gain(saw.range(0, .08).slow(32))
+  .hpf(3000).lpf(saw.range(4000, 12000).slow(32))
+  .distort(.8).crush(8).orbit(7)
+
+// === INDUSTRIAL CLANK — Metallic hits (orbit 8) ===
+$: s("<industrial:0 ~ industrial:2 ~ industrial:1 ~ industrial:3 ~>")
+  .gain(.8).room(.4).roomsize(3).hpf(800).slow(2).orbit(8)
+  ._scope({color:"#770000", thickness:2})
+_$: s("<metal:0 ~ metal:2 ~>")
+  .gain(.8).room(.45).roomsize(3).hpf(700).slow(2).orbit(8)
+_$: s("<mouth:0 ~ mouth:3 ~>")
+  .gain(.8).room(.6).roomsize(4).hpf(600).slow(2).orbit(8)
+
+// === CLAP — Cavernous reverb (orbit 9) ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.45).room(.6).roomsize(5).roomlp(1500).hpf(800).orbit(9)
+
+// === HATS — Sparse, metallic (orbit 10) ===
+$: s("~ hh ~ hh, ~ ~ [~ hh] ~").bank("RolandTR909")
+  .gain("0.15 0.08").hpf(7000).crush(12)
+  .pan(sine.range(.3,.7).slow(5)).orbit(10)
+_$: s("hh*16").gain(rand.range(0.02, 0.15))
+  .pan(rand).hpf(7000).crush(12).orbit(10)
+_$: s("~ oh ~ ~, hh*4").bank("RolandTR909")
+  .gain(.12).hpf(6000).crush(14).orbit(10)
+
+// === GHOSTLY WHISPER — Vowel-filtered noise (orbit 11) ===
+$: s("pink").seg(16).vowel("<a ~ e ~ i ~ o ~>")
+  .gain(.2).room(.9).roomsize(10).hpf(800).lpf(3000)
+  .slow(4).orbit(11)
+_$: s("gm_breath_noise").gain(.2).room(.7).slow(8).orbit(11)
+_$: s("pink").seg(8).vowel("<o ~ u ~ o ~ a ~>")
+  .gain(.5).room(.95).roomsize(12).hpf(1000).lpf(2500)
+  .slow(8).orbit(11)
+
+// === CROW — Muted by default, activate for chaos ===
+$: s("<crow:0 ~ ~ crow:2 ~ ~ crow:1 ~>")
+  .gain(.5).room(.5).roomsize(4).hpf(500).slow(4).orbit(3)
+
+// === RUMBLE — Low-end texture (orbit 12) ===
+$: note("c1").s("brown").gain(.3).lpf(80).slow(16).orbit(12)
+
+// === PITCH DROP STINGER — Muted, activate for dramatic moments ===
+_$: note("c4").s("sine").fm(3).fmh(1.41)
+  .penv(-12).pdec(3).gain(.2).room(.6).roomsize(5).slow(8).orbit(3)
+
+// === VIZ — Attach ._spectrum() to a sounding pattern (s("~") won't work) ===
+// Move ._spectrum() to whichever $: pattern you have active.
+// Example: add ._spectrum({color:"#330000", thickness:2}) to the kick or drone line.

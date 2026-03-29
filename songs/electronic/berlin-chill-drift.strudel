@@ -1,0 +1,161 @@
+// BERLIN CHILL DRIFT — Floaty, Weightless, Almost Ambient
+
+setCps(121/60/4)
+
+// === KICK — Very sparse, half-time ===
+$: s("<bd ~ ~ ~ bd ~ ~ ~>").bank("RolandTR909")
+  .gain(.78)
+  .shape(.25)
+  .lpf(2000)
+  .duck("1:2:3:4:5:6:7:8").duckattack(.015).duckdepth(.85)
+  .room(.25).roomsize(5).roomlp(600)
+  .orbit(1)
+  ._scope({color:"#0d1117", thickness:3})
+  ._spectrum({color:"#0d1117", thickness:2})
+
+// === KICK ALT — Full 4/4 for buildup ===
+_$: s("bd*4").bank("RolandTR909")
+  .gain(.8)
+  .shape(.28)
+  .lpf(2200)
+  .duck("1:2:3:4:5:6:7:8").duckattack(.01).duckdepth(.9)
+  .room(.2).roomsize(4).roomlp(700)
+  .orbit(1)
+  ._scope({color:"#0d1117", thickness:3})
+
+// === KICK ALT 2 — Kickless version ===
+_$: s("~")
+  .orbit(1)
+
+// === SUB BASS — Gentle, slow movement ===
+$: note("<c1!8 eb1!4 bb0!4>")
+  .s("sine")
+  .gain(.45)
+  .lpf(65)
+  .slow(16)
+  .orbit(2)
+
+// === PAD — DOMINANT, wide chord, lots of reverb ===
+$: note("<[c3,eb3,g3]!4 [bb2,d3,f3]!2 [ab2,c3,eb3]!2>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.09))
+  .superimpose(x => x.add(-0.09))
+  .lpf(sine.range(300, 2000).slow(48))
+  .attack(1.2).decay(3).sustain(.45).release(2)
+  .gain(.18)
+  .room(.85).roomsize(9).roomlp(1000).roomdim(2000)
+  .slow(8)
+  .orbit(5)
+
+// === STAB MAIN — Arpeggio-style, the star ===
+$: note("<[c4 eb4 g4 c5] ~ [bb3 d4 f4 bb4] ~ [g3 bb3 d4 g4] ~ [c4 eb4 g4 ~] ~>")
+  .s("sine")
+  .fm(1.5).fmh(2.01)
+  .decay(.4).release(.6)
+  .lpf(2800)
+  .gain(sine.range(.5, .8))
+  .delay(.4).delaytime(3/16).delayfeedback(.5)
+  .room(.7).roomsize(6)
+  .pan(.4)
+  .slow(2)
+  .orbit(6)
+  ._pianoroll({color:"#334466"})
+
+// === STAB ALT 1 — Single hits, berghain-style but louder ===
+_$: note("<~ ~ ~ [eb4 ~ d4 ~] ~ ~ ~ [c4 ~ ~ ~]>")
+  .s("sine")
+  .fm(2).fmh(2.01)
+  .decay(.3).release(.4)
+  .lpf(2500)
+  .gain(.45)
+  .delay(.35).delaytime(3/16).delayfeedback(.45)
+  .room(.6).roomsize(5)
+  .pan(.4)
+  .orbit(6)
+  ._pianoroll({color:"#334466"})
+
+// === STAB ALT 2 — Triangle with FM shimmer ===
+_$: note("<[c4 ~ eb4 ~] ~ [g4 ~ f4 ~] ~ [eb4 ~ d4 ~] ~ [c4 ~ ~ ~] ~>")
+  .s("triangle")
+  .fm(1).fmh(3.01)
+  .decay(.35).release(.5)
+  .lpf(3200)
+  .gain(.35)
+  .delay(.45).delaytime(3/16).delayfeedback(.5)
+  .room(.7).roomsize(6)
+  .pan(.45)
+  .slow(2)
+  .orbit(6)
+  ._pianoroll({color:"#334466"})
+
+// === STAB ALT 3 — gm_epiano1 arpeggios, dreamy ===
+_$: note("<[c4 eb4 g4 ~] ~ [bb3 d4 f4 ~] ~ [g3 bb3 d4 ~] ~ ~ ~>")
+  .s("gm_epiano1")
+  .decay(.45).release(.6)
+  .lpf(3000)
+  .gain(.4)
+  .delay(.5).delaytime(3/16).delayfeedback(.55)
+  .room(.75).roomsize(7)
+  .pan(.4)
+  .slow(2)
+  .orbit(6)
+  ._pianoroll({color:"#334466"})
+
+// === BASS STAB — Very minimal ===
+$: note("<[c2 ~ ~ ~] [~ ~ ~ ~] [c2 ~ ~ ~] [~ ~ ~ <bb1 g1>]>")
+  .s("sawtooth")
+  .lpf(sine.range(150, 400).slow(32))
+  .lpq(5)
+  .decay(.1).release(.05)
+  .distort(.6)
+  .gain(.28)
+  .orbit(2)
+
+// === CLAP — Very light ===
+_$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.3)
+  .room(.5).roomsize(5).roomlp(1500)
+  .hpf(800)
+  .orbit(3)
+
+// === CLAP ALT — Active, slightly louder ===
+$: s("~ cp ~ ~").bank("RolandTR909")
+  .gain(.35)
+  .room(.6).roomsize(6).roomlp(1500)
+  .hpf(800)
+  .orbit(3)
+
+// === CLOSED HAT — Very sparse ===
+$: s("~ hh ~ ~").bank("RolandTR909")
+  .gain(.1)
+  .hpf(7500)
+  .pan(.55)
+  .orbit(4)
+
+// === OPEN HAT — Ghost, rare ===
+$: s("~ ~ ~ [~ oh]").bank("RolandTR909")
+  .gain(.08)
+  .hpf(6000)
+  .decay(.15)
+  .pan(.6)
+  .orbit(4)
+
+// === RUMBLE — Low-end atmosphere ===
+$: note("c0")
+  .s("brown")
+  .gain(.22)
+  .lpf(38)
+  .slow(16)
+  .orbit(7)
+
+// === ATMOSPHERIC NOISE — High frequency shimmer ===
+$: s("~:0")
+  .s("pink")
+  .gain(.03)
+  .hpf(8000)
+  .room(.9).roomsize(10)
+  .pan(sine.range(.2,.8).slow(13))
+  .orbit(8)
+
+// === VIZ ===
+// ._spectrum() is on the kick line above (must be on a sounding pattern)

@@ -43,7 +43,8 @@ Algorave music workspace using [Strudel](https://strudel.cc/) — a browser-base
 
 ### Tempo & Pacing
 - **Always use `arrange()` for multi-section pieces** — `cat()` alternates patterns per cycle, it does NOT play them sequentially to completion.
-- **Always pair `arrange([N, ...])` with `.slow(N)`** — the arrange cycle count and slow value must match, otherwise the tempo is wrong. Example: `[5.5, note(...).slow(5.5)]`
+- **Classical: pair `arrange([N, ...])` with `.slow(N)`** — for melodic note sequences, the arrange cycle count and slow value must match. Example: `[5.5, note(...).slow(5.5)]`
+- **Electronic: do NOT put `.slow(N)` on repeating drum patterns inside `arrange()`** — `s("bd*4").slow(32)` stretches 4 kicks over 32 cycles (nearly silent). Only use `.slow()` on patterns that musically need stretching (pads, sub bass drones).
 - **Granular tempo variation is essential** — split into individual measures or 2-measure phrases. The opening of a piece should be the most granular (measure-by-measure) to nail the feel in the first 10-20 seconds.
 - **Tempo calibration (mellotron cello, per measure):** `slow(1.5-2)` = moderate single measure. `slow(1.3-1.5)` = fast/driving. `slow(2-2.5)` = broad/held. For 2-measure groups, double these values.
 - **Tempo shape matters:** slightly held opening → flowing middle → push forward on tension → broaden on resolution → slow dramatically at end.
@@ -81,7 +82,8 @@ Algorave music workspace using [Strudel](https://strudel.cc/) — a browser-base
 ### Naming & Presentation
 - "Kaya" pieces in root folder have all identifying comments stripped — only `// Kaya Minor 1` etc.
 - Working/reference versions live in `songs/` with full attribution.
-- The `audit-classical-strudel` skill (~/.claude/skills/) provides a systematic checklist for reviewing pieces.
+- The `audit-classical-strudel` skill (~/.claude/skills/) provides a systematic checklist for reviewing classical pieces.
+- The `compose-electronic-strudel` skill (~/.claude/skills/) provides a checklist for electronic pieces.
 
 ### Techno/Electronic Composition
 - **Use `$:` for active patterns, `_$:` for muted alternatives** — include 2-3 variations per section (acid lines, hat patterns, kicks) so the user can swap during live performance.
@@ -96,6 +98,28 @@ Algorave music workspace using [Strudel](https://strudel.cc/) — a browser-base
   - Dub techno (120-125 BPM) — spacious, reverb-drenched chords, echoing delays
 - **Artist reference points:** Robert Hood = minimal/hypnotic loops, Surgeon = chaotic/industrial polyrhythms, Jeff Mills = precision drum programming/machine funk.
 - **Comment style for electronic pieces:** `// === SECTION NAME — brief description ===` as section headers.
+- **Melodic accents/stabs are critical** for Berghain/chill styles — gain 0.3-0.5, not buried at 0.18. FM sine stabs with delay trails are the signature sound.
+- **Multi-phase arrangement:** Use per-layer `arrange()` for songs with evolving structure. Each layer gets its own arrange() controlling phases independently. Silent phases: `s("~")` (no `.slow()` needed). Chain `.duck()`, `.orbit()` after arrange().
+- **`.slow()` inside `arrange()` — CRITICAL distinction:**
+  - **Repeating patterns** (drums, hats, claps): do NOT use `.slow(N)` — they loop every cycle naturally. `s("bd*4").slow(32)` = 4 kicks over 32 cycles = nearly silent. Wrong!
+  - **Stretching patterns** (pads, sub bass drones, chord progressions): USE `.slow(N)` matching the musical intent, e.g. `.slow(8)` for a pad that changes chords every 8 cycles. The `.slow()` value is the musical tempo, NOT the phase duration.
+- **Visualizations:**
+  - `._spectrum()` / `._scope()` / `._pianoroll()` (with underscore) render inline — must be on a **sounding pattern**. `s("~")._spectrum()` produces nothing.
+  - Attach `._spectrum()` to the kick or another always-active layer.
+  - `all(spectrum)` renders full-page background — doesn't work well via strudel.nvim.
+- **Sample loading:** `samples('github:...')` loads asynchronously. Large packs (Dirt-Samples) take seconds. Use intro/ambient phases in full tracks to let samples load before they're needed.
+- **Gain management in dense phases:** When many layers play simultaneously (peak/industrial phases), reduce individual gains to prevent clipping. Total gain across all layers should not exceed what the speakers can handle.
+- **Preventing audio crackling (WebAudio buffer underruns):**
+  - `.roomsize()` is the #1 CPU cost — cap at **5 max**, use 2-3 for non-essential layers
+  - `.crush()` is surprisingly CPU-heavy — **avoid entirely** unless essential to the sound
+  - `.distort()` adds CPU load — keep values moderate, remove from layers where not critical
+  - Single `.superimpose()` instead of double (2 voices not 3) — saves ~33% on that layer
+  - `.seg(8)` instead of `.seg(16)` on noise/whisper — fewer granular voices
+  - Reduce `.delayfeedback()` — long feedback tails consume more CPU
+  - Share `.orbit()` between layers in different frequency ranges (e.g. rumble + whisper)
+  - Close Chrome DevTools while playing — DevTools cause audio glitches
+  - Fewer active `$:` patterns = less CPU pressure
+- **The `compose-electronic-strudel` skill** (~/.claude/skills/) provides a full checklist for creating/reviewing electronic pieces.
 
 ### Key Lesson: Match Real Recordings
 - Always compare against a specific recording (user provides Spotify links).
@@ -106,6 +130,7 @@ Algorave music workspace using [Strudel](https://strudel.cc/) — a browser-base
 
 - Song files: `*.strudel` (JavaScript/Strudel pattern code)
 - Each file is a self-contained composition that can be evaluated in the Strudel REPL
+- **Naming:** Files with multi-phase `arrange()` structure (full songs) use `-full-track` suffix, e.g. `berlin-convergence-full-track.strudel`. Loop-based files (single repeating pattern set) use plain names.
 - **Folder structure:**
   - `songs/classical/` — classical music transcriptions (cello concertos, Bach suites, etc.)
   - `songs/jazz/` — jazz pieces (bebop, modal, bossa, soul groove)
