@@ -1,0 +1,126 @@
+// BERLIN 90s RAW — Tresor / Hard Wax
+// Jeff Mills, Robert Hood, early Surgeon
+
+setCps(138/60/4)
+
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
+
+// === KICK — 909, distorted, room-shaking ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.92)
+  .shape(.6)
+  .lpf(5000)
+  .duck("1:2:3:4:5").duckattack(.015).duckdepth(1)
+  .orbit(0)
+  ._scope({color:"#cc0000", thickness:3})
+
+// === CLAP — Dry, hard, on 2 and 4 ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.6)
+  .distort(1.2)
+  .room(.15).roomsize(.8)
+  .orbit(1)
+
+// === CLOSED HATS — Relentless 16ths, velocity variation ===
+$: s("hh*16").bank("RolandTR909")
+  .gain("<0.38 0.12 0.28 0.12>*4")
+  .speed("<1 1.05 1 1.1>*4")
+  .hpf(7000)
+  .pan(rand.range(.3,.7))
+  .orbit(2)
+
+// === OPEN HAT — Offbeat, cuts through ===
+$: s("~ oh ~ oh").bank("RolandTR909")
+  .gain(.22)
+  .hpf(5500)
+  .cut(2)
+  .pan(.55)
+  .orbit(2)
+
+// === RIDE — Subtle, pushing forward ===
+$: s("~ [~ hh:3] ~ [~ hh:3]").bank("RolandTR909")
+  .gain(.15)
+  .hpf(8000)
+  .pan(.65)
+  .orbit(2)
+
+// === ACID LINE A — Hypnotic single-note, filter is the melody ===
+_$: note("<c2!6 bb1 c2, ~ ~ ~ ~ ~ ~ eb2 ~>")
+  .s("sawtooth")
+  .lpf(90).lpenv(sine.range(3, 14).slow(16)).lpdecay(.08)
+  .lpq(24)
+  .distort(3.5)
+  .gain(.32)
+  .orbit(3)
+  ._pianoroll({color:"#ff4400"})
+
+// === ACID LINE B — Chromatic, erratic, Jeff Mills style ===
+$: n(irand(7).seg(16)).scale("c:minor")
+  .o(2).s("supersaw")
+  .acidenv(0.6)
+  .lpq(20)
+  .distort(3)
+  .gain(.05)
+  .orbit(3)
+  ._pianoroll({color:"#ff6600"})
+  .slow(8)
+
+// === ACID LINE C — Stabbing 303 riff, syncopated ===
+$: note("<c2 ~ c2 eb2 ~ c2 f2 ~, ~ ~ ~ ~ c2 ~ ~ eb2>")
+  .s("supersaw")
+  .acidenv(sine.range(0.4, 0.7).slow(8))
+  .lpq(20)
+  .distort(2.8)
+  .gain("<0.2 0.7>"*4)
+  .orbit(3)
+  ._pianoroll({color:"#ff8800"})
+  .slow(1.5)
+
+// === SUB BASS — Sine, locked to kick ===
+$: note("c1*4")
+  .s("sine")
+  .gain(.45)
+  .lpf(80)
+  .decay(.15).release(.05)
+  .orbit(4)
+
+// === STAB — Sparse chord hit, every 2-4 bars ===
+$: note("<~ ~ [c3,eb3,g3] ~, ~ ~ ~ [c3,eb3,bb3]>")
+  .s("square")
+  .fm(2).fmh(1.5)
+  .lpf(2000).lpq(6)
+  .decay(.12).release(.05)
+  .distort(1.5)
+  .room(.35).roomsize(2)
+  .gain(.2)
+  .orbit(5)
+
+// === METALLIC PERCUSSION — Sparse, industrial ===
+$: note("<c5 ~ ~ eb5 ~ ~ c5 ~>")
+  .s("sine")
+  .fm(9).fmh(4.71)
+  .decay(.04).release(.01)
+  .gain(.18)
+  .distort(1.5)
+  .hpf(2000)
+  .delay(.15).delaytime(3/16).delayfeedback(.25)
+  .pan(.35)
+  .orbit(6)
+
+// === NOISE SWEEP — Building tension, every 8 bars ===
+_$: s("white").gain(sine.range(0, .12).slow(8))
+  .hpf(2000)
+  .lpf(sine.range(3000, 12000).slow(8))
+  .distort(1.5)
+  .crush(8)
+  .orbit(7)
+
+// === RUMBLE — Sub-floor pressure ===
+$: note("c0")
+  .s("sine")
+  .gain(.35)
+  .lpf(50)
+  .slow(16)
+
+// === VIZ ===
+$: s("~")._spectrum({color:"#cc0000", thickness:2})

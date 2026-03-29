@@ -83,6 +83,20 @@ Algorave music workspace using [Strudel](https://strudel.cc/) — a browser-base
 - Working/reference versions live in `songs/` with full attribution.
 - The `audit-classical-strudel` skill (~/.claude/skills/) provides a systematic checklist for reviewing pieces.
 
+### Techno/Electronic Composition
+- **Use `$:` for active patterns, `_$:` for muted alternatives** — include 2-3 variations per section (acid lines, hat patterns, kicks) so the user can swap during live performance.
+- **Acid envelope recipe:** `register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))` — use `.acidenv(0.5-0.7)` on acid lines. The parameter controls sweep intensity.
+- **Parameter alternation:** use `<>` in any parameter to alternate per cycle, e.g. `.acidenv("<0.6 0.5>")`, `.gain("<0.2 0.7>")`.
+- **Supersaw alternatives for acid:** `sawtooth` (thinner, classic 303), `square` (hollow, punchier stabs), `triangle` (softer, rounder). All respond well to acid envelope + high resonance.
+- **Sidechain ducking on kick:** `.duck("1:2:3:4:5").duckattack(.015).duckdepth(1)` — list all orbits used by other patterns.
+- **Distortion flavors:** `.distort(N)` for harsh digital, `.shape(N)` for warmer saturation (better for kicks), `.crush(N)` for bitcrushing.
+- **Berlin techno subgenres:**
+  - Berghain (128 BPM) — sparse, hypnotic, deep kick + sub, slow-evolving pads
+  - 90s Tresor/Hard Wax (135-142 BPM) — raw 909, acid, stripped back, high energy
+  - Dub techno (120-125 BPM) — spacious, reverb-drenched chords, echoing delays
+- **Artist reference points:** Robert Hood = minimal/hypnotic loops, Surgeon = chaotic/industrial polyrhythms, Jeff Mills = precision drum programming/machine funk.
+- **Comment style for electronic pieces:** `// === SECTION NAME — brief description ===` as section headers.
+
 ### Key Lesson: Match Real Recordings
 - Always compare against a specific recording (user provides Spotify links).
 - The first 10-20 seconds must be convincing — make the opening the most granular.
@@ -92,6 +106,11 @@ Algorave music workspace using [Strudel](https://strudel.cc/) — a browser-base
 
 - Song files: `*.strudel` (JavaScript/Strudel pattern code)
 - Each file is a self-contained composition that can be evaluated in the Strudel REPL
+- **Folder structure:**
+  - `songs/classical/` — classical music transcriptions (cello concertos, Bach suites, etc.)
+  - `songs/jazz/` — jazz pieces (bebop, modal, bossa, soul groove)
+  - `songs/electronic/` — all electronic genres: techno, synthwave, acid, trance, industrial
+  - Root folder — "Kaya" performance pieces (stripped of attribution)
 
 ## External Resources (from awesome-strudel)
 

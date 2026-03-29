@@ -1,0 +1,116 @@
+// BERLIN 90s HOOD — Minimal Techno, Deep & Functional
+// Robert Hood, Floorplan, Minimal Nation era
+
+setCps(132/60/4)
+
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
+
+// === KICK — 909, clean, deep, room pressure ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.88)
+  .shape(.35)
+  .lpf(4000)
+  .duck("1:2:3:4:5:6").duckattack(.01).duckdepth(1)
+  .orbit(0)
+  ._scope({color:"#880000", thickness:3})
+
+// === CLAP — Dry, tight, 2 and 4 ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.48)
+  .room(.08).roomsize(.5)
+  .orbit(1)
+
+// === CLOSED HATS — Steady 16ths, subtle dynamics ===
+$: s("hh*16").bank("RolandTR909")
+  .gain("<0.32 0.10 0.22 0.10>*4")
+  .hpf(7500)
+  .pan(rand.range(.35,.65))
+  .orbit(2)
+
+// === CLOSED HATS ALT — Syncopated, sparser ===
+_$: s("hh [~ hh] hh [hh ~], ~ ~ ~ [~ hh] ~ ~ [~ hh] ~").bank("RolandTR909")
+  .gain(.28)
+  .hpf(7500)
+  .pan(rand.range(.35,.65))
+  .orbit(2)
+
+// === OPEN HAT — Offbeat pulse ===
+$: s("~ oh ~ oh").bank("RolandTR909")
+  .gain(.18)
+  .hpf(6000)
+  .cut(2)
+  .pan(.55)
+  .orbit(2)
+
+// === ACID LINE A — Single-note hypnosis, filter IS the melody ===
+$: note("d2*8")
+  .s("sawtooth")
+  .lpf(80).lpenv(sine.range(2, 12).slow(32)).lpdecay(.06)
+  .lpq(22)
+  .distort(2.5)
+  .gain(.28)
+  .orbit(3)
+  ._pianoroll({color:"#ff4400"})
+
+// === ACID LINE B — Two-note tension, Hood-style locked groove ===
+_$: note("<d2!6 c2 d2>")
+  .s("sawtooth")
+  .lpf(80).lpenv(sine.range(3, 10).slow(24)).lpdecay(.07)
+  .lpq(20)
+  .distort(2.2)
+  .gain(.5)
+  .orbit(3)
+  ._pianoroll({color:"#ff4400"})
+
+// === ACID LINE C — Minimal phrase, D minor motif ===
+$: note("<d2 f2 e2 d2 a1 ~>")
+  .s("supersaw")
+  .acidenv(sine.range(0.3, 0.6).slow(1))
+  .lpq(25)
+  .distort(2)
+  .gain(.24)
+  .orbit(3)
+  ._pianoroll({color:"#ff6600"})
+
+// === SUB BASS — Deep sine, locked to kick ===
+$: note("d1*4")
+  .s("sine")
+  .gain(.42)
+  .lpf(70)
+  .decay(.12).release(.04)
+  .orbit(4)
+
+// === SUB BASS ALT — Syncopated sub, more groove ===
+_$: note("d1 ~ d1 d1 ~ d1 ~ d1")
+  .s("sine")
+  .gain(.40)
+  .lpf(70)
+  .decay(.14).release(.05)
+  .orbit(4)
+
+// === PERC — Sparse rimshot, minimal punctuation ===
+$: s("~ ~ ~ [~ hh:4], ~ ~ ~ ~  ~ ~ ~ [~ hh:4]").bank("RolandTR909")
+  .gain(.14)
+  .hpf(3000)
+  .delay(.12).delaytime(3/16).delayfeedback(.15)
+  .pan(.4)
+  .orbit(5)
+
+// === CHORD WASH — Distant, felt not heard ===
+_$: note("[d3,f3,a3]")
+  .s("sine")
+  .gain(sine.range(0, .06).slow(32))
+  .lpf(sine.range(400, 1200).slow(24))
+  .attack(.3).release(1.2)
+  .room(.6).roomsize(4)
+  .orbit(6)
+
+// === RUMBLE — Sub-floor weight ===
+$: note("d0")
+  .s("sine")
+  .gain(.30)
+  .lpf(45)
+  .slow(16)
+
+// === VIZ ===
+$: s("~")._spectrum({color:"#880000", thickness:2})

@@ -20,12 +20,21 @@ $bass: n(irand(10).sub(7).seg(16)).scale("c:minor")
   ._pianoroll()
 
 // === INDUSTRIAL ACID — Stabbing square, syncopated ===
+// Two interlocking layers (separated by , in mini-notation):
+//   Top:    0 ~ 3 ~ 5 ~ 0 <7|-3>  — C Eb G with alternating Bb/Ab at end
+//   Bottom: ~ 0 ~ 3 ~ 5 ~ 0       — same notes offset by one step
+// The layers fill each other's rests, creating a syncopated call-and-response.
+// acidenv(0.6) applies the registered acid envelope: filter starts at 100Hz,
+// sweeps up sharply (lpenv 5.4) with fast decay (120ms) — the classic 303 squelch.
+// lpq(16) = high resonance makes the sweep scream. distort("3:.4") = heavy grit at 40% mix.
+// Alternatives to supersaw: try "sawtooth" (thinner, more classic 303), "square" (hollow,
+// punchier stabs), or "triangle" (softer, rounder — good for deeper/less aggressive feel).
 $: n("<0 ~ 3 ~ 5 ~ 0 <7 -3>, ~ 0 ~ 3 ~ 5 ~ 0>").scale("c:minor")
   .o(2).s("supersaw")
   .acidenv(0.6)
   .lpq(16)
   .distort("3:.4")
-  .gain(.2)
+  .gain(.8)
   .orbit(3)
   ._pianoroll()
 

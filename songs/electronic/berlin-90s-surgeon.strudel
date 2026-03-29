@@ -1,0 +1,251 @@
+// BERLIN 90s SURGEON — Concrete Bunker Techno
+// Early Surgeon / Birmingham-meets-Berlin industrial, ~1994-96
+
+setCps(140/60/4)
+
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
+
+// === KICK — 909, maximum pressure, sidechain source ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.95)
+  .shape(.72)
+  .distort(.4)
+  .lpf(4500)
+  .duck("1:2:3:4:5:6:7:8").duckattack(.01).duckdepth(1)
+  .orbit(0)
+  ._scope({color:"#aa0000", thickness:3})
+
+// === CLAP — Brutal, distorted, 2 and 4 ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.62)
+  .distort(2)
+  .crush(10)
+  .room(.12).roomsize(.5)
+  .orbit(1)
+
+// alt: displaced clap, syncopated
+_$: s("~ ~ cp [~ cp]").bank("RolandTR909")
+  .gain(.58)
+  .distort(1.8)
+  .room(.1).roomsize(.4)
+  .orbit(1)
+
+// === CLOSED HATS — Frantic 16ths, velocity chaos ===
+$: s("hh*16").bank("RolandTR909")
+  .gain("<0.42 0.1 0.32 0.08 0.38 0.12 0.35 0.06>*2")
+  .speed("<1 1.08 0.95 1.12>*4")
+  .hpf(7500)
+  .distort(.6)
+  .pan(rand.range(.25,.75))
+  .orbit(2)
+
+// alt: broken hat pattern, more sparse
+_$: s("hh [~ hh] hh [hh ~ hh ~]").bank("RolandTR909").fast(2)
+  .gain(.35)
+  .speed("<1.05 0.95>*4")
+  .hpf(7000)
+  .distort(.8)
+  .pan(rand.range(.3,.7))
+  .orbit(2)
+
+// === OPEN HAT — Offbeat, cutting ===
+$: s("~ oh ~ oh").bank("RolandTR909")
+  .gain(.24)
+  .hpf(5500)
+  .distort(.5)
+  .cut(2)
+  .pan(.55)
+  .orbit(2)
+
+// === RIDE — Metallic wash ===
+$: s("~ [~ hh:3] ~ [~ hh:3]").bank("RolandTR909")
+  .gain(.16)
+  .hpf(8500)
+  .crush(12)
+  .pan(.62)
+  .orbit(2)
+
+// === EUCLIDEAN PERC A — Polyrhythmic claves ===
+_$: s("cp(5,8)").bank("RolandTR909")
+  .speed(2.2)
+  .gain(.14)
+  .hpf(6000)
+  .distort(1)
+  .delay(.1).delaytime(5/16).delayfeedback(.2)
+  .pan(.3)
+  .orbit(6)
+
+// alt: tighter euclidean pattern
+_$: s("cp(7,12)").bank("RolandTR909")
+  .speed(2.5)
+  .gain(.12)
+  .hpf(6500)
+  .distort(1.2)
+  .pan(.35)
+  .orbit(6)
+
+// === EUCLIDEAN PERC B — Cross-rhythm rimshot ===
+$: s("sd:3(3,8,2)").bank("RolandTR909")
+  .gain(.12)
+  .hpf(4000)
+  .distort(.8)
+  .pan(.7)
+  .orbit(6)
+
+// === ACID LINE A — Surgeon-style: relentless, narrow filter sweep ===
+_$: note("<eb2!4 db2!2 eb2 gb2, ~ ~ ~ ~ eb2 ~ ~ db2>")
+  .s("sawtooth")
+  .lpf(80).lpenv(sine.range(4, 16).slow(12)).lpdecay(.06)
+  .lpq(26)
+  .distort(2)
+  .shape(.3)
+  .gain(.8)
+  .orbit(3)
+  ._pianoroll({color:"#ff2200"})
+
+// alt: single-note obsessive, pure filter manipulation
+_$: note("eb2!8")
+  .s("sawtooth")
+  .lpf(60).lpenv(sine.range(2, 18).slow(16)).lpdecay(.05)
+  .lpq(28)
+  .distort(4.5)
+  .gain(.25)
+  .orbit(3)
+  ._pianoroll({color:"#ff2200"})
+
+// === ACID LINE B — Erratic chromatic, Surgeon chaos ===
+_$: n(irand(8).seg(16)).scale("eb:minor")
+  .o(2).s("supersaw")
+  .acidenv(0.7)
+  .lpq(26)
+  .distort(3)
+  .shape(.2)
+  .gain(.2)
+  .orbit(3)
+  ._pianoroll({color:"#ff4400"})
+  .slow(6)
+
+// alt: pentatonic variant, slightly less chaotic
+_$: n(irand(5).seg(16)).scale("eb:minPent")
+  .o(2).s("supersaw")
+  .acidenv(0.5)
+  .lpq(18)
+  .distort(2.8)
+  .gain(.05)
+  .orbit(3)
+  .slow(1)
+  ._pianoroll({color:"#ff4400"})
+
+// === ACID LINE C — Stabbing, syncopated, Eb minor ===
+$: note("<eb2 ~ eb2 gb2 ~ eb2 ab2 ~, ~ ~ ~ ~ eb2 ~ ~ db2>")
+  .s("supersaw")
+  .acidenv(sine.range(0.5, 0.8).slow(6))
+  .lpq(22)
+  .distort(3.2)
+  .gain("<0.18 0.65>"*4)
+  .orbit(3)
+  ._pianoroll({color:"#ff6600"})
+  .slow(1.5)
+
+// === SUB BASS — Locked to kick, Eb foundation ===
+$: note("eb1*4")
+  .s("sine")
+  .gain(.48)
+  .lpf(75)
+  .decay(.14).release(.04)
+  .shape(.15)
+  .orbit(4)
+
+// === STAB — Dissonant industrial chord, sparse ===
+$: note("<~ ~ [eb3,gb3,bb3] ~, ~ ~ ~ [eb3,gb3,db4]>")
+  .s("square")
+  .fm(3).fmh(1.73)
+  .lpf(1800).lpq(8)
+  .decay(.1).release(.04)
+  .distort(2)
+  .crush(10)
+  .room(.25).roomsize(1.5)
+  .gain(.18)
+  .orbit(5)
+
+// alt: wider voicing, more metallic
+$: note("<~ ~ [eb3,bb3,db4] ~, ~ [gb3,db4,eb4] ~ ~>")
+  .s("square")
+  .fm(4).fmh(2.17)
+  .lpf(2200).lpq(6)
+  .decay(.08).release(.03)
+  .distort(2.5)
+  .gain(.15)
+  .orbit(5)
+
+// === METALLIC PERC A — FM inharmonic, Surgeon signature ===
+$: note("<eb5 ~ ~ gb5 ~ ~ eb5 ~, ~ ~ ab5 ~ ~ ~ gb5 ~>")
+  .s("sine")
+  .fm(11).fmh(5.13)
+  .decay(.03).release(.008)
+  .gain(.2)
+  .distort(2)
+  .hpf(2500)
+  .delay(.12).delaytime(3/16).delayfeedback(.3)
+  .pan(.3)
+  .orbit(6)
+
+// === METALLIC PERC B — High FM clicks, polyrhythmic ===
+$: note("eb6(5,16)")
+  .s("sine")
+  .fm(14).fmh(7.1)
+  .decay(.015).release(.005)
+  .gain(.13)
+  .distort(1.5)
+  .hpf(4000)
+  .pan(.72)
+  .orbit(6)
+
+// alt: denser click pattern
+_$: note("eb6(7,16,3)")
+  .s("sine")
+  .fm(16).fmh(8.33)
+  .decay(.012).release(.004)
+  .gain(.11)
+  .distort(1.8)
+  .hpf(4500)
+  .pan(.68)
+  .orbit(6)
+
+// === NOISE BURST — Industrial texture, rhythmic ===
+$: s("white(3,8)")
+  .gain(.1)
+  .hpf(3000)
+  .lpf(sine.range(4000, 10000).slow(4))
+  .distort(2.5)
+  .crush(6)
+  .decay(.06).release(.02)
+  .orbit(7)
+
+// alt: noise sweep, building tension over 8 bars
+_$: s("white").gain(sine.range(0, .14).slow(8))
+  .hpf(2500)
+  .lpf(sine.range(3000, 14000).slow(8))
+  .distort(2)
+  .crush(7)
+  .orbit(7)
+
+// === NOISE TEXTURE — Bitcrushed static, constant ===
+$: s("brown")
+  .gain(.04)
+  .hpf(5000)
+  .crush(4)
+  .distort(1)
+  .pan(rand.range(.2,.8))
+  .orbit(7)
+
+// === RUMBLE — Sub-floor pressure, Eb ===
+$: note("eb0")
+  .s("sine")
+  .gain(.38)
+  .lpf(45)
+  .shape(.1)
+  .slow(16)
+
+// === VIZ ===
+$: s("~")._spectrum({color:"#aa0000", thickness:2})

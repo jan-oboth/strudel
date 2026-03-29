@@ -1,0 +1,227 @@
+// BERLIN 90s MILLS — Purpose Maker / Axis Records
+// Jeff Mills machine precision, 142 BPM, stripped to the bone
+
+setCps(142/60/4)
+
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
+
+// ======================================================
+// DRUMS — The Machine
+// ======================================================
+
+// === KICK A — Relentless, syncopated Mills programming ===
+$: s("<bd*4, ~ ~ ~ [bd ~]>").bank("RolandTR909")
+  .gain(.94)
+  .shape(.55)
+  .lpf(6000)
+  .duck("1:2:3:4:5:6:7").duckattack(.01).duckdepth(1)
+  .orbit(0)
+  ._scope({color:"#ff0000", thickness:3})
+
+// === KICK B — Broken pattern, drops and fills ===
+_$: s("<[bd bd ~ bd] [bd ~ bd ~] [bd bd bd ~] [~ bd ~ bd]>").bank("RolandTR909")
+  .gain(.94)
+  .shape(.55)
+  .lpf(6000)
+  .duck("1:2:3:4:5:6:7").duckattack(.01).duckdepth(1)
+  .orbit(0)
+  ._scope({color:"#ff0000", thickness:3})
+
+// === KICK C — Triplet fills, machine gun ===
+_$: s("<bd*4, [~ ~ bd bd] [bd ~ ~ bd] [~ bd bd ~] [bd bd ~ ~]>").bank("RolandTR909")
+  .gain(.92)
+  .shape(.6)
+  .lpf(5500)
+  .duck("1:2:3:4:5:6:7").duckattack(.01).duckdepth(1)
+  .orbit(0)
+  ._scope({color:"#ff0000", thickness:3})
+
+// === CLAP — Dry, sharp, no reverb ===
+_$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.58)
+  .distort(1.5)
+  .room(.05).roomsize(.3)
+  .orbit(1)
+
+// === CLAP B — Syncopated, off-grid ===
+$: s("~ cp ~ [~ cp]").bank("RolandTR909")
+  .gain(.55)
+  .distort(1.3)
+  .room(.05).roomsize(.3)
+  .orbit(1)
+
+// === CLOSED HATS A — 16ths, razor sharp, velocity programmed ===
+$: s("hh*16").bank("RolandTR909")
+  .gain("<0.42 0.10 0.30 0.10 0.38 0.10 0.28 0.10>*2")
+  .speed("<1 1.08 1.02 1.06>*4")
+  .hpf(7500)
+  .pan(rand.range(.35,.65))
+  .orbit(2)
+
+// === CLOSED HATS B — Broken 16ths, Mills edit style ===
+_$: s("<[hh hh ~ hh hh ~ hh hh] [hh ~ hh hh ~ hh ~ hh] [hh hh hh ~ hh hh ~ hh] [~ hh hh hh hh ~ hh hh]>*2").bank("RolandTR909")
+  .gain(.32)
+  .speed(choose(1, 1.05, 1.1))
+  .hpf(7500)
+  .pan(rand.range(.35,.65))
+  .orbit(2)
+
+// === OPEN HAT — Offbeat, cutting ===
+$: s("~ oh ~ oh").bank("RolandTR909")
+  .gain(.20)
+  .hpf(6000)
+  .cut(2)
+  .pan(.55)
+  .orbit(2)
+
+// === OPEN HAT B — Erratic placement ===
+_$: s("<[~ oh ~ ~] [~ ~ oh ~] [~ oh ~ oh] [oh ~ ~ oh]>").bank("RolandTR909")
+  .gain(.18)
+  .hpf(6000)
+  .cut(2)
+  .pan(.55)
+  .orbit(2)
+
+// === RIDE — Ticking clock, pushing forward ===
+$: s("hh:3*8").bank("RolandTR909")
+  .gain("<0.10 0.05 0.08 0.05>*2")
+  .hpf(9000)
+  .pan(.60)
+  .orbit(2)
+
+// === RIMSHOT — Syncopated machine funk ===
+$: s("<[~ ~ rm ~] [~ rm ~ ~] [~ ~ ~ rm] [rm ~ ~ ~]>").bank("RolandTR909")
+  .gain(.28)
+  .hpf(3000)
+  .pan(.40)
+  .orbit(2)
+
+// === RIMSHOT B — Rapid-fire fills ===
+_$: s("<[rm ~ rm ~] [~ rm ~ rm] [rm rm ~ ~] [~ ~ rm rm]>").bank("RolandTR909")
+  .gain(.25)
+  .hpf(3000)
+  .pan(.42)
+  .orbit(2)
+
+// ======================================================
+// PERCUSSION — Industrial textures
+// ======================================================
+
+// === METALLIC HIT — FM percussion, sparse ===
+$: note("<c6 ~ ~ ~ eb6 ~ ~ ~>")
+  .s("sine")
+  .fm(11).fmh(5.13)
+  .decay(.03).release(.008)
+  .gain(.15)
+  .distort(1.8)
+  .hpf(3000)
+  .pan(.30)
+  .orbit(3)
+
+// === METALLIC HIT B — Denser, random pitch ===
+_$: note(choose("c6","eb6","f6","g6").seg(8))
+  .s("sine")
+  .fm(11).fmh(5.13)
+  .decay(.025).release(.006)
+  .gain(.12)
+  .distort(1.5)
+  .hpf(3500)
+  .pan(rand.range(.25,.45))
+  .orbit(3)
+
+// === NOISE BURST — Stab of white noise, percussive ===
+$: s("<~ ~ white ~ ~ ~ white ~>")
+  .gain(.08)
+  .hpf(6000)
+  .lpf(14000)
+  .decay(.03).release(.01)
+  .distort(2)
+  .orbit(3)
+
+// ======================================================
+// ACID — Sharp, cutting, minimal
+// ======================================================
+
+// === ACID A — Single-note filter workout ===
+$: note("c2!8")
+  .s("sawtooth")
+  .lpf(80).lpenv(sine.range(2, 16).slow(12)).lpdecay(.06)
+  .lpq(22)
+  .distort(3.8)
+  .gain(.28)
+  .orbit(4)
+  ._pianoroll({color:"#ff3300"})
+
+// === ACID B — Chromatic random, irand Mills chaos ===
+_$: n(irand(5).seg(16)).scale("c:minor")
+  .o(2).s("supersaw")
+  .acidenv(0.65)
+  .lpq(22)
+  .distort(3.2)
+  .gain(.04)
+  .orbit(4)
+  ._pianoroll({color:"#ff5500"})
+  .slow(4)
+
+// === ACID C — Stabbing syncopated riff ===
+_$: note("<c2 ~ c2 ~ eb2 ~ c2 ~, ~ c2 ~ ~ ~ eb2 ~ f2>")
+  .s("supersaw")
+  .acidenv(sine.range(0.3, 0.8).slow(6))
+  .lpq(22)
+  .distort(3)
+  .gain("<0.15 0.6>"*4)
+  .orbit(4)
+  ._pianoroll({color:"#ff7700"})
+  .slow(1.5)
+
+// ======================================================
+// BASS — Sub-floor locked
+// ======================================================
+
+// === SUB BASS — Sine, locked tight to kick ===
+$: note("c1*4")
+  .s("sine")
+  .gain(.42)
+  .lpf(70)
+  .decay(.12).release(.04)
+  .orbit(5)
+
+// ======================================================
+// STABS — Sparse, surgical
+// ======================================================
+
+// === CHORD STAB — Minimal, every 4 bars ===
+$: note("<~ ~ ~ [c3,eb3,g3], ~ ~ ~ ~, ~ ~ ~ ~, ~ ~ ~ [c3,eb3,bb3]>")
+  .s("square")
+  .fm(2).fmh(1.5)
+  .lpf(1800).lpq(5)
+  .decay(.08).release(.03)
+  .distort(1.8)
+  .room(.1).roomsize(.5)
+  .gain(.18)
+  .orbit(6)
+
+// ======================================================
+// TEXTURE — Tension
+// ======================================================
+
+// === NOISE SWEEP — Building, every 16 bars ===
+_$: s("white").gain(sine.range(0, .08).slow(16))
+  .hpf(3000)
+  .lpf(sine.range(4000, 14000).slow(16))
+  .distort(1.2)
+  .crush(6)
+  .orbit(7)
+
+// === RUMBLE — Sub pressure ===
+$: note("c0")
+  .s("sine")
+  .gain(.30)
+  .lpf(45)
+  .slow(16)
+
+// ======================================================
+// VIZ
+// ======================================================
+
+$: s("~")._spectrum({color:"#ff0000", thickness:2})
