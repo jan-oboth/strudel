@@ -1,0 +1,98 @@
+// GABBER EXPLORATION — 170 BPM
+// Distorted kicks, hoover synths, rave stabs — classic 90s hardcore
+// Key: C minor
+// Identity: Hoover synths + rave stabs — detuned saw sweeps, big chords, NO acid
+
+setCps(170/60/4)
+
+// === KICK — Massively distorted, the star of gabber ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.95).distort(2.5).shape(.7)
+  .lpf(sine.range(1500, 4000).slow(8))
+  .duck("1:2:3:4:5:6:7").duckattack(.01).duckdepth(1)
+  .orbit(0)
+  ._scope({color:"#ffff00", thickness:3})
+  ._spectrum({color:"#ffff00", thickness:2})
+
+// === HOOVER — Classic rave hoover synth (detuned saw + filter sweep) ===
+// THE gabber signature: multiple detuned saws sweeping through a wide filter range
+$: note("<c3 ~ ~ c3 ~ eb3 ~ c3, ~ ~ c3 ~ ~ ~ c3 ~>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.12))
+  .lpf(sine.range(400, 3000).slow(8)).lpq(8)
+  .distort(1.5).gain(.35)
+  .room(.3).roomsize(3)
+  .orbit(1)
+  ._pianoroll({color:"#ffff00"})
+
+// Alt hoover: supersaw (thicker)
+_$: note("<c3 ~ ~ c3 ~ eb3 ~ c3, ~ ~ c3 ~ ~ ~ c3 ~>")
+  .s("supersaw").detune(.5)
+  .lpf(sine.range(500, 2500).slow(8)).lpq(6)
+  .distort(1.2).gain(.3)
+  .room(.3).roomsize(3)
+  .orbit(1)
+
+// Alt hoover: square wave (more aggressive)
+_$: note("<c3 ~ ~ c3 ~ eb3 ~ c3, ~ ~ c3 ~ ~ ~ c3 ~>")
+  .s("square")
+  .superimpose(x => x.add(0.1))
+  .lpf(sine.range(300, 2000).slow(8)).lpq(10)
+  .distort(2).gain(.3)
+  .orbit(1)
+
+// === RAVE STAB — Big chord hits with reverb ===
+// The other gabber signature: huge chorded stabs that ring out
+$: note("<~ ~ [c4,eb4,g4,bb4] ~ ~ ~ [c4,eb4,g4] ~>").s("sawtooth")
+  .superimpose(x => x.add(0.06))
+  .decay(.2).release(.1)
+  .lpf(4000).gain(.45)
+  .room(.4).roomsize(4)
+  .delay(.15).delaytime(1/8).delayfeedback(.25)
+  .pan(.45)
+  .orbit(2)
+
+// Alt stab: FM stab (sharper)
+_$: note("<~ ~ [c4,eb4,g4,bb4] ~ ~ ~ [c4,eb4,g4] ~>").s("sine")
+  .fm(3).fmh(2.01).decay(.15).release(.06)
+  .lpf(3500).gain(.4)
+  .room(.35).roomsize(3)
+  .delay(.12).delaytime(1/8).delayfeedback(.2)
+  .orbit(2)
+
+// Alt stab: pitched-up vocal-like (mentasm style)
+_$: note("<~ ~ [c5,eb5,g5] ~ ~ ~ [c5,eb5] ~>").s("sawtooth")
+  .superimpose(x => x.add(0.15))
+  .superimpose(x => x.add(-0.08))
+  .lpf(6000).hpf(1000).gain(.3)
+  .decay(.15).release(.08)
+  .room(.5).roomsize(4)
+  .orbit(2)
+
+// === CLAP — Massive, reverbed ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.6).distort(.5).room(.4).roomsize(3)
+  .orbit(3)
+
+// === HATS — Fast 16ths, driving ===
+$: s("hh*16").bank("RolandTR909")
+  .gain("<0.3 0.08 0.2 0.08>*4")
+  .speed("<1 1.1 1 1.05>*4")
+  .hpf(6000).pan(rand.range(.35,.65))
+  .orbit(4)
+
+// === SNARE ROLL — Gabber fill element ===
+_$: s("~ ~ ~ sd*8").bank("RolandTR909")
+  .gain(sine.range(0.15, 0.4).fast(2))
+  .distort(.5)
+  .orbit(5)
+
+// === SUB — Punchy, felt through the floor ===
+$: note("c1*4").s("sine")
+  .gain(.35).lpf(60).decay(.1).release(.03)
+  .orbit(6)
+
+// === RIDE — Offbeat energy ===
+$: s("~ ride ~ ride").bank("RolandTR909")
+  .gain(.15).hpf(7000).pan(.55)
+  .orbit(7)

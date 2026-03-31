@@ -1,0 +1,84 @@
+// SCHRANZ EXPLORATION — 155 BPM
+// Looping, hypnotic, relentless, minimal but fast
+// Key: C minor
+// Identity: Hypnotic filter loops — self-oscillating resonance, drone modulation, NO acid envelope
+
+setCps(155/60/4)
+
+// === KICK — Tight, punchy, hypnotic 4-on-floor ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.88).shape(.5).distort(.6)
+  .lpf(3500)
+  .duck("1:2:3:4:5:6").duckattack(.015).duckdepth(.95)
+  .orbit(0)
+  ._scope({color:"#00ff88", thickness:3})
+  ._spectrum({color:"#00ff88", thickness:2})
+
+// === FILTER DRONE — The schranz signature: one note, filter IS the melody ===
+// NOT acid (no lpenv snap) — instead, a slow sine-modulated filter sweep
+// The hypnosis comes from the filter moving so slowly you barely notice it changing
+$: note("c2").s("sawtooth")
+  .lpf(sine.range(200, 2800).slow(16)).lpq(18)
+  .distort(2).gain(.32)
+  .orbit(1)
+  ._pianoroll({color:"#00ff88"})
+
+// Alt drone: square wave (hollower, more piercing at resonance peaks)
+_$: note("c2").s("square")
+  .lpf(sine.range(250, 2400).slow(12)).lpq(20)
+  .distort(1.8).gain(.3)
+  .orbit(1)
+
+// Alt drone: two notes alternating very slowly (minimal movement)
+_$: note("<c2 c2 c2 c2 c2 c2 c2 eb2>")
+  .s("sawtooth")
+  .lpf(sine.range(300, 2500).slow(16)).lpq(16)
+  .distort(2.2).gain(.28)
+  .orbit(1)
+
+// === RESONANCE PING — Self-oscillating filter as percussion ===
+// High resonance filter with no input signal — just the filter ringing
+$: note("<~ c5 ~ ~ ~ c5 ~ ~>").s("sine")
+  .gain(.02).lpf(sine.range(3000, 8000).slow(8)).lpq(30)
+  .decay(.03).release(.01)
+  .hpf(2000).gain(.15)
+  .delay(.3).delaytime(3/16).delayfeedback(.45)
+  .pan(.4)
+  .orbit(2)
+
+// Alt ping: faster, more insistent
+_$: note("<~ c5 ~ c5 ~ ~ c5 ~>").s("sine")
+  .gain(.02).lpf(sine.range(2500, 7000).slow(6)).lpq(28)
+  .decay(.02).release(.01)
+  .hpf(2000).gain(.12)
+  .delay(.25).delaytime(3/16).delayfeedback(.4)
+  .pan(.45)
+  .orbit(2)
+
+// === CLAP — Tight, minimal ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.5).distort(.4).room(.2).roomsize(2)
+  .orbit(3)
+
+// === HATS — Relentless 16ths, the hypnotic backbone ===
+$: s("hh*16").bank("RolandTR909")
+  .gain("<0.28 0.08 0.2 0.08>*4")
+  .speed("<1 1.03 1 1.06>*4")
+  .hpf(7000).pan(sine.range(.35,.65).slow(4))
+  .orbit(4)
+
+// Alt hats: even more minimal (8ths only)
+_$: s("hh*8").bank("RolandTR909")
+  .gain("<0.25 0.1>*4")
+  .hpf(7500)
+  .orbit(4)
+
+// === OPEN HAT — Offbeat pulse ===
+$: s("~ oh ~ oh").bank("RolandTR909")
+  .gain(.15).hpf(6000).cut(2).pan(.55)
+  .orbit(5)
+
+// === SUB — Minimal, tight ===
+$: note("c1*4").s("sine")
+  .gain(.38).lpf(65).decay(.12).release(.04)
+  .orbit(6)

@@ -1,0 +1,94 @@
+// HARD TECHNO EXPLORATION — 152 BPM
+// Pounding percussion, distorted synth riffs, raw energy
+// Key: C minor
+// Identity: Percussive intensity — layered distorted hits, synth stabs, NO acid
+
+setCps(152/60/4)
+
+// === KICK — Distorted 909, sidechain everything ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.9).shape(.6).distort(.8)
+  .duck("1:2:3:4:5:6:7").duckattack(.015).duckdepth(.95)
+  .orbit(0)
+  ._scope({color:"#ff6600", thickness:3})
+  ._spectrum({color:"#ff6600", thickness:2})
+
+// === SYNTH RIFF — Distorted sawtooth, rhythmic chops (NOT acid) ===
+// Hard techno riffs are rhythmic and percussive, not filter-swept
+_$: note("<[c2 ~ c2 ~] [~ eb2 ~ c2] [c2 ~ f2 ~] [eb2 c2 ~ ~]>")
+  .s("sawtooth").lpf(1800).lpq(4)
+  .distort(3).gain(.35)
+  .decay(.08).release(.03)
+  .orbit(1)
+  ._pianoroll({color:"#ff6600"})
+
+// Alt riff: supersaw stabs (chunkier)
+_$: note("<[c2 ~ c2 ~] [~ eb2 ~ c2] [c2 ~ f2 ~] [eb2 c2 ~ ~]>")
+  .s("supersaw").lpf(2200).lpq(3)
+  .distort(2.5).gain(.3)
+  .decay(.1).release(.04)
+  .orbit(1)
+
+// Alt riff: square wave (hollower, more aggressive)
+$: note("<[c2 ~ c2 ~] [~ eb2 ~ c2] [c2 ~ f2 ~] [eb2 c2 ~ ~]>")
+  .s("square").lpf(1500).lpq(5)
+  .distort(2.8).gain(.32)
+  .decay(.06).release(.02)
+  .orbit(1)
+
+// === PERC LAYER — Layered toms/percussion, the hard techno signature ===
+$: s("<[lt ~ ~ lt] [~ mt ~ ~] [lt ~ ~ ht] [~ mt lt ~]>").bank("RolandTR909")
+  .gain(.4).distort(1.2).shape(.3)
+  .room(.15).roomsize(2)
+  .orbit(2)
+
+// Alt perc: tribal pattern
+_$: s("<[lt lt ~ ~] [~ ~ mt mt] [lt ~ ht ~] [~ mt ~ lt]>").bank("RolandTR909")
+  .gain(.38).distort(1).shape(.4)
+  .room(.2).roomsize(2)
+  .orbit(2)
+
+// === STAB — FM sine, punchy, with delay trails ===
+$: note("<~ ~ ~ [eb4 ~ ~ ~] ~ ~ [c4 ~ f4 ~] ~ ~>").s("sine")
+  .fm(3).fmh(2.01).decay(.15).release(.08)
+  .lpf(3500).gain(.45).distort(.4)
+  .delay(.2).delaytime(3/16).delayfeedback(.35)
+  .room(.3).roomsize(3).pan(.4)
+  .orbit(3)
+
+// Alt stab: chord stab
+_$: note("<~ ~ ~ [eb4,g4,bb4] ~ ~ [c4,eb4,g4] ~ ~>").s("sine")
+  .fm(2).fmh(2.01).decay(.12).release(.06)
+  .lpf(3000).gain(.4)
+  .delay(.15).delaytime(3/16).delayfeedback(.3)
+  .room(.25).roomsize(2).pan(.45)
+  .orbit(3)
+
+// === CLAP — Hard 909 ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.55).distort(.6).room(.2).roomsize(2)
+  .orbit(4)
+
+// === HATS — Driving 16ths with velocity ===
+$: s("hh*16").bank("RolandTR909")
+  .gain("<0.35 0.1 0.25 0.1>*4")
+  .speed("<1 1.05 1 1.08>*4")
+  .hpf(6000).pan(rand.range(.3,.7))
+  .orbit(5)
+
+// Alt hats: more chaotic
+_$: s("hh*16").bank("RolandTR909")
+  .gain(sine.range(0.05, 0.3).fast(4))
+  .pan(rand).speed(rand.range(1, 1.5))
+  .hpf(5000)
+  .orbit(5)
+
+// === SUB — Percussive ===
+$: note("c1*4").s("sine")
+  .gain(.4).lpf(70).decay(.12).release(.04)
+  .orbit(6)
+
+// === RIDE — Driving 8ths ===
+$: s("~ ride ~ ride").bank("RolandTR909")
+  .gain(.12).hpf(8000).pan(.6)
+  .orbit(7)

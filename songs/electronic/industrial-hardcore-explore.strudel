@@ -1,0 +1,86 @@
+// INDUSTRIAL HARDCORE EXPLORATION — 160 BPM
+// Noisy, metallic, punishing — Perc / Ansome style
+// Key: C minor
+// Identity: Metallic noise textures — FM inharmonics, gated noise, NO acid
+
+setCps(160/60/4)
+
+// === KICK — Crushed and distorted, punishing ===
+$: s("<bd*4 bd*4 bd*4 [bd*4 bd*2]>").bank("RolandTR909")
+  .gain(.85).distort(1.8).shape(.4)
+  .duck("1:2:3:4:5:6:7:8").duckattack(.01).duckdepth(1)
+  .orbit(0)
+  ._scope({color:"#cc0000", thickness:3})
+  ._spectrum({color:"#cc0000", thickness:2})
+
+// === METALLIC LEAD — Inharmonic FM, the industrial signature ===
+// NOT acid — the harshness comes from FM ratios and distortion, not resonance
+_$: note("<[c3 ~ ~ eb3] [~ c3 ~ ~] [f3 ~ ~ c3] [~ ~ eb3 ~]>").s("sine")
+  .fm(7).fmh(3.51).decay(.1).release(.04)
+  .lpf(4500).hpf(800).gain(.45).distort(1.5)
+  .delay(.1).delaytime(1/8).delayfeedback(.15)
+  .pan(.55)
+  .orbit(1)
+  ._pianoroll({color:"#cc0000"})
+
+// Alt lead: even more inharmonic (bell-like, violent)
+_$: note("<[c3 ~ ~ eb3] [~ c3 ~ ~] [f3 ~ ~ c3] [~ ~ eb3 ~]>").s("sine")
+  .fm(13).fmh(7.07).decay(.06).release(.02)
+  .lpf(6000).hpf(1000).gain(.8).distort(1.8)
+  .delay(.08).delaytime(3/16).delayfeedback(.2)
+  .pan(.5)
+  .orbit(1)
+
+// Alt lead: metallic chord clusters
+$: note("<[c3,eb3] ~ ~ [f3,ab3] ~ [c3,gb3] ~ ~>").s("sine")
+  .fm(9).fmh(4.71).decay(.08).release(.03)
+  .lpf(5000).hpf(900).gain(.8).distort(1.6)
+  .orbit(1)
+
+// === INDUSTRIAL NOISE — Rhythmic gated white noise (the texture backbone) ===
+$: s("white:2*8")
+  .gain("0.15 0.03 0.1 0.03 0.12 0.03 0.08 0.03")
+  .hpf(3000).distort(1.5).decay(.04)
+  .orbit(2)
+
+// Alt noise: pink noise, gentler
+_$: s("pink*8")
+  .gain("0.1 0.02 0.08 0.02 0.09 0.02 0.06 0.02")
+  .hpf(4000).distort(1.2).decay(.03)
+  .orbit(2)
+
+// Alt noise: rhythmic noise bursts
+_$: s("white:2*16")
+  .gain("0.1 0 0 0.08 0 0 0.06 0 0.1 0 0 0.07 0 0 0.05 0")
+  .hpf(2500).distort(2).decay(.02)
+  .orbit(2)
+
+// === FM METALLIC PERC — High inharmonic hits, machine-gun texture ===
+$: note("<c5 ~ ~ eb5 ~ ~ c5 ~>").s("sine")
+  .fm(11).fmh(5.19).decay(.04).release(.01)
+  .struct("[x ~ ~ x] [~ x ~ ~]")
+  .gain(.2).distort(.8).hpf(2000)
+  .delay(.15).delaytime(3/16).delayfeedback(.2)
+  .pan(.35)
+  .orbit(3)
+
+// === CLAP — Dry, distorted, snapping ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.6).distort(1.5).room(.1).roomsize(1)
+  .orbit(4)
+
+// === HATS — Chaotic, random velocity and speed ===
+$: s("hh*16").bank("RolandTR909")
+  .gain(sine.range(0.05, 0.25).fast(4))
+  .pan(rand).speed(rand.range(1, 1.8))
+  .hpf(5000)
+  .orbit(5)
+
+// === PULSE — Dark rhythmic throb ===
+$: s("pulse").seg(8)
+  .lpf(400).lpq(6).gain(.2)
+  .orbit(6)
+
+// === RUMBLE ===
+$: note("c0").s("sine").gain(.25).lpf(45)
+  .orbit(7)
