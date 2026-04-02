@@ -1,0 +1,132 @@
+// FRUITY CHICAGO HOUSE — "COCONUT"
+// Lo-fi woozy beach house — Soft Moon x Alles vibes
+// Tape-saturated, dreamy, heavy bass, space-age melodies
+
+setCps(120/60/4)
+
+// === KICK — Heavy but warm, slightly saturated ===
+$: s("bd*4").bank("RolandTR808")
+  .gain(.86)
+  .shape(.3)
+  .lpf(1800)
+  .room(.2).roomsize(2.5)
+  .orbit(0)
+  ._scope({color:"#ffaa55", thickness:2})
+
+// === KICK ALT — Half-time, spacious ===
+_$: s("bd ~ bd ~").bank("RolandTR808")
+  .gain(.84)
+  .shape(.28)
+  .lpf(1700)
+  .room(.25).roomsize(3)
+  .orbit(0)
+  ._scope({color:"#ffaa55", thickness:2})
+
+// === BASS — Buzzing, heavy, infectious ===
+$: note("<[f1 ~ f1 f2] [~ f1 ~ f1] [bb1 ~ bb0 bb1] [c2 ~ c1 c2]>")
+  .s("sawtooth")
+  .lpf(sine.range(300, 700).slow(8))
+  .lpq(4)
+  .shape(.25)
+  .decay(.18).sustain(.15).release(.1)
+  .gain(.5)
+  .orbit(1)
+  .swingBy(1/8, 4)
+
+// === BASS ALT — Sub only, cleaner ===
+_$: note("<f1!4 f1!4 bb0!4 c1!4>")
+  .s("sine")
+  .gain(.52)
+  .lpf(150)
+  .decay(.4).sustain(.3).release(.2)
+  .shape(.15)
+  .orbit(1)
+
+// === DREAMY PAD — Woozy, sun-bleached, slow filter ===
+$: note("<[f3,a3,c4,e4] [f3,a3,c4,e4] [bb2,d3,f3,a3] [c3,e3,g3,bb3]>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.06))
+  .superimpose(x => x.add(-0.06))
+  .lpf(sine.range(500, 1800).slow(24))
+  .attack(.8).decay(2).sustain(.4).release(2)
+  .gain(.11)
+  .shape(.2)
+  .room(.75).roomsize(7).roomlp(2000).roomdim(1500)
+  .delay(.25).delaytime(1/4).delayfeedback(.3)
+  .orbit(2)
+  .slow(2)
+
+// === PAD ALT — Thinner, just 5ths, more space ===
+_$: note("<[f3,c4] [f3,c4] [bb2,f3] [c3,g3]>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.06))
+  .lpf(sine.range(400, 1400).slow(20))
+  .attack(.6).decay(1.5).sustain(.4).release(1.5)
+  .gain(.09)
+  .shape(.18)
+  .room(.8).roomsize(8)
+  .orbit(2)
+  .slow(2)
+
+// === SPACE MELODY — Floaty sine, tape-warped, Alles-style ===
+$: note("<[~ a4 ~ c5] [~ ~ f4 ~] [~ bb4 ~ ~] [c5 ~ ~ g4]>")
+  .s("sine")
+  .fm(1).fmh(2.02)
+  .attack(.02).decay(.5).sustain(0).release(.8)
+  .gain(.22)
+  .shape(.15)
+  .lpf(4000)
+  .room(.65).roomsize(6)
+  .delay(.45).delaytime(3/16).delayfeedback(.5)
+  .pan(sine.range(.3,.7).slow(6))
+  .orbit(3)
+  ._pianoroll({color:"#ffaa55"})
+
+// === SPACE MELODY ALT — Higher, sparser ===
+_$: note("<[~ ~ c5 ~] [~ ~ ~ ~] [~ f5 ~ ~] [~ ~ ~ a4]>")
+  .s("sine")
+  .fm(1).fmh(2.02)
+  .attack(.02).decay(.45).sustain(0).release(.7)
+  .gain(.18)
+  .shape(.12)
+  .lpf(4500)
+  .room(.7).roomsize(7)
+  .delay(.5).delaytime(3/16).delayfeedback(.55)
+  .orbit(3)
+  ._pianoroll({color:"#ffaa55"})
+
+// === CLAP — Pitched down, lo-fi ===
+$: s("~ cp ~ cp").bank("RolandTR808")
+  .gain(.3)
+  .shape(.2)
+  .room(.55).roomsize(5)
+  .hpf(600)
+  .orbit(4)
+
+// === HATS — Swung, soft, slightly crushed ===
+$: s("hh*16").bank("RolandTR808")
+  .gain("<0.16 0.05 0.12 0.05>*4")
+  .hpf(6000)
+  .shape(.15)
+  .pan(rand.range(.35,.65))
+  .orbit(5)
+  .swingBy(1/6, 4)
+
+// === OPEN HAT — Lazy offbeat ===
+$: s("~ oh ~ oh").bank("RolandTR808")
+  .gain(.1)
+  .hpf(5000)
+  .decay(.18)
+  .shape(.1)
+  .pan(.58)
+  .orbit(5)
+
+// === TAPE HISS — Lo-fi texture, always present ===
+$: s("white")
+  .gain(.035)
+  .hpf(3500)
+  .lpf(sine.range(7000, 12000).slow(16))
+  .shape(.1)
+  .pan(perlin.range(.3,.7))
+  .orbit(6)
+  ._spectrum({color:"#ffaa55", thickness:2})

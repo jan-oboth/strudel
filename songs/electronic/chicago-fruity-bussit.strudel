@@ -1,0 +1,159 @@
+// FRUITY CHICAGO HOUSE — "BUSS IT"
+// Mason Collective vibes — bouncy tech house, cheeky chops, squelchy lows
+// G minor, 127 BPM, head-nodding swagger
+
+setCps(127/60/4)
+
+// === KICK — Stomping, present ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.9)
+  .shape(.22)
+  .lpf(2600)
+  .room(.1).roomsize(1.5)
+  .orbit(0)
+  ._scope({color:"#55ddaa", thickness:2})
+
+// === KICK ALT — Broken, more bounce ===
+_$: s("<[bd bd bd bd] [bd bd ~ bd] [bd bd bd bd] [~ bd bd bd]>").bank("RolandTR909")
+  .gain(.88)
+  .shape(.22)
+  .lpf(2600)
+  .room(.1).roomsize(1.5)
+  .orbit(0)
+  ._scope({color:"#55ddaa", thickness:2})
+
+// === BASS — Squelchy, funky, the low-slung groove ===
+$: note("<[g1 ~ g2 g1] [~ g1 ~ g2] [c2 ~ c1 c2] [d2 d1 ~ d2]>")
+  .s("sawtooth")
+  .lpf(sine.range(200, 800).slow(4))
+  .lpq(7)
+  .decay(.12).sustain(.06).release(.05)
+  .gain(.5)
+  .shape(.1)
+  .orbit(1)
+  .swingBy(1/8, 4)
+
+// === BASS ALT — Rounder, less filter ===
+_$: note("<[g1 ~ g1 g2] [~ g1 g1 ~] [c2 ~ c1 ~] [d2 ~ ~ d1]>")
+  .s("square")
+  .lpf(450).lpq(5)
+  .decay(.15).sustain(.08).release(.06)
+  .gain(.46)
+  .orbit(1)
+  .swingBy(1/8, 4)
+
+// === CHOP HOOK — Choppy synth stabs mimicking vocal rhythm ===
+$: note("<[~ g4 ~ bb4] [~ ~ g4 ~] [~ d4 ~ ~] [g4 ~ bb4 ~]>")
+  .s("square")
+  .lpf(2800)
+  .decay(.06).sustain(0).release(.03)
+  .gain(.35)
+  .room(.3).roomsize(2.5)
+  .delay(.15).delaytime(1/8).delayfeedback(.2)
+  .hpf(400)
+  .orbit(2)
+  .swingBy(1/6, 4)
+  ._pianoroll({color:"#55ddaa"})
+
+// === CHOP ALT — Busier, more call-and-response ===
+_$: note("<[g4 ~ bb4 g4] [~ d4 ~ g4] [bb4 ~ g4 ~] [~ d4 g4 ~]>")
+  .s("square")
+  .lpf(3000)
+  .decay(.05).sustain(0).release(.03)
+  .gain(.32)
+  .room(.25).roomsize(2)
+  .delay(.12).delaytime(1/8).delayfeedback(.18)
+  .hpf(400)
+  .orbit(2)
+  .swingBy(1/6, 4)
+  ._pianoroll({color:"#55ddaa"})
+
+// === CHOP ALT 2 — Lower, darker ===
+_$: note("<[~ g3 ~ bb3] [d4 ~ ~ g3] [~ ~ bb3 ~] [g3 ~ d4 ~]>")
+  .s("square")
+  .lpf(2200)
+  .decay(.07).sustain(0).release(.04)
+  .gain(.34)
+  .room(.3).roomsize(2.5)
+  .hpf(300)
+  .orbit(2)
+  .swingBy(1/6, 4)
+  ._pianoroll({color:"#55ddaa"})
+
+// === CHORD STAB — Bouncy offbeat, adds the fruity color ===
+$: note("<[~ [g3,bb3,d4] ~ ~] [~ ~ ~ [g3,bb3,d4]] [~ [c4,eb4,g4] ~ [c4,eb4,g4]] [~ ~ [d4,f4,a4] ~]>")
+  .s("gm_epiano1")
+  .lpf(4200)
+  .decay(.18).sustain(.03).release(.15)
+  .gain(.33)
+  .room(.35).roomsize(2.5)
+  .orbit(3)
+  .swingBy(1/6, 4)
+
+// === CHORD ALT — Sustained, warmer ===
+_$: note("<[g3,bb3,d4] [g3,bb3,d4] [c4,eb4,g4] [d4,f4,a4]>")
+  .s("gm_epiano1")
+  .lpf(3500)
+  .attack(.03).decay(.4).sustain(.25).release(.4)
+  .gain(.28)
+  .room(.45).roomsize(3.5)
+  .orbit(3)
+  .slow(2)
+
+// === CLAP — Tight, snappy ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.38)
+  .room(.35).roomsize(3)
+  .hpf(900)
+  .orbit(4)
+
+// === HATS — Busy, detailed, open top-end ===
+$: s("<[hh hh [hh hh] hh hh hh [hh hh] hh] [hh [hh hh] hh hh hh hh [hh hh] hh]>")
+  .bank("RolandTR909")
+  .gain("<0.24 0.07 0.18 0.07 0.22 0.07 0.16 0.07>")
+  .hpf(6000)
+  .pan(rand.range(.3,.7))
+  .orbit(5)
+  .swingBy(1/6, 4)
+
+// === HATS ALT — Straight 16ths, cleaner ===
+_$: s("hh*16").bank("RolandTR909")
+  .gain("<0.22 0.07 0.16 0.07>*4")
+  .hpf(6500)
+  .pan(rand.range(.35,.65))
+  .orbit(5)
+  .swingBy(1/6, 4)
+
+// === OPEN HAT — Offbeat pulse ===
+$: s("~ oh ~ oh").bank("RolandTR909")
+  .gain(.14)
+  .hpf(5500)
+  .decay(.1)
+  .pan(.58)
+  .orbit(5)
+
+// === PERC — Congas, adds the bounce ===
+$: s("<[~ lt ~ lt] [lt ~ ~ lt] [~ lt lt ~] [lt ~ lt ~]>").bank("RolandTR808")
+  .gain("<0.28 0.15 0.24 0.15>")
+  .hpf(500)
+  .room(.25).roomsize(2)
+  .pan(rand.range(.4,.65))
+  .orbit(6)
+  .swingBy(1/6, 4)
+
+// === PERC ALT — Rim clicks instead ===
+_$: s("<[~ rim ~ ~] [~ ~ rim ~] [rim ~ ~ rim] [~ rim ~ ~]>").bank("RolandTR909")
+  .gain(.2)
+  .hpf(2500)
+  .room(.2).roomsize(1.5)
+  .orbit(6)
+
+// === RIDE — Shimmer on top ===
+$: s("~ hh ~ hh ~ hh ~ hh").bank("RolandTR909")
+  .speed(1.5)
+  .gain(.07)
+  .hpf(8500)
+  .pan(.42)
+  .orbit(5)
+  .swingBy(1/6, 4)
+  ._spectrum({color:"#55ddaa", thickness:2})

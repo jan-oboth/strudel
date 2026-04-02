@@ -1,0 +1,151 @@
+// FRUITY CHICAGO HOUSE — "JACKFRUIT"
+// Raw jacking house — Paul Johnson "Aww Shit" energy
+// Minimal, funky 909, attitude, sleazy bass
+
+setCps(131/60/4)
+
+// === KICK — Punchy 909, front and center ===
+_$: s("bd*4").bank("RolandTR909")
+  .gain(.92)
+  .shape(.22)
+  .lpf(2800)
+  .room(.08).roomsize(1)
+  .orbit(0)
+  ._scope({color:"#ff4444", thickness:2})
+
+// === KICK ALT — Broken, more groove ===
+$: s("<[bd bd bd bd] [bd bd bd bd] [bd bd bd bd] [bd bd bd bd]>").bank("RolandTR909")
+  .gain(.3)
+  .shape(.22)
+  .lpf(2800)
+  .room(.08).roomsize(1)
+  .orbit(0)
+  ._scope({color:"#ff4444", thickness:2})
+
+// === BASS — Sleazy, funky, driving ===
+_$: note("<[f#2 ~ f#2 ~] [~ f#2 ~ f#3] [b1 ~ b2 b1] [c#2 ~ ~ c#2]>")
+  .s("sawtooth")
+  .lpf(600).lpq(5)
+  .decay(.1).sustain(.05).release(.04)
+  .gain(.6)
+  .shape(.15)
+  .orbit(1)
+  .swingBy(1/8, 4)
+
+// === BASS ALT — Deeper, less syncopated ===
+_$: note("<f#1!4 f#1!4 b1!4 c#2!4>")
+  .s("sawtooth")
+  .lpf(500).lpq(4)
+  .decay(.18).sustain(.08).release(.06)
+  .gain(.46)
+  .shape(.12)
+  .orbit(1)
+
+// === BASS ALT 2 — Pulsing square, locks with kick ===
+$: note("b1")
+  .s("square")
+  .lpf(350).lpq(3)
+  .decay(.08).sustain(0).release(.03)
+  .gain(.52)
+  .shape(.2)
+  .orbit(1)
+
+// === BASS ALT 2 — Pulsing square, locks with kick ===
+_$: note("<[f#1 f#1 f#1 f#1] [f#1 f#1 f#1 f#1] [b1 b1 b1 b1] [c#2 c#2 c#2 c#2]>")
+  .s("square")
+  .lpf(350).lpq(3)
+  .decay(.08).sustain(0).release(.03)
+  .gain(.52)
+  .shape(.2)
+  .orbit(1)
+
+// === BASS ALT 3 — Sine sub with grit layer, heavy ===
+_$: note("<f#1!4 f#1!4 b0!4 c#1!4>")
+  .s("sine")
+  .gain(.55)
+  .lpf(120)
+  .decay(.5).sustain(.35).release(.2)
+  .shape(.3)
+  .orbit(1)
+
+// === CHORD STABS — Short, percussive, the groove ===
+_$: note("<[~ [f#3,a#3,c#4] ~ ~] [~ ~ [f#3,a#3,c#4] ~] [~ [b3,d#4,f#4] ~ [b3,d#4,f#4]] [~ [c#4,e#4,g#4] ~ ~]>")
+  .s("square")
+  .lpf(2200)
+  .decay(.08).sustain(0).release(.04)
+  .gain(.38)
+  .room(.25).roomsize(2)
+  .orbit(2)
+  .swingBy(1/6, 4)
+  ._pianoroll({color:"#ff4444"})
+
+// === CHORD ALT — Offbeat hits, Paul Johnson style ===
+_$: note("<[~ [f#3,a#3,c#4] ~ [f#3,a#3,c#4]] [~ [f#3,a#3,c#4] ~ ~] [~ [b3,d#4,f#4] ~ [b3,d#4,f#4]] [[c#4,e#4,g#4] ~ ~ [c#4,e#4,g#4]]>")
+  .s("supersaw")
+  .lpf(2400)
+  .decay(.06).sustain(0).release(.03)
+  .gain(.35)
+  .room(.2).roomsize(1.5)
+  .orbit(2)
+  .swingBy(1/6, 4)
+  ._pianoroll({color:"#ff4444"})
+
+// === CLAP — Snappy, 2 and 4 ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.1)
+  .room(.3).roomsize(2.5)
+  .hpf(900)
+  .orbit(3)
+
+// === HATS — Tight 16ths, no nonsense ===
+_$: s("hh*16").bank("RolandTR909")
+  .gain("<0.22 0.09 0.15 0.09>*4")
+  .hpf(7000)
+  .pan(rand.range(.4,.6))
+  .orbit(4)
+
+// === HATS ALT — 8ths only, stripped back ===
+$: s("hh*8").bank("RolandTR909")
+  .gain("<0.1 0.1 0.1 0.1>*2")
+  .hpf(7000)
+  .pan(.5)
+  .orbit(4)
+
+// === OPEN HAT — Offbeat, crisp ===
+$: s("~ oh ~ oh").bank("RolandTR909")
+  .gain(.15)
+  .hpf(5500)
+  .decay(.1)
+  .orbit(4)
+
+// === VOCALS — 5-step pattern: low, pause, high, pause, low, repeat ===
+$: note("<b4 ~ b3 ~ b4 ~ b3 ~>")
+  .s("gm_voice_oohs")
+  .gain(.33)
+  .lpf(5000)
+  .room(.45).roomsize(4)
+  .delay(.2).delaytime(1/8).delayfeedback(.2)
+  .orbit(6)
+
+_$: note("<~ b3 ~>")
+  .s("gm_voice_oohs")
+  .gain(.33)
+  .lpf(5000)
+  .room(.45).roomsize(4)
+  .delay(.2).delaytime(1/8).delayfeedback(.2)
+  .orbit(6)
+
+// === PERC — Rim clicks for funk ===
+_$: s("<[~ rim ~ ~] [~ ~ rim ~] [~ ~ ~ rim] [rim ~ ~ ~]>").bank("RolandTR909")
+  .gain(.9)
+  .hpf(2500)
+  .room(.2).roomsize(1.5)
+  .orbit(4)
+  ._spectrum({color:"#ff4444", thickness:2})
+
+$: s("<[~ ~ rim ~]>").bank("RolandTR909")
+  .gain(.9)
+  .hpf(2500)
+  .room(.2).roomsize(1.5)
+  .orbit(4)
+  ._spectrum({color:"#ff4444", thickness:2})

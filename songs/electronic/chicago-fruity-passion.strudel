@@ -1,0 +1,150 @@
+// FRUITY CHICAGO HOUSE — "PASSION FRUIT"
+// Playful arps, FM stabs, DJ Sneak meets Daft Punk bounce
+
+setCps(126/60/4)
+
+// === KICK — Solid 909, four on the floor ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.88)
+  .shape(.22)
+  .lpf(2600)
+  .duck("1:2:3:4:5:6").duckattack(.02).duckdepth(.75)
+  .room(.1).roomsize(1.5)
+  .orbit(0)
+  ._scope({color:"#ff44aa", thickness:2})
+
+// === KICK ALT — Half-time for breakdowns ===
+_$: s("bd ~ bd ~").bank("RolandTR909")
+  .gain(.82)
+  .shape(.2)
+  .lpf(2400)
+  .duck("1:2:3:4:5:6").duckattack(.02).duckdepth(.7)
+  .room(.15).roomsize(2)
+  .orbit(0)
+  ._scope({color:"#ff44aa", thickness:2})
+
+// === SUB BASS — Sine foundation ===
+$: note("<d1!4 b0!4 g1!4 a1!4>")
+  .s("sine")
+  .gain(.5)
+  .lpf(90)
+  .decay(.5).sustain(.3).release(.2)
+  .orbit(1)
+
+// === MID BASS — Sawtooth layer, bouncy octave jumps ===
+$: note("<[d2 ~ d2 d3] [b1 ~ b1 b2] [g2 ~ g2 g3] [a1 ~ a2 a1]>")
+  .s("sawtooth")
+  .lpf(1200).lpq(2.5)
+  .decay(.15).sustain(.05).release(.06)
+  .gain(.3)
+  .room(.1).roomsize(1)
+  .orbit(1)
+  .swingBy(1/8, 4)
+
+// === MID BASS ALT — Simpler pattern ===
+_$: note("<[d2 ~ ~ d3] [b1 ~ ~ b2] [g2 ~ ~ g3] [a1 ~ ~ a2]>")
+  .s("sawtooth")
+  .lpf(1000).lpq(2)
+  .decay(.18).sustain(.08).release(.08)
+  .gain(.28)
+  .orbit(1)
+
+// === ARP CHORDS — 16th cascades, the star element ===
+$: note("<[d4 f#4 a4 d5 a4 f#4 d4 f#4] [b3 d4 f#4 b4 f#4 d4 b3 d4] [g4 b4 d5 g5 d5 b4 g4 b4] [a3 c#4 e4 a4 e4 c#4 a3 c#4]>")
+  .s("sawtooth")
+  .lpf(sine.range(1500, 4500).slow(8))
+  .lpq(2)
+  .attack(.005).decay(.12).sustain(.05).release(.1)
+  .gain(.28)
+  .room(.35).roomsize(3).roomlp(4000)
+  .delay(.3).delaytime(3/16).delayfeedback(.4)
+  .pan(sine.range(.35, .65).slow(3))
+  .orbit(2)
+  .swingBy(1/6, 4)
+  ._pianoroll({color:"#ff44aa"})
+
+// === ARP ALT — Slower, half-speed cascade ===
+_$: note("<[d4 f#4 a4 d5] [b3 d4 f#4 b4] [g4 b4 d5 g5] [a3 c#4 e4 a4]>")
+  .s("sawtooth")
+  .lpf(sine.range(1200, 3800).slow(12))
+  .lpq(2)
+  .attack(.005).decay(.15).sustain(.08).release(.12)
+  .gain(.26)
+  .room(.4).roomsize(3.5)
+  .delay(.35).delaytime(3/16).delayfeedback(.45)
+  .orbit(2)
+  .swingBy(1/6, 4)
+  ._pianoroll({color:"#ff44aa"})
+
+// === FM STAB — Percussive, sparkly accents ===
+$: note("<[~ d5 ~ ~] [~ ~ f#5 ~] [~ ~ ~ b4] [a4 ~ ~ ~]>")
+  .s("sine")
+  .fm(2).fmh(4.01)
+  .attack(.005).decay(.2).sustain(0).release(.3)
+  .gain(.35)
+  .lpf(5500)
+  .room(.5).roomsize(4).roomlp(3500)
+  .delay(.45).delaytime(3/16).delayfeedback(.4)
+  .hpf(600)
+  .pan(.45)
+  .orbit(5)
+
+// === FM STAB ALT — Syncopated, busier ===
+_$: note("<[~ d5 ~ a4] [~ ~ f#5 ~] [b4 ~ ~ d5] [~ a4 ~ ~]>")
+  .s("sine")
+  .fm(2).fmh(4.01)
+  .attack(.005).decay(.18).sustain(0).release(.25)
+  .gain(.32)
+  .lpf(5000)
+  .room(.45).roomsize(3.5)
+  .delay(.4).delaytime(3/16).delayfeedback(.35)
+  .hpf(600)
+  .orbit(5)
+
+// === CLAP — On 2 and 4 ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.36)
+  .room(.45).roomsize(3.5).roomlp(3500)
+  .hpf(800)
+  .orbit(3)
+
+// === RIM — "And" of 3 for extra groove ===
+$: s("~ ~ [~ rim] ~").bank("RolandTR909")
+  .gain(.22)
+  .room(.3).roomsize(2)
+  .hpf(2500)
+  .orbit(3)
+
+// === CLOSED HATS — Driving 16ths, swung, panned ===
+$: s("hh*16").bank("RolandTR909")
+  .gain("<0.22 0.07 0.15 0.07>*4")
+  .hpf(6500)
+  .pan(rand.range(.3,.7))
+  .room(.12).roomsize(1.5)
+  .orbit(4)
+  .swingBy(1/6, 4)
+
+// === OPEN HAT — Every offbeat for energy ===
+$: s("[~ oh]*4").bank("RolandTR909")
+  .gain(.11)
+  .hpf(5500)
+  .decay(.1)
+  .pan(.6)
+  .orbit(4)
+
+// === OPEN HAT ALT — Sparser ===
+_$: s("~ oh ~ oh").bank("RolandTR909")
+  .gain(.12)
+  .hpf(5500)
+  .decay(.12)
+  .pan(.6)
+  .orbit(4)
+
+// === SHAKER TEXTURE — Subtle 16th noise ===
+$: s("white*16")
+  .gain("<0.02 0.008 0.015 0.008>*4")
+  .hpf(9000).lpf(14000)
+  .pan(rand.range(.3,.7))
+  .orbit(6)
+  .swingBy(1/6, 4)
+  ._spectrum({color:"#ff44aa", thickness:2})

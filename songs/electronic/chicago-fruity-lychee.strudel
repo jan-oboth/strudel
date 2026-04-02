@@ -1,0 +1,123 @@
+// FRUITY CHICAGO HOUSE — "LYCHEE"
+// Jacking warehouse energy, raw piano loops, percussive drive
+
+setCps(125/60/4)
+
+// === KICK — Punchy, front of the mix ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.9)
+  .shape(.2)
+  .lpf(2400)
+  .room(.1).roomsize(1)
+  .orbit(0)
+  ._scope({color:"#44dd88", thickness:2})
+
+// === KICK ALT — Broken pattern, more groove ===
+_$: s("<[bd bd bd bd] [bd bd ~ bd] [bd bd bd bd] [bd ~ bd bd]>").bank("RolandTR909")
+  .gain(.88)
+  .shape(.2)
+  .lpf(2400)
+  .room(.1).roomsize(1)
+  .orbit(0)
+  ._scope({color:"#44dd88", thickness:2})
+
+// === BASS — Gritty sawtooth, syncopated, jacking ===
+$: note("<[g2 ~ g2 ~] [~ g2 ~ g3] [c2 ~ c3 c2] [d2 ~ ~ d2]>")
+  .s("sawtooth")
+  .lpf(900).lpq(4)
+  .decay(.12).sustain(.05).release(.05)
+  .gain(.48)
+  .orbit(1)
+  .swingBy(1/6, 4)
+
+// === BASS ALT — Deeper, less busy ===
+_$: note("<g1!4 g1!4 c2!4 d2!4>")
+  .s("sawtooth")
+  .lpf(600).lpq(3)
+  .decay(.2).sustain(.1).release(.1)
+  .gain(.44)
+  .orbit(1)
+
+// === PIANO LOOP — Raw, looping stabs, jacking rhythm ===
+$: note("<[[g3,b3,d4] ~ [g3,b3,d4] ~] [~ [g3,b3,d4] ~ [g3,b3,d4]] [[c4,e4,g4] ~ ~ [c4,e4,g4]] [~ [d4,f#4,a4] [d4,f#4,a4] ~]>")
+  .s("gm_epiano1")
+  .lpf(5000)
+  .decay(.2).sustain(.05).release(.2)
+  .gain(.42)
+  .room(.35).roomsize(2.5)
+  .orbit(2)
+  .swingBy(1/6, 4)
+  ._pianoroll({color:"#44dd88"})
+
+// === PIANO ALT — Sustained, warmer ===
+_$: note("<[g3,b3,d4]!4 [g3,b3,d4]!4 [c4,e4,g4]!4 [d4,f#4,a4]!4>")
+  .s("gm_epiano1")
+  .lpf(3800)
+  .attack(.03).decay(.5).sustain(.3).release(.5)
+  .gain(.35)
+  .room(.45).roomsize(3.5)
+  .orbit(2)
+  .slow(2)
+  ._pianoroll({color:"#44dd88"})
+
+// === ORGAN STAB — Raw, percussive, warehouse ===
+$: note("<[~ ~ [g4,b4] ~] [~ ~ ~ ~] [~ [c5,e5] ~ ~] [~ ~ ~ [d5,f#5]]>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.04))
+  .lpf(3000)
+  .decay(.1).sustain(0).release(.08)
+  .gain(.25)
+  .room(.4).roomsize(3)
+  .hpf(500)
+  .orbit(3)
+
+// === ORGAN ALT — Busier, more stabs ===
+_$: note("<[~ [g4,b4] ~ [g4,b4]] [~ [g4,b4] ~ ~] [~ [c5,e5] ~ [c5,e5]] [[d5,f#5] ~ ~ [d5,f#5]]>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.04))
+  .lpf(3200)
+  .decay(.1).sustain(0).release(.08)
+  .gain(.22)
+  .room(.35).roomsize(2.5)
+  .hpf(500)
+  .orbit(3)
+
+// === CLAP — Snappy, on 2 and 4 ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.38)
+  .room(.4).roomsize(3)
+  .hpf(900)
+  .orbit(4)
+
+// === CLAP ALT — With a pickup ===
+_$: s("~ cp ~ [~ cp]").bank("RolandTR909")
+  .gain("<0.38 0.38 0.38 0.2>")
+  .room(.4).roomsize(3)
+  .hpf(900)
+  .orbit(4)
+
+// === HATS — Hard-swung 16ths, loud and proud ===
+$: s("hh*16").bank("RolandTR909")
+  .gain("<0.24 0.08 0.18 0.08>*4")
+  .hpf(6000)
+  .pan(rand.range(.3,.7))
+  .orbit(5)
+  .swingBy(1/5, 4)
+
+// === OPEN HAT — Offbeat, crisp ===
+$: s("~ oh ~ oh").bank("RolandTR909")
+  .gain(.14)
+  .hpf(5500)
+  .decay(.1)
+  .pan(.6)
+  .orbit(5)
+  ._spectrum({color:"#44dd88", thickness:2})
+
+// === RIDE — Steady 8ths, adds jacking energy ===
+$: s("~ hh ~ hh ~ hh ~ hh").bank("RolandTR909")
+  .speed(1.4)
+  .gain(.08)
+  .hpf(8000)
+  .pan(.45)
+  .orbit(5)
+  .swingBy(1/6, 4)

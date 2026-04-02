@@ -1,0 +1,113 @@
+// FRUITY CHICAGO HOUSE — "GUAVA"
+// Latin-disco house, congas + piano stabs, Marshall Jefferson energy
+
+setCps(123/60/4)
+
+// === KICK — Round 808, not aggressive ===
+$: s("bd*4").bank("RolandTR808")
+  .gain(.85)
+  .lpf(1800)
+  .room(.2).roomsize(2)
+  .orbit(0)
+  ._scope({color:"#e8aa22", thickness:2})
+
+// === KICK ALT — 909, punchier ===
+_$: s("bd*4").bank("RolandTR909")
+  .gain(.82)
+  .shape(.15)
+  .lpf(2200)
+  .room(.15).roomsize(1.5)
+  .orbit(0)
+  ._scope({color:"#e8aa22", thickness:2})
+
+// === BASS — Disco octave bounce, round and fat ===
+$: note("<[eb2 eb2 eb3 eb2] [ab1 ab1 ab2 ab1] [bb1 bb1 bb2 bb1] [bb1 bb2 eb2 bb1]>")
+  .s("triangle")
+  .lpf(sine.range(500, 1200).slow(8))
+  .lpq(2)
+  .decay(.15).sustain(.2).release(.1)
+  .gain(.45)
+  .room(.12).roomsize(1)
+  .orbit(1)
+  .swingBy(1/8, 4)
+
+// === BASS ALT — Simpler, driving ===
+_$: note("<eb2!4 ab1!4 bb1!4 bb1!4>")
+  .s("triangle")
+  .lpf(700).lpq(2)
+  .decay(.2).sustain(.2).release(.12)
+  .gain(.42)
+  .orbit(1)
+
+// === PIANO STABS — Offbeat, bright, the soul of the track ===
+$: note("<[~ [eb4,g4,bb4] ~ [eb4,g4,bb4]] [~ [ab3,c4,eb4] ~ ~] [~ [bb3,d4,f4] ~ [bb3,d4,f4]] [~ ~ [bb3,d4,f4] ~]>")
+  .s("gm_epiano1")
+  .lpf(4500)
+  .decay(.3).sustain(.1).release(.4)
+  .gain(.4)
+  .room(.45).roomsize(3.5)
+  .delay(.2).delaytime(1/8).delayfeedback(.25)
+  .orbit(2)
+  .swingBy(1/6, 4)
+  ._pianoroll({color:"#e8aa22"})
+
+// === PIANO ALT — Sustained chords, less rhythmic ===
+_$: note("<[eb4,g4,bb4] [ab3,c4,eb4] [bb3,d4,f4] [bb3,d4,f4]>")
+  .s("gm_epiano1")
+  .lpf(4000)
+  .attack(.05).decay(.5).sustain(.3).release(.6)
+  .gain(.32)
+  .room(.5).roomsize(4)
+  .orbit(2)
+  .slow(2)
+  ._pianoroll({color:"#e8aa22"})
+
+// === CONGAS — Latin groove, the fruity spice ===
+$: s("<[~ lt ~ lt] [lt ~ ~ lt] [~ lt lt ~] [lt ~ lt ~]>").bank("RolandTR808")
+  .gain("<0.35 0.2 0.3 0.2>")
+  .hpf(400)
+  .room(.3).roomsize(2.5)
+  .pan(rand.range(.4, .7))
+  .orbit(3)
+  .swingBy(1/6, 4)
+
+// === CONGAS ALT — Busier, more fills ===
+_$: s("<[lt ~ lt lt] [lt lt ~ lt] [~ lt lt lt] [lt lt lt ~]>").bank("RolandTR808")
+  .gain("<0.3 0.15 0.25 0.15>")
+  .hpf(400)
+  .room(.3).roomsize(2.5)
+  .pan(rand.range(.4, .7))
+  .orbit(3)
+  .swingBy(1/6, 4)
+
+// === CLAP — 2 and 4, open and roomy ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.32)
+  .room(.55).roomsize(4)
+  .hpf(700)
+  .orbit(4)
+
+// === HATS — Loose 16ths, light touch ===
+$: s("hh*16").bank("RolandTR808")
+  .gain("<0.18 0.06 0.13 0.06>*4")
+  .hpf(7000)
+  .pan(rand.range(.35,.65))
+  .orbit(5)
+  .swingBy(1/6, 4)
+
+// === OPEN HAT — Offbeat ===
+$: s("~ oh ~ oh").bank("RolandTR808")
+  .gain(.12)
+  .hpf(5500)
+  .pan(.58)
+  .orbit(5)
+
+// === TAMBOURINE — Shimmery top, 8ths ===
+$: s("~ hh ~ hh ~ hh ~ hh").bank("RolandCompuRhythm1000")
+  .gain(.08)
+  .hpf(8000)
+  .pan(.4)
+  .room(.3).roomsize(2)
+  .orbit(5)
+  .swingBy(1/6, 4)
+  ._spectrum({color:"#e8aa22", thickness:2})

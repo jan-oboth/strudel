@@ -104,7 +104,7 @@ $: arrange(
 // === ACID LINE A (orbit 3) — raw 303 style, filter IS the melody ===
 // =========================================================================
 
-$: arrange(
+_$: arrange(
   [24, s("~")],                                                             // 1. silent
   [16, note("<c2!6 bb1 c2, ~ ~ ~ ~ ~ ~ eb2 ~>").s("sawtooth")
     .lpf(90).lpenv(sine.range(3, 14).slow(16)).lpdecay(.08)
@@ -136,7 +136,7 @@ _$: note("<c2 ~ c2 eb2 ~ c2 f2 ~, ~ ~ ~ ~ c2 ~ ~ eb2>").s("supersaw")
 // === RISING ACID ARP (orbit 3) — raw phase only, syncopated ascent ===
 // =========================================================================
 
-$: arrange(
+_$: arrange(
   [24, s("~")],                                                             // 1. silent
   [16, s("~")],                                                             // 2. silent
   [32, note("<[c3 ~ eb3 ~] [f3 ~ g3 ~] [ab3 ~ bb3 ~] [c4 ~ eb4 ~]>")

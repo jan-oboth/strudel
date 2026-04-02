@@ -1,0 +1,213 @@
+// FRUITY CHICAGO HOUSE — "JACKFRUIT" FULL TRACK
+// Raw jacking house → slow rap vocal progression
+// F# major, 131 BPM, funky and stripped
+
+setCps(131/60/4)
+
+// =====================================================
+// ARRANGEMENT — 7 phases, ~3:30
+// 1. INTRO (8)    — rim + bass, raw
+// 2. BUILD (8)    — kick + hats creep in
+// 3. GROOVE (16)  — full drums, simple vocal enters
+// 4. DEVELOP (16) — vocal gets rhythmic, chords enter
+// 5. RAP (24)     — full rap flow, everything cooking
+// 6. BREAK (8)    — strip to vocal + bass + rim
+// 7. PEAK (16)    — everything back, rap at full tilt
+// 8. OUTRO (8)    — fade out elements
+// =====================================================
+
+// === KICK ===
+$: arrange(
+  [8, s("~")],
+  [8, s("bd*4").gain(.2)],
+  [16, s("bd*4").gain(.3)],
+  [16, s("bd*4").gain(.3)],
+  [24, s("bd*4").gain(.35)],
+  [8, s("~")],
+  [16, s("bd*4").gain(.45)],
+  [8, s("bd*4").gain(.2)]
+).bank("RolandTR909")
+  .shape(.22).lpf(2800)
+  .room(.08).roomsize(1)
+  .orbit(0)
+  ._scope({color:"#ff4444", thickness:2})
+
+// === BASS — Single note square, funky rhythm develops ===
+$: arrange(
+  [8, note("b1")],
+  [8, note("b1")],
+  [16, note("b1")],
+  [16, note("<[b1 ~ b1 ~] [~ b1 ~ b2] [b1 ~ b2 b1] [~ b1 ~ ~]>")],
+  [24, note("<[b1 ~ b1 ~] [~ b1 ~ b2] [b1 ~ b2 b1] [~ b2 b1 ~]>")],
+  [8, note("b1")],
+  [16, note("<[b1 ~ b2 b1] [~ b1 ~ b2] [b1 b1 ~ b2] [~ b2 b1 ~]>")],
+  [8, note("b1")]
+).s("square")
+  .lpf(350).lpq(3)
+  .decay(.08).sustain(0).release(.03)
+  .gain(.52).shape(.2)
+  .orbit(1)
+
+// === RIM — The backbone, always present ===
+$: arrange(
+  [8, s("<[~ ~ rim ~]>")],
+  [8, s("<[~ ~ rim ~]>")],
+  [16, s("<[~ ~ rim ~]>")],
+  [16, s("<[~ ~ rim ~] [~ rim ~ ~]>")],
+  [24, s("<[~ rim ~ rim] [~ ~ rim ~] [rim ~ ~ rim] [~ ~ rim ~]>")],
+  [8, s("<[~ ~ rim ~]>")],
+  [16, s("<[~ rim ~ rim] [~ ~ rim ~] [rim ~ ~ rim] [~ rim ~ ~]>")],
+  [8, s("<[~ ~ rim ~]>")]
+).bank("RolandTR909")
+  .gain(.9).hpf(2500)
+  .room(.2).roomsize(1.5)
+  .orbit(4)
+
+// === CLAP ===
+$: arrange(
+  [8, s("~")],
+  [8, s("~ cp ~ cp").gain(.06)],
+  [16, s("~ cp ~ cp").gain(.1)],
+  [16, s("~ cp ~ cp").gain(.1)],
+  [24, s("~ cp ~ cp").gain(.12)],
+  [8, s("~")],
+  [16, s("~ cp ~ cp").gain(.14)],
+  [8, s("~ cp ~ cp").gain(.06)]
+).bank("RolandTR909")
+  .room(.3).roomsize(2.5)
+  .hpf(900)
+  .orbit(3)
+
+// === HATS — 8ths, quiet, enter phase 2 ===
+$: arrange(
+  [8, s("~")],
+  [8, s("hh*8").gain(.06)],
+  [16, s("hh*8").gain(.1)],
+  [16, s("hh*8").gain(.1)],
+  [24, s("hh*8").gain(.12)],
+  [8, s("~")],
+  [16, s("hh*8").gain(.14)],
+  [8, s("hh*8").gain(.06)]
+).bank("RolandTR909")
+  .hpf(7000).pan(.5)
+  .orbit(5)
+
+// === OPEN HAT ===
+$: arrange(
+  [8, s("~")],
+  [8, s("~")],
+  [16, s("~ oh ~ oh").gain(.12)],
+  [16, s("~ oh ~ oh").gain(.14)],
+  [24, s("~ oh ~ oh").gain(.15)],
+  [8, s("~")],
+  [16, s("~ oh ~ oh").gain(.15)],
+  [8, s("~ oh ~ oh").gain(.08)]
+).bank("RolandTR909")
+  .hpf(5500).decay(.1)
+  .orbit(5)
+
+// === CHORD STABS — Enter in develop phase, supersaw offbeats ===
+$: arrange(
+  [8, s("~")],
+  [8, s("~")],
+  [16, s("~")],
+  [16, note("<[~ [f#3,a#3,c#4] ~ [f#3,a#3,c#4]] [~ [f#3,a#3,c#4] ~ ~] [~ [b3,d#4,f#4] ~ [b3,d#4,f#4]] [[c#4,e#4,g#4] ~ ~ [c#4,e#4,g#4]]>")
+    .s("supersaw").gain(.3)],
+  [24, note("<[~ [f#3,a#3,c#4] ~ [f#3,a#3,c#4]] [~ [f#3,a#3,c#4] ~ ~] [~ [b3,d#4,f#4] ~ [b3,d#4,f#4]] [[c#4,e#4,g#4] ~ ~ [c#4,e#4,g#4]]>")
+    .s("supersaw").gain(.32)],
+  [8, s("~")],
+  [16, note("<[~ [f#3,a#3,c#4] ~ [f#3,a#3,c#4]] [~ [f#3,a#3,c#4] ~ ~] [~ [b3,d#4,f#4] ~ [b3,d#4,f#4]] [[c#4,e#4,g#4] ~ ~ [c#4,e#4,g#4]]>")
+    .s("supersaw").gain(.35)],
+  [8, s("~")]
+).lpf(2400)
+  .decay(.06).sustain(0).release(.03)
+  .room(.2).roomsize(1.5)
+  .swingBy(1/6, 4)
+  .orbit(2)
+  ._pianoroll({color:"#ff4444"})
+
+// =====================================================
+// === VOCALS — The progression from ohh to slow rap ===
+// =====================================================
+
+// === VOCAL — Simple ooh, enters phase 3, builds to rap ===
+$: arrange(
+  [8, s("~")],
+  [8, s("~")],
+  // PHASE 3: Simple alternating — "ohh... ohh..."
+  [16, note("<b4 ~ b3 ~ b4 ~ b3 ~>")
+    .decay(.4).sustain(.08).release(.3)
+    .gain(.6)],
+  // PHASE 4: Getting rhythmic — starting to flow
+  [16, note("<[b4 ~ ~ b3] [~ b4 ~ ~] [b3 ~ b4 ~] [~ ~ b3 ~]>")
+    .decay(.4).sustain(.08).release(.3)
+    .gain(.32)],
+  // PHASE 5: RAP — full speed flow
+  [24, note("<[b3 b4 b3 ~ b4 b3 b4 ~] [~ b3 b4 b3 ~ b4 ~ b3] [b4 ~ b3 b4 b3 ~ b4 b3] [b3 b4 ~ b3 b4 b3 ~ b4]>")
+    .decay(.12).sustain(0).release(.06)
+    .gain(.35)],
+  // PHASE 6: RAP — continues
+  [8, note("<[b3 b4 b3 ~ b4 b3 b4 ~] [~ b3 b4 b3 ~ b4 ~ b3] [b4 ~ b3 b4 b3 ~ b4 b3] [b3 b4 ~ b3 b4 b3 ~ b4]>")
+    .decay(.12).sustain(0).release(.06)
+    .gain(.36)],
+  // PHASE 7: PEAK RAP — full speed, maximum flow
+  [16, note("<[b3 b4 b3 ~ b4 b3 b4 ~] [~ b3 b4 b3 ~ b4 ~ b3] [b4 ~ b3 b4 b3 ~ b4 b3] [b3 b4 ~ b3 b4 b3 ~ b4]>")
+    .decay(.12).sustain(0).release(.06)
+    .gain(.36)],
+  // PHASE 8: OUTRO — fading back to simple
+  [8, note("<b4 ~ ~ ~ b3 ~ ~ ~>")
+    .decay(.5).sustain(.1).release(.4)
+    .gain(.25)]
+).s("gm_voice_oohs")
+  .lpf(5000)
+  .room(.45).roomsize(4)
+  .delay(.2).delaytime(1/8).delayfeedback(.2)
+  .pan(sine.range(.4, .6).slow(5))
+  .orbit(6)
+
+// === VOCAL HIGH — Second voice, comes in later, call-and-response ===
+$: arrange(
+  [8, s("~")],
+  [8, s("~")],
+  [16, s("~")],
+  // PHASE 4: Sparse high response
+  [16, note("<[~ ~ ~ ~] [~ ~ b4 ~] [~ ~ ~ ~] [~ b4 ~ ~]>")
+    .decay(.35).sustain(0).release(.25)
+    .gain(.25)],
+  // PHASE 5: RAP — weaving with low voice
+  [24, note("<[~ b4 ~ ~] [b4 ~ b4 ~] [~ ~ b4 b4] [~ b4 ~ ~] [b4 ~ ~ b4] [~ b4 ~ ~] [~ ~ b4 ~] [b4 ~ b4 ~]>")
+    .decay(.18).sustain(0).release(.1)
+    .gain(.28)],
+  // PHASE 6: BREAK — just a whisper
+  [8, note("<[~ ~ ~ ~] [~ ~ ~ ~] [~ ~ ~ ~] [~ ~ ~ ~]>")
+    .decay(.5).sustain(.1).release(.5)
+    .gain(.2)],
+  // PHASE 7: PEAK — double-time response
+  [16, note("<[~ b4 ~ b4 ~ b4 ~ ~] [b4 ~ ~ b4 ~ ~ b4 ~] [~ ~ b4 ~ b4 ~ ~ b4] [b4 ~ b4 ~ ~ b4 ~ b4]>")
+    .decay(.1).sustain(0).release(.05)
+    .gain(.3)],
+  [8, s("~")]
+).s("gm_voice_oohs")
+  .lpf(4500)
+  .room(.5).roomsize(4.5)
+  .delay(.2).delaytime(3/16).delayfeedback(.25)
+  .pan(sine.range(.45, .65).slow(7))
+  .orbit(6)
+
+// === FUNKY PERC — Conga hits, appear in rap phases ===
+$: arrange(
+  [8, s("~")],
+  [8, s("~")],
+  [16, s("~")],
+  [16, s("~")],
+  [24, s("<[~ lt ~ lt] [lt ~ ~ lt] [~ lt lt ~] [lt ~ lt ~]>").gain(.22)],
+  [8, s("~")],
+  [16, s("<[lt ~ lt lt] [~ lt ~ lt] [lt lt ~ lt] [~ lt lt ~]>").gain(.25)],
+  [8, s("~")]
+).bank("RolandTR808")
+  .hpf(500)
+  .room(.25).roomsize(2)
+  .pan(rand.range(.4,.65))
+  .swingBy(1/6, 4)
+  .orbit(4)
+  ._spectrum({color:"#ff4444", thickness:2})

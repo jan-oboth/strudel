@@ -1,0 +1,124 @@
+// FRUITY CHICAGO HOUSE — "PAPAYA"
+// Deep soulful, gospel chords, warm strings, Larry Heard dreaminess
+
+setCps(120/60/4)
+
+// === KICK — Soft, warm, pillow-like ===
+$: s("bd*4").bank("RolandTR808")
+  .gain(.82)
+  .lpf(1600)
+  .room(.25).roomsize(3)
+  .orbit(0)
+  ._scope({color:"#cc66dd", thickness:2})
+
+// === BASS — Round sine, simple and deep ===
+_$: note("<[ab1 ~ ~ ab1] [~ ab1 ab2 ~] [db2 ~ ~ db2] [eb2 ~ eb1 ~]>")
+  .s("sine")
+  .gain(.52)
+  .lpf(200)
+  .decay(.3).sustain(.25).release(.15)
+  .orbit(1)
+  .swingBy(1/8, 4)
+
+// === BASS ALT — Walking, more melodic ===
+$: note("<[ab1 bb1 c2 ab1] [ab1 gb1 f1 ab1] [db2 c2 bb1 db2] [eb2 db2 c2 eb2]>")
+  .s("sine")
+  .gain(.48)
+  .lpf(180)
+  .decay(.25).sustain(.2).release(.12)
+  .orbit(1)
+  .swingBy(1/8, 4)
+
+// === GOSPEL CHORDS — Rich, stacked, the emotional core ===
+_$: chord("<Ab^7 Fm9 Db^7 Eb7>")
+  .voicing()
+  .s("gm_epiano1")
+  .lpf(3800)
+  .attack(.03).decay(.6).sustain(.35).release(.8)
+  .gain(.38)
+  .room(.55).roomsize(5).roomlp(3000)
+  .delay(.15).delaytime(1/4).delayfeedback(.2)
+  .orbit(2)
+  .slow(2)
+  ._pianoroll({color:"#cc66dd"})
+
+// === CHORDS ALT — Rhythmic stabs ===
+_$: chord("<Ab^7 Fm9 Db^7 Eb7>")
+  .voicing()
+  .s("gm_epiano1")
+  .struct("[~ x x ~] [x ~ ~ x]")
+  .lpf(4200)
+  .decay(.25).sustain(.1).release(.3)
+  .gain(.4)
+  .room(.45).roomsize(4)
+  .orbit(2)
+  .slow(2)
+  .swingBy(1/6, 4)
+  ._pianoroll({color:"#cc66dd"})
+
+// === STRING PAD — Lush, cinematic, breathes slowly ===
+_$: note("<[ab3,c4,eb4,g4] [f3,ab3,c4,eb4] [db3,f3,ab3,c4] [eb3,g3,bb3,db4]>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.05))
+  .superimpose(x => x.add(-0.05))
+  .lpf(sine.range(600, 2200).slow(16))
+  .attack(.5).decay(1.5).sustain(.5).release(2)
+  .gain(.12)
+  .room(.7).roomsize(6).roomlp(2500)
+  .orbit(3)
+  .slow(2)
+
+// === STRING ALT — Thinner, just 5ths ===
+_$: note("<[ab3,eb4] [f3,c4] [db3,ab3] [eb3,bb3]>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.05))
+  .lpf(sine.range(500, 1800).slow(20))
+  .attack(.4).decay(1).sustain(.4).release(1.5)
+  .gain(.1)
+  .room(.7).roomsize(6)
+  .orbit(3)
+  .slow(2)
+
+// === CLAP — Soft, lots of room ===
+$: s("~ cp ~ cp").bank("RolandTR808")
+  .gain(.28)
+  .room(.6).roomsize(5)
+  .hpf(700)
+  .orbit(4)
+
+// === HATS — Gentle 8ths, barely there ===
+$: s("hh*8").bank("RolandTR808")
+  .gain("<0.14 0.06 0.12 0.06>*2")
+  .hpf(7500)
+  .pan(rand.range(.4,.6))
+  .room(.2).roomsize(2)
+  .orbit(5)
+  .swingBy(1/6, 4)
+
+// === HATS ALT — 16ths, more driving ===
+_$: s("hh*16").bank("RolandTR808")
+  .gain("<0.16 0.05 0.11 0.05>*4")
+  .hpf(7500)
+  .pan(rand.range(.35,.65))
+  .orbit(5)
+  .swingBy(1/6, 4)
+
+// === OPEN HAT — Lazy offbeat ===
+$: s("~ oh ~ oh").bank("RolandTR808")
+  .gain(.1)
+  .hpf(5000)
+  .decay(.18)
+  .pan(.55)
+  .orbit(5)
+
+// === HIGH MELODIC — Tiny sine hook, dreamy ===
+$: note("<[~ ~ ab4 ~] [~ c5 ~ ~] [~ ~ ~ eb5] [~ db5 ~ ~]>")
+  .s("sine")
+  .attack(.01).decay(.4).sustain(0).release(.6)
+  .gain(.2)
+  .room(.65).roomsize(6)
+  .delay(.4).delaytime(3/16).delayfeedback(.45)
+  .hpf(800)
+  .pan(sine.range(.35,.65).slow(5))
+  .orbit(6)
+  ._spectrum({color:"#cc66dd", thickness:2})

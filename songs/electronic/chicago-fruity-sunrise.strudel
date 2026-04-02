@@ -1,0 +1,126 @@
+// FRUITY CHICAGO HOUSE — "SUNRISE JUICE"
+// Classic piano house, Frankie Knuckles warmth, FM bell sparkle
+
+setCps(122/60/4)
+
+// === KICK — Warm 909, four on the floor ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.88)
+  .shape(.2)
+  .lpf(2500)
+  .duck("1:2:3:4:5").duckattack(.02).duckdepth(.75)
+  .room(.12).roomsize(1.5)
+  .orbit(0)
+  ._scope({color:"#ff8833", thickness:2})
+
+// === KICK ALT — Softer, pulled back ===
+_$: s("bd*4").bank("RolandTR909")
+  .gain(.78)
+  .shape(.15)
+  .lpf(2000)
+  .duck("1:2:3:4:5").duckattack(.02).duckdepth(.7)
+  .room(.15).roomsize(2)
+  .orbit(0)
+  ._scope({color:"#ff8833", thickness:2})
+
+// === BASS — Bouncy sawtooth, octave jumps ===
+$: note("<[c2 ~ c2 c3] [a1 ~ a1 a2] [d2 ~ d2 d3] [g1 ~ g1 g2]>")
+  .s("sawtooth")
+  .lpf(800).lpq(3)
+  .decay(.18).sustain(.1).release(.08)
+  .gain(.48)
+  .room(.15).roomsize(1)
+  .orbit(1)
+  .swingBy(1/6, 4)
+
+// === BASS ALT — Simpler, root notes only ===
+_$: note("<c2!4 a1!4 d2!4 g1!4>")
+  .s("sawtooth")
+  .lpf(700).lpq(2)
+  .decay(.25).sustain(.15).release(.1)
+  .gain(.45)
+  .orbit(1)
+
+// === CHORDS — Electric piano, soulful voicings ===
+$: chord("<C^7 Am7 Dm7 G7>")
+  .voicing()
+  .s("gm_epiano1")
+  .lpf(3500)
+  .decay(.5).sustain(.3).release(.6)
+  .gain(.35)
+  .room(.4).roomsize(3).roomlp(4000)
+  .delay(.2).delaytime(3/16).delayfeedback(.3)
+  .orbit(2)
+  .slow(2)
+  ._pianoroll({color:"#ffaa33"})
+
+// === CHORDS ALT — Offbeat stabs, more rhythmic ===
+_$: chord("<C^7 Am7 Dm7 G7>")
+  .voicing()
+  .s("gm_epiano1")
+  .struct("[~ x ~ x] [~ x x ~]")
+  .lpf(4000)
+  .decay(.3).sustain(.1).release(.3)
+  .gain(.38)
+  .room(.35).roomsize(2.5)
+  .delay(.25).delaytime(3/16).delayfeedback(.35)
+  .orbit(2)
+  .slow(2)
+  ._pianoroll({color:"#ffaa33"})
+
+// === CLAP — On 2 and 4, roomy ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.38)
+  .room(.5).roomsize(4).roomlp(3000)
+  .hpf(800)
+  .orbit(3)
+
+// === CLAP ALT — With ghost clap ===
+_$: s("~ cp [~ cp?] cp").bank("RolandTR909")
+  .gain("<0.38 0.38 0.18 0.38>")
+  .room(.5).roomsize(4).roomlp(3000)
+  .hpf(800)
+  .orbit(3)
+
+// === CLOSED HATS — Swung 16ths, velocity grooved ===
+$: s("hh*16").bank("RolandTR909")
+  .gain("<0.22 0.08 0.16 0.08>*4")
+  .hpf(6500)
+  .pan(rand.range(.35,.65))
+  .room(.15).roomsize(1.5)
+  .orbit(4)
+  .swingBy(1/6, 4)
+
+// === OPEN HAT — Offbeat pulse ===
+$: s("~ oh ~ oh").bank("RolandTR909")
+  .gain(.14)
+  .hpf(5500)
+  .decay(.12)
+  .pan(.6)
+  .orbit(4)
+
+// === FM BELL — Sparkly fruity accents ===
+$: note("<[~ g4 ~ ~] [~ ~ e4 ~] [~ ~ ~ d5] [~ c5 ~ ~]>")
+  .s("sine")
+  .fm(3).fmh(3.5)
+  .attack(.005).decay(.35).sustain(0).release(.5)
+  .gain(.32)
+  .lpf(5000)
+  .room(.55).roomsize(5).roomlp(3000)
+  .delay(.5).delaytime(3/16).delayfeedback(.45)
+  .hpf(500)
+  .pan(sine.range(.3, .7).slow(5))
+  .orbit(5)
+
+// === FM BELL ALT — Higher, more sparse ===
+_$: note("<[~ ~ c5 ~] [~ ~ ~ ~] [~ e5 ~ ~] [~ ~ ~ g4]>")
+  .s("sine")
+  .fm(3).fmh(3.5)
+  .attack(.005).decay(.3).sustain(0).release(.4)
+  .gain(.28)
+  .lpf(5500)
+  .room(.6).roomsize(5)
+  .delay(.55).delaytime(3/16).delayfeedback(.5)
+  .hpf(500)
+  .pan(.55)
+  .orbit(5)

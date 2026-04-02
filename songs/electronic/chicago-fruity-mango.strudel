@@ -1,0 +1,137 @@
+// FRUITY CHICAGO HOUSE — "MANGO GROOVE"
+// Deep organ groove, squelchy bass, Ron Trent / Cajmere hypnotic feel
+
+setCps(124/60/4)
+
+// === KICK — Punchy 909, four on the floor ===
+_$: s("bd*4").bank("RolandTR909")
+  .gain(.88)
+  .shape(.25)
+  .lpf(2800)
+  .duck("1:2:3:4:5").duckattack(.02).duckdepth(.75)
+  .room(.1).roomsize(1.5)
+  .orbit(0)
+  ._scope({color:"#ff6622", thickness:2})
+  ._spectrum({color:"#ff6622", thickness:2})
+
+// === KICK ALT — Softer, more round ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.8)
+  .shape(.18)
+  .lpf(2200)
+  .duck("1:2:3:4:5").duckattack(.025).duckdepth(.7)
+  .room(.12).roomsize(2)
+  .orbit(0)
+  ._scope({color:"#ff6622", thickness:2})
+
+// === BASS — Squelchy square, filter envelope ===
+$: note("<[f1 ~ ~ f1] [~ f1 ~ ~] [bb1 ~ ~ bb1] [c2 ~ c1 ~]>")
+  .s("sawtooth")
+  .lpf(400).lpenv(4).lpdecay(.15).lpsustain(0)
+  .lpq(6)
+  .decay(.2).sustain(.1).release(.06)
+  .gain(.5)
+  .room(.1).roomsize(1)
+  .orbit(1)
+  .swingBy(1/8, 4)
+
+// === BASS ALT — Simpler, walking root ===
+_$: note("<f1!4 bb1!4 g1!4 c2!4>")
+ .s("square")
+  .lpf(350).lpenv(3).lpdecay(.12).lpsustain(0)
+  .lpq(5)
+  .decay(.22).sustain(.1).release(.08)
+  .gain(.46)
+  .orbit(1)
+
+// === BASS ALT 2 — Sawtooth, smoother ===
+_$: note("<[f1 ~ f1 f2] [~ f1 ~ ~] [bb1 ~ bb1 bb2] [c2 ~ ~ c1]>")
+  .s("sawtooth")
+  .lpf(600).lpq(3)
+  .decay(.2).sustain(.1).release(.08)
+  .gain(.9)
+  .orbit(1)
+  .swingBy(1/8, 4)
+
+// === ORGAN CHORDS — Detuned saw stabs, drawbar organ feel ===
+_$: chord("<F^7 Bb^7 Gm7 C7>")
+  .voicing()
+  .s("sawtooth")
+  .superimpose(x => x.add(0.06))
+  .superimpose(x => x.add(-0.06))
+  .struct("[~ x ~ x] [x ~ x ~]")
+  .lpf(sine.range(1200, 3500).slow(16))
+  .lpq(1.5)
+  .attack(.01).decay(.35).sustain(.15).release(.3)
+  .gain(.28)
+  .room(.45).roomsize(3.5).roomlp(3500)
+  .delay(.2).delaytime(3/16).delayfeedback(.3)
+  .orbit(2)
+  .slow(2)
+  ._pianoroll({color:"#ff9944"})
+
+// === ORGAN ALT — Sustained, less rhythmic ===
+_$: chord("<F^7 Bb^7 Gm7 C7>")
+  .voicing()
+  .s("sawtooth")
+  .superimpose(x => x.add(0.06))
+  .superimpose(x => x.add(-0.06))
+  .lpf(sine.range(1000, 2800).slow(12))
+  .lpq(1.5)
+  .attack(.05).decay(.5).sustain(.3).release(.5)
+  .gain(.22)
+  .room(.5).roomsize(4)
+  .orbit(2)
+  .slow(2)
+  ._pianoroll({color:"#ff9944"})
+
+// === WARM PAD — Follows chord changes, body and warmth ===
+_$: note("<[f3,a3,c4] [f3,bb3,d4] [g3,bb3,d4] [e3,g3,c4]>")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.07))
+  .lpf(sine.range(400, 1400).slow(24))
+  .attack(.6).decay(1).sustain(.4).release(1)
+  .gain(.09)
+  .room(.6).roomsize(5).roomlp(2000)
+  .orbit(5)
+  .slow(2)
+
+// === CLAP — On 2 and 4, warm ===
+_$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.35)
+  .room(.5).roomsize(4).roomlp(3500)
+  .hpf(800)
+  .orbit(3)
+
+// === CLAP ALT — Syncopated ===
+_$: s("~ cp [~ cp?] cp").bank("RolandTR909")
+  .gain("<0.35 0.35 0.15 0.35>")
+  .room(.45).roomsize(3.5)
+  .hpf(800)
+  .orbit(3)
+
+// === CLOSED HATS — 8ths with ghost 16th accents, swung ===
+_$: s("<[hh hh hh hh hh hh hh hh] [hh hh [hh hh] hh hh hh [hh hh] hh]>")
+  .bank("RolandTR909")
+  .gain("<0.2 0.08 0.16 0.08 0.18 0.08 0.14 0.08>")
+  .hpf(6500)
+  .pan(rand.range(.35,.65))
+  .room(.12).roomsize(1.5)
+  .orbit(4)
+  .swingBy(1/6, 4)
+
+// === OPEN HAT — Offbeat ===
+_$: s("~ [~ oh] ~ [~ oh]").bank("RolandTR909")
+  .gain(.12)
+  .hpf(5500)
+  .decay(.15)
+  .pan(.6)
+  .room(.2).roomsize(2)
+  .orbit(4)
+
+// === RIM — Sparse syncopation for extra groove ===
+_$: s("<[~ ~ rim ~] [~ ~ ~ ~] [~ rim ~ ~] [~ ~ ~ ~]>").bank("RolandTR909")
+  .gain(.2)
+  .room(.3).roomsize(2.5)
+  .hpf(2000)
+  .orbit(4)

@@ -1,0 +1,136 @@
+// FRUITY CHICAGO HOUSE — "DRAGONFRUIT"
+// Stoned at the beach, Buss It vibes, sun-drenched tech house
+// Bouncy, hazy, playful, squelchy, smile energy
+
+setCps(124/60/4)
+
+// === KICK — Solid but not aggressive, beach-friendly ===
+$: s("bd*4").bank("RolandTR909")
+  .gain(.85)
+  .shape(.18)
+  .lpf(2200)
+  .room(.2).roomsize(2)
+  .orbit(0)
+  ._scope({color:"#dd55ff", thickness:2})
+
+// === KICK ALT — Softer, half-open ===
+_$: s("bd*4").bank("RolandTR808")
+  .gain(.82)
+  .lpf(1800)
+  .room(.22).roomsize(2.5)
+  .orbit(0)
+  ._scope({color:"#dd55ff", thickness:2})
+
+// === BASS — Squelchy, bouncy, head-nodding ===
+$: note("<[g1 ~ g2 g1] [~ g1 g1 ~] [c2 ~ c1 c2] [d2 ~ d1 ~]>")
+  .s("sawtooth")
+  .lpf(sine.range(250, 900).slow(4))
+  .lpq(6)
+  .decay(.14).sustain(.08).release(.06)
+  .gain(.48)
+  .shape(.12)
+  .orbit(1)
+  .swingBy(1/8, 4)
+
+// === BASS ALT — Deeper, more sub ===
+_$: note("<[g1 ~ ~ g1] [~ g1 ~ ~] [c2 ~ ~ c1] [d2 ~ d1 ~]>")
+  .s("square")
+  .lpf(400).lpq(4)
+  .decay(.2).sustain(.1).release(.08)
+  .gain(.45)
+  .orbit(1)
+  .swingBy(1/8, 4)
+
+// === FRUITY STAB — Cheeky chord hits, the personality ===
+$: note("<[~ ~ [g3,b3,d4] ~] [~ [g3,b3,d4] ~ [g3,b3,d4]] [~ [c4,e4,g4] ~ ~] [~ ~ [d4,f#4,a4] ~]>")
+  .s("gm_epiano1")
+  .lpf(4500)
+  .decay(.2).sustain(.05).release(.2)
+  .gain(.4)
+  .shape(.1)
+  .room(.4).roomsize(3)
+  .delay(.2).delaytime(1/8).delayfeedback(.25)
+  .orbit(2)
+  .swingBy(1/6, 4)
+  ._pianoroll({color:"#dd55ff"})
+
+// === STAB ALT — Sustained, dreamier ===
+_$: note("<[g3,b3,d4] [g3,b3,d4] [c4,e4,g4] [d4,f#4,a4]>")
+  .s("gm_epiano1")
+  .lpf(3800)
+  .attack(.04).decay(.5).sustain(.3).release(.5)
+  .gain(.32)
+  .shape(.08)
+  .room(.5).roomsize(4)
+  .orbit(2)
+  .slow(2)
+  ._pianoroll({color:"#dd55ff"})
+
+// === HAZY HOOK — Stoned sine melody, floating above everything ===
+$: note("<[~ ~ b4 ~] [d5 ~ ~ ~] [~ g4 ~ a4] [~ ~ ~ d5]>")
+  .s("sine")
+  .attack(.02).decay(.6).sustain(0).release(1)
+  .gain(.2)
+  .shape(.1)
+  .lpf(3500)
+  .room(.7).roomsize(6).roomlp(2500)
+  .delay(.5).delaytime(3/16).delayfeedback(.5)
+  .pan(sine.range(.3,.7).slow(7))
+  .orbit(3)
+
+// === HOOK ALT — FM shimmer version ===
+_$: note("<[~ b4 ~ ~] [~ ~ d5 ~] [~ ~ ~ g4] [a4 ~ ~ ~]>")
+  .s("sine")
+  .fm(1.5).fmh(2.01)
+  .attack(.01).decay(.5).sustain(0).release(.8)
+  .gain(.18)
+  .lpf(4000)
+  .room(.65).roomsize(5)
+  .delay(.45).delaytime(3/16).delayfeedback(.45)
+  .orbit(3)
+
+// === WARM PAD — Beach sunset wash, barely there ===
+_$: note("[g3,b3,d4]")
+  .s("sawtooth")
+  .superimpose(x => x.add(0.05))
+  .superimpose(x => x.add(-0.05))
+  .lpf(sine.range(400, 1200).slow(32))
+  .attack(1).decay(2).sustain(.4).release(2)
+  .gain(.08)
+  .shape(.15)
+  .room(.8).roomsize(8).roomlp(1800)
+  .orbit(5)
+  .slow(4)
+
+// === CLAP — Relaxed, roomy ===
+$: s("~ cp ~ cp").bank("RolandTR909")
+  .gain(.32)
+  .room(.5).roomsize(4)
+  .hpf(750)
+  .orbit(4)
+
+// === HATS — Bouncy 16ths, playful ===
+$: s("hh*16").bank("RolandTR909")
+  .gain("<0.2 0.06 0.14 0.06>*4")
+  .hpf(6500)
+  .pan(rand.range(.3,.7))
+  .room(.15).roomsize(1.5)
+  .orbit(6)
+  .swingBy(1/6, 4)
+
+// === OPEN HAT — Offbeat, breezy ===
+$: s("~ oh ~ oh").bank("RolandTR909")
+  .gain(.12)
+  .hpf(5500)
+  .decay(.14)
+  .pan(.6)
+  .orbit(6)
+
+// === SHAKER — Beach shimmer ===
+$: s("white*8")
+  .gain("<0.025 0.01 0.02 0.01>*2")
+  .hpf(8000).lpf(13000)
+  .pan(rand.range(.35,.65))
+  .orbit(6)
+  .swingBy(1/6, 4)
+  ._spectrum({color:"#dd55ff", thickness:2})
