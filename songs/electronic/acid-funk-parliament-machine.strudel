@@ -1,0 +1,138 @@
+// Parliament Machine — acid funk loop set
+setCps(118/60/4)
+
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
+
+// === KICK — four-on-floor LinnDrum ===
+$: s("bd*4").bank("linn")
+  .gain(.88).shape(.2).lpf(2800)
+  .room(.05).roomsize(1)
+  .duck("1:2:3:4:5:6:7:8").duckattack(.015).duckdepth(.85)
+  .orbit(0)
+  ._scope({color:"#ffcc00", thickness:2})
+  ._spectrum({color:"#ffcc00", thickness:2})
+
+_$: s("bd [~ bd] [bd ~] [~ bd:1]").bank("linn")
+  .gain(.88).shape(.2).lpf(2800)
+  .room(.05).roomsize(1)
+  .duck("1:2:3:4:5:6:7:8").duckattack(.015).duckdepth(.85)
+  .orbit(0)
+
+// === SNARE — backbeat ===
+_$: s("~ sd ~ sd").bank("linn")
+  .gain(.9).room(.2).roomsize(1.5).hpf(800)
+  .orbit(2)
+
+$: s("~ sd [~ sd:1] sd, [~ ~ ~ sd:1]*2").bank("linn")
+  .gain("<0.35 0.18 0.28 0.18>*4").room(.2).roomsize(1.5).hpf(800)
+  .orbit(2)
+
+// === HATS/PERC — busy 16th funk ===
+_$: s("hh*16").bank("linn")
+  .gain("<0.2 0.08 0.15 0.08>*4")
+  .hpf(6000).pan(rand.range(.3,.7))
+  .swingBy(1/8, 4)
+  .orbit(3)
+
+_$: s("<[~ rim ~ ~] [~ ~ rim ~] [~ ~ ~ rim] [rim ~ ~ ~]>").bank("linn")
+  .gain(.22).hpf(2000)
+  .orbit(3)
+
+_$: s("~ oh ~ oh").bank("linn")
+  .gain(.2).hpf(5500).decay(.1)
+  .orbit(3)
+
+$: s("hh*8").bank("linn")
+  .gain("<0.18 0.1>*4")
+  .hpf(6000).pan(rand.range(.3,.7))
+  .swingBy(1/8, 4)
+  .orbit(3)
+
+// === FUNK BASS — the groove anchor ===
+_$: note("<[e2 ~ e3 e2] [~ g2 a2 ~] [b2 ~ e2 d#2] [e2 ~ ~ e3]>")
+  .s("sawtooth")
+  .lpf(500).lpq(5)
+  .shape(.2)
+  .decay(.12).sustain(.08).release(.05)
+  .gain(.9)
+  .swingBy(1/8, 4)
+  .orbit(1)
+  ._pianoroll({color:"#ffcc00"})
+
+_$: note("<[e2 ~ ~ ~] [~ g2 ~ ~] [b2 ~ ~ a2] [~ ~ e2 ~]>")
+  .s("sawtooth")
+  .lpf(500).lpq(5)
+  .shape(.2)
+  .decay(.12).sustain(.08).release(.05)
+  .gain(.58)
+  .swingBy(1/8, 4)
+  .orbit(1)
+
+$: note("<[e2 e3 e2 e3] [g2 g3 a2 a3] [b2 b3 e2 e3] [e2 e3 d#2 e2]>")
+  .s("sawtooth")
+  .lpf(550).lpq(4)
+  .shape(.25)
+  .decay(.1).sustain(.06).release(.04)
+  .gain(.58)
+  .swingBy(1/8, 4)
+  .orbit(1)
+
+// === ACID LINE — mid-register squelch ===
+_$: note("<[~ e3 ~ g3] [a3 ~ ~ b3] [~ ~ g3 ~] [e3 ~ ~ ~]>")
+  .s("square")
+  .acidenv(0.55).lpq(12)
+  .gain(.4)
+  .distort(.6)
+  .swingBy(1/8, 4)
+  .orbit(4)
+
+_$: note("<[~ e3 g3 ~] [a3 b3 ~ a3] [g3 ~ e3 g3] [~ b3 ~ e3]>")
+  .s("square")
+  .acidenv(0.75).lpq(16)
+  .gain(.38)
+  .distort(.7)
+  .swingBy(1/8, 4)
+  .orbit(4)
+
+// === LEAD — response phrase ===
+$: note("<[e4 ~ ~ ~] [~ ~ b3 ~] [a3 ~ ~ d4] [~ b3 ~ ~]>")
+  .s("square")
+  .lpf(2000).lpq(3)
+  .decay(.1).sustain(.05).release(.06)
+  .gain(.9)
+  .room(.2).roomsize(1.5)
+  .delay(.15).delaytime(1/8).delayfeedback(.25)
+  .orbit(5)
+
+_$: note("<[~ ~ g4 ~] [b3 ~ ~ e4] [~ d4 ~ ~] [a3 ~ b3 ~]>")
+  .s("square")
+  .lpf(2000).lpq(3)
+  .decay(.1).sustain(.05).release(.06)
+  .gain(.35)
+  .room(.2).roomsize(1.5)
+  .delay(.15).delaytime(1/8).delayfeedback(.25)
+  .orbit(5)
+
+// === CHORD WAH — Parliament keyboard wash ===
+$: note("<[~ [e3,g3,b3,d4,f#4] ~ ~] [~ ~ [a3,c4,e4,g4] ~]>")
+  .s("sawtooth").superimpose(x => x.add(0.08))
+  .lpf(sine.range(400, 3000).slow(4)).lpq(6)
+  .decay(.2).sustain(.1).release(.1)
+  .gain(.9)
+  .pan(sine.range(.35,.65).slow(3))
+  .orbit(6)
+
+_$: note("<[[e3,g3,b3,d4,f#4] ~ [e3,g3,b3,d4,f#4] ~] [[a3,c4,e4,g4] ~ ~ [a3,c4,e4,g4]]>")
+  .s("sawtooth").superimpose(x => x.add(0.08))
+  .lpf(sine.range(500, 2500).slow(3)).lpq(5)
+  .decay(.15).sustain(.08).release(.08)
+  .gain(.16)
+  .pan(sine.range(.35,.65).slow(3))
+  .orbit(6)
+
+// === SUB BASS — root anchor ===
+$: note("e1")
+  .s("sine")
+  .lpf(60).gain(.42)
+  .decay(.5).sustain(.3).release(.2)
+  .orbit(7)
