@@ -1,0 +1,95 @@
+// Dirty Slap — acid funk loop set
+setCps(118/60/4)
+
+register('acidenv', (x, pat) => pat.lpf(100).lpenv(x * 9).lps(.2).lpd(.12))
+
+// === KICK — four-on-floor 808 ===
+$: s("bd*4").bank("RolandTR808")
+  .gain(.9).shape(.3).lpf(2500)
+  .room(.06).roomsize(1)
+  .duck("1:2:3:4:5:6").duckattack(.015).duckdepth(.9)
+  .orbit(0)
+  ._scope({color:"#ff6600", thickness:2})
+  ._spectrum({color:"#ff3300", thickness:2})
+
+_$: s("bd ~ [~ bd] ~, bd ~ ~ bd").bank("RolandTR808")
+  .gain(.9).shape(.3).lpf(2500)
+  .room(.06).roomsize(1)
+  .duck("1:2:3:4:5:6").duckattack(.015).duckdepth(.9)
+  .orbit(0)
+
+// === CLAP — backbeat ===
+$: s("~ cp ~ cp").bank("RolandTR808")
+  .gain(.28).room(.25).roomsize(2).hpf(900)
+  .orbit(2)
+
+_$: s("~ cp ~ cp, [~ ~ cp ~]*2").bank("RolandTR808")
+  .gain("<0.28 0.14>*4").room(.25).roomsize(2).hpf(900)
+  .orbit(2)
+
+// === HATS — 16th funk ===
+$: s("hh*16").bank("RolandTR808")
+  .gain("<0.2 0.08 0.14 0.08>*4")
+  .hpf(6000).pan(rand.range(.35,.65))
+  .swingBy(1/6, 4)
+  .orbit(3)
+
+$: s("~ oh ~ oh").bank("RolandTR808")
+  .gain(.12).hpf(5500).decay(.12)
+  .orbit(3)
+
+_$: s("hh*8").bank("RolandTR808")
+  .gain("<0.18 0.1>*4")
+  .hpf(6000).pan(rand.range(.35,.65))
+  .swingBy(1/6, 4)
+  .orbit(3)
+
+// === ACID BASS — the lead voice ===
+$: note("<[e2 ~ g2 a2 ~ e3 b2 ~] [e2 e3 ~ g2 ~ a2 ~ b2]>")
+  .s("sawtooth")
+  .acidenv(0.65).lpq(14)
+  .distort(.8)
+  .gain(.7)
+  .swingBy(1/6, 4)
+  .orbit(1)
+  ._pianoroll({color:"#00ff88"})
+
+_$: note("<[e2 ~ e3 ~ g2 b2 ~ a2] [~ e3 g2 ~ a2 ~ e2 b2]>")
+  .s("sawtooth")
+  .acidenv(0.8).lpq(18)
+  .distort(.9)
+  .gain(.7)
+  .swingBy(1/6, 4)
+  .orbit(1)
+
+_$: note("<[e2 ~ ~ a1 ~ ~ e2 ~] [~ ~ g1 ~ ~ ~ e2 ~]>")
+  .s("sawtooth")
+  .acidenv(0.45).lpq(8)
+  .distort(.6)
+  .gain(.65)
+  .swingBy(1/6, 4)
+  .orbit(1)
+
+// === FUNK STABS — off-beat chords ===
+$: note("<[~ [e3,g3,b3,d4] ~ [e3,g3,b3,d4]] [~ ~ [a3,c4,e4,g4] ~]>")
+  .s("square")
+  .decay(.08).sustain(0).release(.04)
+  .gain(.35)
+  .lpf(2200).room(.2).roomsize(1.5)
+  .swingBy(1/6, 4)
+  .orbit(4)
+
+_$: note("<[~ [b2,e3,g3,d4] ~ ~] [~ [a3,e4,g4,c5] ~ [a3,c4,e4,g4]]>")
+  .s("square")
+  .decay(.1).sustain(0).release(.05)
+  .gain(.32)
+  .lpf(1800).room(.2).roomsize(1.5)
+  .swingBy(1/6, 4)
+  .orbit(4)
+
+// === SUB BASS — root anchor ===
+$: note("e1")
+  .s("sine")
+  .lpf(65).gain(.45)
+  .decay(.5).sustain(.3).release(.2)
+  .orbit(5)

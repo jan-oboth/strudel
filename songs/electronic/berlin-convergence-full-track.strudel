@@ -33,7 +33,7 @@ $: arrange(
   [16, s("bd*4").bank("RolandTR909")
     .gain(.88).shape(.3).lpf(2500)],                                        // 2. transition — continues
   [32, s("bd*4").bank("RolandTR909")
-    .gain(.85).shape(.6).lpf(5000)],                                        // 3. raw — harder, brighter
+     .gain(.85).shape(.6).lpf(5000)],                                        // 3. raw — harder, brighter
   [28, s("bd*4").bank("RolandTR909")
     .gain(.78).distort(1.2)],                                               // 4. industrial — distorted (reduced)
   [16, s("~")],                                                             // 5. breakdown — silence
